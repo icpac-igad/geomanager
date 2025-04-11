@@ -52,7 +52,7 @@ frozenlist==1.3.3
 fsspec==2023.5.0
 future==0.18.3
 GDAL==3.5.1
-git+https://github.com/icpac-igad/geomanager.git@main
+git+https://github.com/icpac-igad/geomanager.git@eahw-v20
 geopandas==0.13.0
 html5lib==1.1
 hyperlink==21.0.0
@@ -141,3 +141,4 @@ Willow==1.9.0
 asgiref==3.8.1
 deep-translator==1.11.4 
 wagtail-modeladmin==2.1.0
+django-deep-translator=1.5.1
