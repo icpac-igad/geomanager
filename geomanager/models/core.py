@@ -180,7 +180,7 @@ class Dataset(TimeStampedModel, AdminSortable):
         blank=True,
         verbose_name=_("latest data date set by data ingestion job"),
         help_text=_(
-            "Last day date of the pentad/week/dekad/month/season as extracted from dataset, depending on dataset periodicity"
+            "First day (initialization) date of the pentad/week/dekad/month/season as extracted from dataset, depending on dataset periodicity"
         ),
     )
     published = models.BooleanField(

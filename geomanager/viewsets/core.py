@@ -3,7 +3,6 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from wagtail import hooks
-
 from geomanager import serializers
 from geomanager.models import Dataset
 from geomanager.models.core import Metadata
@@ -63,8 +62,11 @@ class DatasetSlugViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, vie
         return context
     
     def update(self, request, *args, **kwargs):
+        # explicitly set partial update status
         kwargs['partial'] = True
-        return super().update(request, *args, **kwargs)
+        super().update(request, *args, **kwargs)
+        # return request payload
+        return request.data
     
 class MetadataViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Metadata.objects.all()
