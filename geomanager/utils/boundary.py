@@ -10,7 +10,7 @@ def create_boundary_dataset(tiles_url):
         "layer": dataset_id,
         "isBoundary": True,
         "public": True,
-        "layers": []
+        "layers": [],
     }
 
     layer = {
@@ -107,11 +107,10 @@ def create_boundary_dataset(tiles_url):
                 {
                     "column": "gid_0",
                     "property": "ISO",
-                    'type': "string",
+                    "type": "string",
                 },
                 {
                     "column": "gid_1",
-
                     "property": "admin1",
                     "type": "string",
                 },

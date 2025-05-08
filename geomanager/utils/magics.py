@@ -35,7 +35,7 @@ def get_mxarray_data_from_geotiff(geotiff_path):
     ds = xr.open_dataset(geotiff_path, engine="rasterio")
 
     # Rename the x and y dimensions to longitude and latitude
-    ds = ds.rename({'x': 'longitude', 'y': 'latitude'})
+    ds = ds.rename({"x": "longitude", "y": "latitude"})
     ds.coords["longitude"].attrs = {
         "standard_name": "longitude",
     }
@@ -88,7 +88,7 @@ def get_magics_png_tile(source, x, y, z, contour_params):
         "page_frame": "off",
         "skinny_mode": "on",
         "page_id_line": "off",
-        "subpage_gutter_percentage": 0.,
+        "subpage_gutter_percentage": 0.0,
     }
 
     # create area
@@ -104,7 +104,7 @@ def get_magics_png_tile(source, x, y, z, contour_params):
 
     # create magics output
     moutput = magics.output(
-        output_formats=['png'],
+        output_formats=["png"],
         output_name_first_page_number="off",
         output_cairo_transparent_background=True,
         output_width=width,
@@ -114,11 +114,11 @@ def get_magics_png_tile(source, x, y, z, contour_params):
     try:
         # plot
         magics.plot(moutput, area, data, contour)
-    except Exception as e:
+    except Exception:
         raise
 
     # read the image
-    with open(output_fname, 'rb') as f:
+    with open(output_fname, "rb") as f:
         image_bytes = f.read()
 
     # delete the temporary file

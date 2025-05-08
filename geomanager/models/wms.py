@@ -10,11 +10,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.models import Image
 from wagtail.models import Orderable
 
-from geomanager.blocks import (
-    InlineLegendBlock,
-    LayerMoreInfoBlock,
-    QueryParamSelectableBlock
-)
+from geomanager.blocks import InlineLegendBlock, LayerMoreInfoBlock, QueryParamSelectableBlock
 from geomanager.models.core import Dataset, BaseLayer
 from geomanager.utils import DATE_FORMAT_CHOICES
 
@@ -32,85 +28,159 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
     )
 
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="wms_layers", verbose_name=_("dataset"))
-    request_time_from_capabilities = models.BooleanField(default=True, verbose_name=_("Request time from capabilities"),
-                                                         help_text=_("Get list of available times for this layer"
-                                                                     " from getCapabilities"), )
-    base_url = models.CharField(max_length=500, verbose_name=_("base url for WMS"), )
+    request_time_from_capabilities = models.BooleanField(
+        default=True,
+        verbose_name=_("Request time from capabilities"),
+        help_text=_("Get list of available times for this layer from getCapabilities"),
+    )
+    base_url = models.CharField(
+        max_length=500,
+        verbose_name=_("base url for WMS"),
+    )
     version = models.CharField(max_length=50, default="1.1.1", choices=VERSION_CHOICES, verbose_name=_("WMS Version"))
-    width = models.IntegerField(default=256, verbose_name=_("Pixel Width"),
-                                help_text=_("The size of the map image in pixels along the i axis"), )
-    height = models.IntegerField(default=256, verbose_name=_("Pixel Height"),
-                                 help_text=_("The size of the map image in pixels along the j axis"), )
-    transparent = models.BooleanField(default=True, verbose_name=_("Transparency"),
-                                      help_text=_("Ability of underlying maps to be visible or not"), )
-    srs = models.CharField(max_length=50, default="EPSG:3857", verbose_name=_("Spatial Reference System"),
-                           help_text=_("WMS Spatial Reference e.g EPSG:3857"), )
-    format = models.CharField(max_length=50, default="image/png", choices=OUTPUT_FORMATS,
-                              verbose_name=_("Output Format"),
-                              help_text=_(
-                                  "Allowed map formats are either “picture” formats or “graphic element” formats."), )
-    wms_query_params_selectable = StreamField([
-        ('param', QueryParamSelectableBlock(label=_("Query Parameter")))
-    ], use_json_field=True, null=True, blank=True, verbose_name=_("WMS Query Params With selectable Options"),
+    width = models.IntegerField(
+        default=256,
+        verbose_name=_("Pixel Width"),
+        help_text=_("The size of the map image in pixels along the i axis"),
+    )
+    height = models.IntegerField(
+        default=256,
+        verbose_name=_("Pixel Height"),
+        help_text=_("The size of the map image in pixels along the j axis"),
+    )
+    transparent = models.BooleanField(
+        default=True,
+        verbose_name=_("Transparency"),
+        help_text=_("Ability of underlying maps to be visible or not"),
+    )
+    srs = models.CharField(
+        max_length=50,
+        default="EPSG:3857",
+        verbose_name=_("Spatial Reference System"),
+        help_text=_("WMS Spatial Reference e.g EPSG:3857"),
+    )
+    format = models.CharField(
+        max_length=50,
+        default="image/png",
+        choices=OUTPUT_FORMATS,
+        verbose_name=_("Output Format"),
+        help_text=_("Allowed map formats are either “picture” formats or “graphic element” formats."),
+    )
+    wms_query_params_selectable = StreamField(
+        [("param", QueryParamSelectableBlock(label=_("Query Parameter")))],
+        use_json_field=True,
+        null=True,
+        blank=True,
+        verbose_name=_("WMS Query Params With selectable Options"),
         help_text=_(
-            "This should provide a list of options that users can choose to change the query parameter of the url"))
+            "This should provide a list of options that users can choose to change the query parameter of the url"
+        ),
+    )
 
-    params_selectors_side_by_side = models.BooleanField(default=False,
-                                                        verbose_name=_("Arrange Param Selectors side by side"))
-    legend = StreamField([
-        ('legend', InlineLegendBlock(label=_("Custom Legend")),),
-        ('legend_image', ImageChooserBlock(label=_("Custom Image")),),
-    ], use_json_field=True, null=True, blank=True, max_num=1, verbose_name=_("Legend"), )
+    params_selectors_side_by_side = models.BooleanField(
+        default=False, verbose_name=_("Arrange Param Selectors side by side")
+    )
+    legend = StreamField(
+        [
+            (
+                "legend",
+                InlineLegendBlock(label=_("Custom Legend")),
+            ),
+            (
+                "legend_image",
+                ImageChooserBlock(label=_("Custom Image")),
+            ),
+        ],
+        use_json_field=True,
+        null=True,
+        blank=True,
+        max_num=1,
+        verbose_name=_("Legend"),
+    )
 
-    date_format = models.CharField(max_length=100, choices=DATE_FORMAT_CHOICES, blank=True, null=True,
-                                   verbose_name=_("Display Format for DateTime Selector"))
-    custom_get_capabilities_url = models.URLField(blank=True, null=True, verbose_name=_("Get Capabilities URL"),
-                                                  help_text=_("Alternative URL for the GetCapabilities request. "
-                                                              "Used when 'Request time from capabilities' "
-                                                              "option is checked. Leave blank to use base url."))
-    get_capabilities_layer_name = models.CharField(max_length=255, blank=True, null=True,
-                                                   verbose_name=_("Get Capabilities Layer Name"),
-                                                   help_text=_("Alternative layer name for the GetCapabilities request"
-                                                               ))
-    more_info = StreamField([
-        ('more_info', LayerMoreInfoBlock(label=_("Info link")),),
-    ], block_counts={
-        'more_info': {'max_num': 1},
-    }, use_json_field=True, null=True, blank=True, max_num=1, verbose_name=_("More Info"), )
+    date_format = models.CharField(
+        max_length=100,
+        choices=DATE_FORMAT_CHOICES,
+        blank=True,
+        null=True,
+        verbose_name=_("Display Format for DateTime Selector"),
+    )
+    custom_get_capabilities_url = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name=_("Get Capabilities URL"),
+        help_text=_(
+            "Alternative URL for the GetCapabilities request. "
+            "Used when 'Request time from capabilities' "
+            "option is checked. Leave blank to use base url."
+        ),
+    )
+    get_capabilities_layer_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name=_("Get Capabilities Layer Name"),
+        help_text=_("Alternative layer name for the GetCapabilities request"),
+    )
+    more_info = StreamField(
+        [
+            (
+                "more_info",
+                LayerMoreInfoBlock(label=_("Info link")),
+            ),
+        ],
+        block_counts={
+            "more_info": {"max_num": 1},
+        },
+        use_json_field=True,
+        null=True,
+        blank=True,
+        max_num=1,
+        verbose_name=_("More Info"),
+    )
 
     class Meta:
         verbose_name = _("WMS Layer")
         verbose_name_plural = _("WMS Layers")
-        ordering = ['order']
+        ordering = ["order"]
 
     panels = [
         FieldPanel("dataset"),
         FieldPanel("title"),
         FieldPanel("default"),
         FieldPanel("date_format"),
-        MultiFieldPanel([
-            FieldPanel("base_url"),
-            FieldPanel("version"),
-            FieldRowPanel([
-                FieldPanel("width", classname="col6"),
-                FieldPanel("height", classname="col6"),
-            ]),
-            FieldPanel("transparent"),
-            FieldPanel("srs"),
-            FieldPanel("format"),
-            InlinePanel("wms_request_layers", heading=_("WMS Request Layers"),
-                        label=_("WMS Request Layer"), min_num=1),
-            InlinePanel("wms_request_styles", heading=_("WMS Request Styles"),
-                        label=_("WMS Request Style")),
-            InlinePanel("wms_request_params", heading=_("WMS Request Additional Parameters"),
-                        label=_("WMS Request Param")),
-            FieldPanel("wms_query_params_selectable"),
-        ], heading=_("WMS GetMap Configuration")),
-        MultiFieldPanel([
-            FieldPanel("request_time_from_capabilities"),
-            FieldPanel("custom_get_capabilities_url"),
-            FieldPanel("get_capabilities_layer_name"),
-        ], heading=_("WMS GetCapabilities Configuration")),
+        MultiFieldPanel(
+            [
+                FieldPanel("base_url"),
+                FieldPanel("version"),
+                FieldRowPanel(
+                    [
+                        FieldPanel("width", classname="col6"),
+                        FieldPanel("height", classname="col6"),
+                    ]
+                ),
+                FieldPanel("transparent"),
+                FieldPanel("srs"),
+                FieldPanel("format"),
+                InlinePanel(
+                    "wms_request_layers", heading=_("WMS Request Layers"), label=_("WMS Request Layer"), min_num=1
+                ),
+                InlinePanel("wms_request_styles", heading=_("WMS Request Styles"), label=_("WMS Request Style")),
+                InlinePanel(
+                    "wms_request_params", heading=_("WMS Request Additional Parameters"), label=_("WMS Request Param")
+                ),
+                FieldPanel("wms_query_params_selectable"),
+            ],
+            heading=_("WMS GetMap Configuration"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("request_time_from_capabilities"),
+                FieldPanel("custom_get_capabilities_url"),
+                FieldPanel("get_capabilities_layer_name"),
+            ],
+            heading=_("WMS GetCapabilities Configuration"),
+        ),
         FieldPanel("params_selectors_side_by_side"),
         FieldPanel("legend"),
         FieldPanel("more_info"),
@@ -163,7 +233,7 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
                 key_val = key.upper()
             params.update({key_val: f"{{{key}}}"})
 
-        query_str = '&'.join([f"{key}={value}" for key, value in params.items()])
+        query_str = "&".join([f"{key}={value}" for key, value in params.items()])
         request_url = f"{self.base_url}?{query_str}"
 
         return request_url
@@ -198,7 +268,7 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
                 "VERSION": self.version,
                 "REQUEST": "GetCapabilities",
             }
-            query_str = '&'.join([f"{key}={value}" for key, value in params.items()])
+            query_str = "&".join([f"{key}={value}" for key, value in params.items()])
             request_url = f"{capabilities_url}?{query_str}"
             return request_url
         return None
@@ -209,13 +279,7 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         if self.dataset.multi_temporal:
             wms_url = f"{wms_url}&time={{time}}"
 
-        layer_config = {
-            "type": "raster",
-            "source": {
-                "type": "raster",
-                "tiles": [wms_url]
-            }
-        }
+        layer_config = {"type": "raster", "source": {"type": "raster", "tiles": [wms_url]}}
 
         return layer_config
 
@@ -253,21 +317,29 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
 
             if self.date_format:
                 if self.date_format == "pentadal":
-                    time_config.update({
-                        "dateFormat": {"currentTime": "MMM yyyy", "asPeriod": "pentadal"},
-                    })
+                    time_config.update(
+                        {
+                            "dateFormat": {"currentTime": "MMM yyyy", "asPeriod": "pentadal"},
+                        }
+                    )
                 elif self.date_format == "dekadal":
-                    time_config.update({
-                        "dateFormat": {"currentTime": "MMM yyyy", "asPeriod": "dekadal"},
-                    })
+                    time_config.update(
+                        {
+                            "dateFormat": {"currentTime": "MMM yyyy", "asPeriod": "dekadal"},
+                        }
+                    )
                 else:
-                    time_config.update({
-                        "dateFormat": {"currentTime": self.date_format},
-                    })
+                    time_config.update(
+                        {
+                            "dateFormat": {"currentTime": self.date_format},
+                        }
+                    )
             else:
-                time_config.update({
-                    "dateFormat": {"currentTime": "yyyy-MM-dd HH:mm"},
-                })
+                time_config.update(
+                    {
+                        "dateFormat": {"currentTime": "yyyy-MM-dd HH:mm"},
+                    }
+                )
 
         return time_config
 
@@ -285,12 +357,8 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         return config
 
     def get_legend_config(self, request):
-
         # default config
-        config = {
-            "type": "basic",
-            "items": []
-        }
+        config = {"type": "basic", "items": []}
 
         legend_block = self.legend
 
@@ -311,10 +379,7 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
             config.update({"type": data.get("type")})
 
             for item in data.get("items"):
-                config["items"].append({
-                    "name": item.get("value"),
-                    "color": item.get("color")
-                })
+                config["items"].append({"name": item.get("value"), "color": item.get("color")})
 
         return config
 
@@ -334,13 +399,16 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
 
 
 class WmsRequestLayer(Orderable):
-    layer = ParentalKey(WmsLayer, on_delete=models.CASCADE, related_name="wms_request_layers",
-                        verbose_name=_("WMS Request Layers"))
-    name = models.CharField(max_length=250, null=False, blank=False,
-                            verbose_name=_("name"),
-                            help_text=_("WMS Layer is requested by using this "
-                                        "name in the LAYERS parameter of a "
-                                        "GetMap request."))
+    layer = ParentalKey(
+        WmsLayer, on_delete=models.CASCADE, related_name="wms_request_layers", verbose_name=_("WMS Request Layers")
+    )
+    name = models.CharField(
+        max_length=250,
+        null=False,
+        blank=False,
+        verbose_name=_("name"),
+        help_text=_("WMS Layer is requested by using this name in the LAYERS parameter of a GetMap request."),
+    )
 
     class Meta:
         verbose_name = _("WMS Request Layer")
@@ -348,11 +416,16 @@ class WmsRequestLayer(Orderable):
 
 
 class WmsRequestStyle(Orderable):
-    layer = ParentalKey(WmsLayer, on_delete=models.CASCADE,
-                        related_name="wms_request_styles", verbose_name=_("WMS Request Styles"))
-    name = models.CharField(max_length=250, null=False, blank=False,
-                            verbose_name=_("name"),
-                            help_text=_("The style's Name is used in the Map request STYLES parameter"))
+    layer = ParentalKey(
+        WmsLayer, on_delete=models.CASCADE, related_name="wms_request_styles", verbose_name=_("WMS Request Styles")
+    )
+    name = models.CharField(
+        max_length=250,
+        null=False,
+        blank=False,
+        verbose_name=_("name"),
+        help_text=_("The style's Name is used in the Map request STYLES parameter"),
+    )
 
     class Meta:
         verbose_name = _("WMS Request Style")
@@ -360,10 +433,17 @@ class WmsRequestStyle(Orderable):
 
 
 class WmsRequestParam(Orderable):
-    layer = ParentalKey(WmsLayer, on_delete=models.CASCADE, related_name="wms_request_params",
-                        verbose_name=_("WMS Requests Additional Parameters", ))
-    name = models.CharField(max_length=250, null=False, blank=False, verbose_name=_("name"),
-                            help_text=_("Name of the parameter"))
+    layer = ParentalKey(
+        WmsLayer,
+        on_delete=models.CASCADE,
+        related_name="wms_request_params",
+        verbose_name=_(
+            "WMS Requests Additional Parameters",
+        ),
+    )
+    name = models.CharField(
+        max_length=250, null=False, blank=False, verbose_name=_("name"), help_text=_("Name of the parameter")
+    )
     value = models.CharField(max_length=250, null=False, blank=False, help_text=_("Value of the parameter"))
 
     class Meta:

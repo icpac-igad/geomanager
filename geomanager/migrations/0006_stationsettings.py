@@ -5,23 +5,27 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wagtailcore', '0083_workflowcontenttype'),
-        ('geomanager', '0005_delete_countryboundary_and_more'),
+        ("wagtailcore", "0083_workflowcontenttype"),
+        ("geomanager", "0005_delete_countryboundary_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='StationSettings',
+            name="StationSettings",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('columns', models.JSONField(blank=True, null=True)),
-                ('id_field', models.CharField(default='station_id', max_length=100)),
-                ('site', models.OneToOneField(editable=False, on_delete=django.db.models.deletion.CASCADE, to='wagtailcore.site')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("columns", models.JSONField(blank=True, null=True)),
+                ("id_field", models.CharField(default="station_id", max_length=100)),
+                (
+                    "site",
+                    models.OneToOneField(
+                        editable=False, on_delete=django.db.models.deletion.CASCADE, to="wagtailcore.site"
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

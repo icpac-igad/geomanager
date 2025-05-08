@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('home', '0006_stationsettings_geomanager_layer_metadata_and_more'),
+        ("home", "0006_stationsettings_geomanager_layer_metadata_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='stationsettings',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="stationsettings",
+            name="id",
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
     ]

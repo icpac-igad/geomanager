@@ -44,8 +44,7 @@ class BaseTileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         blank=True,
         verbose_name=_("Query Params With selectable Options"),
         help_text=_(
-            "This should provide a list of options that users "
-            "can choose to change the query parameter of the url"
+            "This should provide a list of options that users can choose to change the query parameter of the url"
         ),
     )
 
@@ -92,12 +91,8 @@ class BaseTileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         verbose_name=_("More Info"),
     )
 
-    get_time_from_tile_json = models.BooleanField(
-        default=False, verbose_name=_("Get time from tile json url")
-    )
-    tile_json_url = models.URLField(
-        max_length=500, blank=True, null=True, verbose_name=_("Tile JSON url")
-    )
+    get_time_from_tile_json = models.BooleanField(default=False, verbose_name=_("Get time from tile json url"))
+    tile_json_url = models.URLField(max_length=500, blank=True, null=True, verbose_name=_("Tile JSON url"))
     timestamps_response_object_key = models.CharField(
         max_length=100,
         blank=True,
@@ -204,11 +199,7 @@ class BaseTileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
 
     @property
     def has_time(self):
-        return bool(
-            self.dataset.multi_temporal
-            and self.get_time_from_tile_json
-            and self.tile_json_url
-        )
+        return bool(self.dataset.multi_temporal and self.get_time_from_tile_json and self.tile_json_url)
 
     @property
     def params(self):
@@ -293,7 +284,6 @@ class BaseTileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         return config
 
     def get_legend_config(self, request):
-
         # default config
         config = {"type": "basic", "items": []}
 
@@ -328,8 +318,6 @@ class BaseTileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
             config.update({"type": data.get("type")})
 
             for item in data.get("items"):
-                config["items"].append(
-                    {"name": item.get("value"), "color": item.get("color")}
-                )
+                config["items"].append({"name": item.get("value"), "color": item.get("color")})
 
         return config

@@ -9,7 +9,7 @@ from geomanager.models import Category, VectorLayerIcon, VectorTileLayerIcon, Ge
 from geomanager.serializers import CategorySerializer
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @renderer_classes([JSONRenderer])
 def get_mapviewer_config(request):
     gm_settings = GeomanagerSettings.for_request(request)
@@ -24,14 +24,18 @@ def get_mapviewer_config(request):
     }
 
     if gm_settings.enable_my_account:
-        response.update({
-            "enableMyAccount": True,
-        })
+        response.update(
+            {
+                "enableMyAccount": True,
+            }
+        )
 
     if gm_settings.allow_signups:
-        response.update({
-            "allowSignups": True,
-        })
+        response.update(
+            {
+                "allowSignups": True,
+            }
+        )
 
     if gm_settings.map_disclaimer_text:
         response.update({"disclaimerText": gm_settings.map_disclaimer_text})
@@ -42,11 +46,13 @@ def get_mapviewer_config(request):
 
     if gm_settings.terms_of_service_page:
         links.update(
-            {"termsOfServicePageUrl": get_full_url(request, gm_settings.terms_of_service_page.get_full_url(request))})
+            {"termsOfServicePageUrl": get_full_url(request, gm_settings.terms_of_service_page.get_full_url(request))}
+        )
 
     if gm_settings.privacy_policy_page:
         links.update(
-            {"privacyPolicyPageUrl": get_full_url(request, gm_settings.privacy_policy_page.get_full_url(request))})
+            {"privacyPolicyPageUrl": get_full_url(request, gm_settings.privacy_policy_page.get_full_url(request))}
+        )
 
     if gm_settings.map_disclaimer_page:
         links.update({"disclaimerPageUrl": gm_settings.map_disclaimer_page.get_full_url(request)})
@@ -66,9 +72,7 @@ def get_mapviewer_config(request):
     response.update({"vectorLayerIcons": icon_images})
 
     if gm_settings.logo:
-        logo = {
-            "imageUrl": get_full_url(request, gm_settings.logo.file.url)
-        }
+        logo = {"imageUrl": get_full_url(request, gm_settings.logo.file.url)}
 
         if gm_settings.logo_page:
             logo.update({"linkUrl": get_full_url(request, gm_settings.logo_page.url)})
@@ -79,11 +83,13 @@ def get_mapviewer_config(request):
         response.update({"logo": logo})
 
     if abm_settings.countries_list:
-        response.update({
-            "countries": abm_settings.countries_list,
-            "bounds": abm_settings.combined_countries_bounds,
-            "boundaryDataSource": abm_settings.data_source
-        })
+        response.update(
+            {
+                "countries": abm_settings.countries_list,
+                "bounds": abm_settings.combined_countries_bounds,
+                "boundaryDataSource": abm_settings.data_source,
+            }
+        )
 
     base_maps_data = []
 

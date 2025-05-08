@@ -16,7 +16,7 @@ WORLD_BOUNDS = [-180, -85.05112877980659, 180, 85.0511287798066]
 @cache_page
 def tile_gl(request, source_slug, z, x, y):
     source = MBTSource.objects.get(slug=source_slug)
-    with (open_mbtiles(source.file.path)) as mbtiles:
+    with open_mbtiles(source.file.path) as mbtiles:
         try:
             data = mbtiles.tile(z, x, y)
             response = HttpResponse(
@@ -63,18 +63,14 @@ def tile_json_gl(request, source_slug):
         if spec["format"] == "pbf":
             spec["vector_layers"] = metadata["json"]["vector_layers"]
         else:
-            raise NotImplementedError(
-                f"Only mbtiles in pbf format are supported. Found {spec['format']}"
-            )
+            raise NotImplementedError(f"Only mbtiles in pbf format are supported. Found {spec['format']}")
 
         # Optional fields
         spec["scheme"] = spec.get("scheme", "xyz")
         spec["bounds"] = spec.get("bounds", WORLD_BOUNDS)
         spec["minzoom"] = spec.get("minzoom", DEFAULT_MINZOOM)
         spec["maxzoom"] = spec.get("maxzoom", DEFAULT_MINZOOM)
-        spec["center"] = spec.get(
-            "center", center_from_bounds(spec["bounds"], DEFAULT_ZOOM)
-        )
+        spec["center"] = spec.get("center", center_from_bounds(spec["bounds"], DEFAULT_ZOOM))
 
         # Tile
         tile_url = get_full_url(request, (reverse("tile_gl", args=(source.slug, 0, 0, 0))))
@@ -97,10 +93,6 @@ def style_json_gl(request, source_slug):
     style_config["id"] = source.pk
     style_config["name"] = source.name
     style_config["glyphs"] = "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf"
-    style_config["sources"] = {
-        "openmaptiles": {
-            "type": "vector", "url": tilejson_url
-        }
-    }
+    style_config["sources"] = {"openmaptiles": {"type": "vector", "url": tilejson_url}}
 
     return JsonResponse(style_config)

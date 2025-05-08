@@ -68,12 +68,13 @@ def round_to_precision(precision=None):
         A function that rounds numbers to the specified precision.
     """
     if precision is None:
+
         def inner(n):
             return n  # No rounding if precision is not specified
 
         return inner
 
-    multiplier = 10 ** precision
+    multiplier = 10**precision
 
     def inner(n):
         """

@@ -8,4 +8,4 @@ class ReadOnlyFieldPanel(FieldPanel):
 
             # swap html disabled --> readonly
             self.bound_field.field.disabled = True
-            self.bound_field.field.widget.attrs['readonly'] = True
+            self.bound_field.field.widget.attrs["readonly"] = True

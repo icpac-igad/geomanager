@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0044_alter_additionalmapboundarydata_options_and_more'),
+        ("geomanager", "0044_alter_additionalmapboundarydata_options_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='additionalmapboundarydata',
-            name='active',
-            field=models.BooleanField(default=True, verbose_name='Active'),
+            model_name="additionalmapboundarydata",
+            name="active",
+            field=models.BooleanField(default=True, verbose_name="Active"),
         ),
         migrations.AlterField(
-            model_name='additionalmapboundarydata',
-            name='name',
-            field=models.CharField(max_length=255, unique=True, verbose_name='Dataset Name'),
+            model_name="additionalmapboundarydata",
+            name="name",
+            field=models.CharField(max_length=255, unique=True, verbose_name="Dataset Name"),
         ),
     ]

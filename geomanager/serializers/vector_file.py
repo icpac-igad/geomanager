@@ -26,7 +26,7 @@ class PgVectorTableSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PgVectorTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class VectorFileLayerSerializer(serializers.ModelSerializer):
@@ -49,9 +49,26 @@ class VectorFileLayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VectorFileLayer
-        fields = ["id", "dataset", "isDefault", "name", "layerType", "multiTemporal", "isMultiLayer", "legendConfig",
-                  "nestedLegend", "layerConfig", "params", "paramsSelectorConfig", "currentTimeMethod",
-                  "autoUpdateInterval", "interactionConfig", "canClip", "linkedLayers", "showAllMultiLayer"]
+        fields = [
+            "id",
+            "dataset",
+            "isDefault",
+            "name",
+            "layerType",
+            "multiTemporal",
+            "isMultiLayer",
+            "legendConfig",
+            "nestedLegend",
+            "layerConfig",
+            "params",
+            "paramsSelectorConfig",
+            "currentTimeMethod",
+            "autoUpdateInterval",
+            "interactionConfig",
+            "canClip",
+            "linkedLayers",
+            "showAllMultiLayer",
+        ]
 
     def get_showAllMultiLayer(self, obj):
         return obj.dataset.enable_all_multi_layers_on_add
@@ -78,7 +95,7 @@ class VectorFileLayerSerializer(serializers.ModelSerializer):
         return obj.dataset.current_time_method
 
     def get_layerConfig(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
 
         layer_config = obj.layer_config(request)
         return layer_config
@@ -99,7 +116,7 @@ class VectorFileLayerSerializer(serializers.ModelSerializer):
         return not obj.params_selectors_side_by_side
 
     def get_legendConfig(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         return obj.get_legend_config(request)
 
     def get_getCapabilitiesUrl(self, obj):

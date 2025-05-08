@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0011_vectorlayericon'),
+        ("geomanager", "0011_vectorlayericon"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='geomanagersettings',
-            name='crop_raster_to_country',
-            field=models.BooleanField(default=True, help_text='Crop the uploaded raster file to the country boundaries', verbose_name='Crop raster to country'),
+            model_name="geomanagersettings",
+            name="crop_raster_to_country",
+            field=models.BooleanField(
+                default=True,
+                help_text="Crop the uploaded raster file to the country boundaries",
+                verbose_name="Crop raster to country",
+            ),
         ),
     ]

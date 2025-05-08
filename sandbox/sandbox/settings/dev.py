@@ -1,4 +1,4 @@
-from .base import *
+from .base import *  # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -12,10 +12,5 @@ ALLOWED_HOSTS = ["*"]
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # used in dev with Mac OS
-GDAL_LIBRARY_PATH = env.str('GDAL_LIBRARY_PATH', None)
-GEOS_LIBRARY_PATH = env.str('GEOS_LIBRARY_PATH', None)
-
-try:
-    from .local import *
-except ImportError:
-    pass
+GDAL_LIBRARY_PATH = env.str("GDAL_LIBRARY_PATH", None)  # noqa
+GEOS_LIBRARY_PATH = env.str("GEOS_LIBRARY_PATH", None)  # noqa

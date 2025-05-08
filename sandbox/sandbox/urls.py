@@ -13,11 +13,8 @@ urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
-
-    path('auth/', include('allauth.urls')),
-
+    path("auth/", include("allauth.urls")),
     path("", include("geomanager.urls")),
-
     path("", include("home.urls"), name="stations"),
 ]
 

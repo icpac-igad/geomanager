@@ -17,26 +17,26 @@ from geomanager.errors import (
     NoDbfFound,
     InvalidFile,
     InvalidGeomType,
-    GeomValidationNotImplemented
+    GeomValidationNotImplemented,
 )
 
 POSTGRES_DATA_TYPES_DJANGO_FIELDS_MAPPING = {
-    'smallint': models.SmallIntegerField,
-    'integer': models.IntegerField,
-    'bigint': models.BigIntegerField,
-    'decimal': models.DecimalField,
-    'numeric': models.DecimalField,
-    'real': models.FloatField,
-    'double precision': models.FloatField,
-    'character varying': models.CharField,
-    'character': models.CharField,
-    'text': models.TextField,
-    'date': models.DateField,
-    'time': models.TimeField,
-    'timestamp': models.DateTimeField,
-    'timestamp with time zone': models.DateTimeField,
-    'interval': models.DurationField,
-    'boolean': models.BooleanField,
+    "smallint": models.SmallIntegerField,
+    "integer": models.IntegerField,
+    "bigint": models.BigIntegerField,
+    "decimal": models.DecimalField,
+    "numeric": models.DecimalField,
+    "real": models.FloatField,
+    "double precision": models.FloatField,
+    "character varying": models.CharField,
+    "character": models.CharField,
+    "text": models.TextField,
+    "date": models.DateField,
+    "time": models.TimeField,
+    "timestamp": models.DateTimeField,
+    "timestamp with time zone": models.DateTimeField,
+    "interval": models.DurationField,
+    "boolean": models.BooleanField,
     "Point": models.PointField,
     "MultiPoint": models.MultiPointField,
 }
@@ -65,11 +65,25 @@ def ogr2pg(file_path, table_name, db_settings, srid=4326, overwrite=False):
 
     # construct ogr2ogr command
     # notable option: -lco FID=gid  - Use custom fid column name. ogr by default gives ogc_fid. We use gid instead
-    cmd = ["ogr2ogr", "-f", "PostgreSQL",
-           f"PG:host={db_host} port={db_port} user={db_user} password={db_password} dbname={db_name}", file_path,
-           "-nln", table_name, "-lco", f"FID=gid", "-lco", f"SCHEMA={pg_service_schema}", "-lco", "GEOMETRY_NAME=geom",
-           "-nlt", "PROMOTE_TO_MULTI", "-lco", "PRECISION=NO"
-           ]
+    cmd = [
+        "ogr2ogr",
+        "-f",
+        "PostgreSQL",
+        f"PG:host={db_host} port={db_port} user={db_user} password={db_password} dbname={db_name}",
+        file_path,
+        "-nln",
+        table_name,
+        "-lco",
+        "FID=gid",
+        "-lco",
+        f"SCHEMA={pg_service_schema}",
+        "-lco",
+        "GEOMETRY_NAME=geom",
+        "-nlt",
+        "PROMOTE_TO_MULTI",
+        "-lco",
+        "PRECISION=NO",
+    ]
 
     # overwrite existing
     if overwrite:
@@ -99,10 +113,10 @@ def ogr2pg(file_path, table_name, db_settings, srid=4326, overwrite=False):
 
 def extract_zipped_shapefile(shp_zip_path, out_dir):
     # unzip file
-    with ZipFile(shp_zip_path, 'r') as zip_obj:
+    with ZipFile(shp_zip_path, "r") as zip_obj:
         for filename in zip_obj.namelist():
             # ignore __macosx files
-            if not filename.startswith('__MACOSX/'):
+            if not filename.startswith("__MACOSX/"):
                 zip_obj.extract(filename, out_dir)
 
     # Use the first available shp
@@ -152,14 +166,14 @@ def ogr_db_import(file_path, table_name, db_settings, overwrite=False, validate_
         table_info = ogr2pg(file_path, table_name, db_settings, overwrite=overwrite)
         return table_info
 
-    raise InvalidFile(message=_('Unsupported file type'))
+    raise InvalidFile(message=_("Unsupported file type"))
 
 
 def get_postgis_table_info(schema, table_name):
     # Get all the column names with corresponding data types
     with connection.cursor() as cursor:
-        columns_sql = f"""SELECT column_name, data_type 
-        FROM information_schema.columns 
+        columns_sql = f"""SELECT column_name, data_type
+        FROM information_schema.columns
         WHERE table_name = '{table_name}' AND table_schema = '{schema}'
         """
         cursor.execute(columns_sql)
@@ -178,12 +192,12 @@ def get_postgis_table_info(schema, table_name):
         """
         cursor.execute(geom_sql)
         result = cursor.fetchone()[0]
-        geometry_type = result.replace('ST_', '')
+        geometry_type = result.replace("ST_", "")
 
     return {
-        'properties': column_data_types,
-        'bounds': bbox_str,
-        'geom_type': GEOM_TYPES[geometry_type],
+        "properties": column_data_types,
+        "bounds": bbox_str,
+        "geom_type": GEOM_TYPES[geometry_type],
     }
 
 
@@ -195,13 +209,7 @@ def drop_vector_table(table_name):
 def create_feature_collection_from_geom(geom):
     return {
         "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "geometry": json.loads(geom.geojson),
-                "properties": {}
-            }
-        ]
+        "features": [{"type": "Feature", "geometry": json.loads(geom.geojson), "properties": {}}],
     }
 
 
@@ -213,11 +221,14 @@ def validate_vector_geom_type(file_path, valid_geom_types, vector_format):
         for geom_type in geom_types:
             if geom_type not in valid_geom_types:
                 error_message = _("Invalid geometry type. Expected one of %(valid_geom_types)s. Not %(geom_type)s") % {
-                    "valid_geom_types": valid_geom_types, "geom_type": geom_type}
+                    "valid_geom_types": valid_geom_types,
+                    "geom_type": geom_type,
+                }
                 raise InvalidGeomType(error_message)
     else:
         error_message = _("Geometry Type validation not implemented for format %(vector_format)s") % {
-            "vector_format": vector_format}
+            "vector_format": vector_format
+        }
         raise GeomValidationNotImplemented(error_message)
 
 

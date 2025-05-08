@@ -24,9 +24,27 @@ class RasterFileLayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RasterFileLayer
-        fields = ["id", "dataset", "isDefault", "name", "layerType", "multiTemporal", "isMultiLayer", "legendConfig",
-                  "nestedLegend", "layerConfig", "params", "paramsSelectorConfig", "currentTimeMethod",
-                  "autoUpdateInterval", "canClip", "analysisConfig", "tileJsonUrl", "linkedLayers", "showAllMultiLayer"]
+        fields = [
+            "id",
+            "dataset",
+            "isDefault",
+            "name",
+            "layerType",
+            "multiTemporal",
+            "isMultiLayer",
+            "legendConfig",
+            "nestedLegend",
+            "layerConfig",
+            "params",
+            "paramsSelectorConfig",
+            "currentTimeMethod",
+            "autoUpdateInterval",
+            "canClip",
+            "analysisConfig",
+            "tileJsonUrl",
+            "linkedLayers",
+            "showAllMultiLayer",
+        ]
 
     def get_linkedLayers(self, obj):
         return obj.linked_layers
@@ -56,13 +74,13 @@ class RasterFileLayerSerializer(serializers.ModelSerializer):
         return obj.title
 
     def get_layerConfig(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
 
         layer_config = obj.layer_config(request)
         return layer_config
 
     def get_tileJsonUrl(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         tile_json_url = obj.get_tile_json_url(request)
         return tile_json_url
 

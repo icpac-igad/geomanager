@@ -3,7 +3,6 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from wagtail import hooks
-
 from geomanager import serializers
 from geomanager.models import Dataset
 from geomanager.models.core import Metadata
@@ -19,7 +18,7 @@ class DatasetViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context.update({'request': self.request})
+        context.update({"request": self.request})
         return context
 
     def list(self, request, *args, **kwargs):
@@ -51,6 +50,7 @@ class DatasetViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
 
         return Response(datasets)
 
+
 class DatasetSlugViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Dataset.objects.exclude(dataset_slug=None)
     serializer_class = serializers.DatasetSerializer
@@ -59,13 +59,17 @@ class DatasetSlugViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, vie
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context.update({'request': self.request})
+        context.update({"request": self.request})
         return context
-    
+
     def update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return super().update(request, *args, **kwargs)
-    
+        # explicitly set partial update status
+        kwargs["partial"] = True
+        super().update(request, *args, **kwargs)
+        # return request payload
+        return Response(request.data)
+
+
 class MetadataViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Metadata.objects.all()
     serializer_class = serializers.MetadataSerialiazer

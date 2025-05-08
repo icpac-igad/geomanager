@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0034_rastertilelayer_time_parameter_name_and_more'),
+        ("geomanager", "0034_rastertilelayer_time_parameter_name_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='vectortilelayer',
-            name='render_layers_json',
-            field=models.JSONField(blank=True, null=True, verbose_name='Layers Configuration'),
+            model_name="vectortilelayer",
+            name="render_layers_json",
+            field=models.JSONField(blank=True, null=True, verbose_name="Layers Configuration"),
         ),
         migrations.AddField(
-            model_name='vectortilelayer',
-            name='use_render_layers_json',
-            field=models.BooleanField(default=False, verbose_name='Use Render Layers JSON'),
+            model_name="vectortilelayer",
+            name="use_render_layers_json",
+            field=models.BooleanField(default=False, verbose_name="Use Render Layers JSON"),
         ),
     ]

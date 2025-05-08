@@ -7,12 +7,7 @@ from wagtail_modeladmin.views import CreateView, EditView, IndexView
 
 from geomanager.admin.base import BaseModelAdmin, ModelAdminCanHide, LayerFileDeleteView
 from geomanager.models import Dataset, RasterFileLayer, LayerRasterFile, Category
-from geomanager.views import (
-    upload_raster_file,
-    publish_raster,
-    delete_raster_upload,
-    preview_raster_layers
-)
+from geomanager.views import upload_raster_file, publish_raster, delete_raster_upload, preview_raster_layers
 
 
 class RasterFileLayerCreateView(CreateView):
@@ -44,9 +39,11 @@ class RasterFileLayerCreateView(CreateView):
             {"url": "#", "label": _("New") + f" {RasterFileLayer._meta.verbose_name}"},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -76,17 +73,17 @@ class RasterFileLayerEditView(EditView):
             {"url": "#", "label": self.instance.title},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
 
 class RasterFileLayerButtonHelper(ButtonHelper):
-    def get_buttons_for_obj(
-            self, obj, exclude=None, classnames_add=None, classnames_exclude=None
-    ):
+    def get_buttons_for_obj(self, obj, exclude=None, classnames_add=None, classnames_exclude=None):
         buttons = super().get_buttons_for_obj(obj, exclude, classnames_add, classnames_exclude)
 
         classnames = self.edit_button_classnames + classnames_add
@@ -114,7 +111,7 @@ class RasterFileLayerModelAdmin(BaseModelAdmin, SortableAdminMixin, ModelAdminCa
     button_helper_class = RasterFileLayerButtonHelper
     list_display = ("title",)
     list_filter = ("dataset__category",)
-    index_template_name = 'adminsortable/index_without_create_button.html'
+    index_template_name = "adminsortable/index_without_create_button.html"
     list_display_add_buttons = "title"
 
     create_view_class = RasterFileLayerCreateView
@@ -124,9 +121,11 @@ class RasterFileLayerModelAdmin(BaseModelAdmin, SortableAdminMixin, ModelAdminCa
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.list_display = ["thumbnail_url"] + (list(self.list_display) or []) + ["dataset_link", "upload_files",
-                                                                                   "uploaded_files", "preview_layer",
-                                                                                   "mapviewer_map_url"]
+        self.list_display = (
+            ["thumbnail_url"]
+            + (list(self.list_display) or [])
+            + ["dataset_link", "upload_files", "uploaded_files", "preview_layer", "mapviewer_map_url"]
+        )
         self.thumbnail_url.__func__.short_description = _("Thumbnail")
         self.dataset_link.__func__.short_description = _("Dataset")
         self.uploaded_files.__func__.short_description = _("Uploaded Files")
@@ -144,7 +143,7 @@ class RasterFileLayerModelAdmin(BaseModelAdmin, SortableAdminMixin, ModelAdminCa
             <div class="thumbnail">
                 <img src="{raster_file.thumbnail_url}" width="100" height="100">
                 <div class="thumbnail__caption">
-                    <b> Latest Upload: {latest_upload_time}</b> 
+                    <b> Latest Upload: {latest_upload_time}</b>
                 </div>
             </div>
             """)
@@ -249,9 +248,11 @@ class RasterFileIndexView(IndexView):
             {"url": "#", "label": model_verbose_name},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -273,12 +274,14 @@ class RasterFileEditView(EditView):
             {"url": categories_url, "label": _("Categories")},
             {"url": datasets_url, "label": _("Datasets")},
             {"url": layers_url, "label": _("Raster File Layers")},
-            {"url": "#", "label": self.instance}
+            {"url": "#", "label": self.instance},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -288,7 +291,12 @@ class RasterFileModelAdmin(BaseModelAdmin, ModelAdminCanHide):
     exclude_from_explorer = True
     hidden = True
 
-    list_display = ("thumbnail", "__str__", "layer", "time",)
+    list_display = (
+        "thumbnail",
+        "__str__",
+        "layer",
+        "time",
+    )
     list_filter = ("layer",)
     list_display_add_buttons = "__str__"
     index_template_name = "geomanager/modeladmin/index_without_custom_create.html"
@@ -305,16 +313,19 @@ class RasterFileModelAdmin(BaseModelAdmin, ModelAdminCanHide):
 
 
 urls = [
-    path('upload-rasters/', upload_raster_file, name='geomanager_upload_rasters'),
-    path('upload-rasters/<uuid:dataset_id>/', upload_raster_file, name='geomanager_dataset_upload_raster'),
-    path('upload-rasters/<uuid:dataset_id>/<uuid:layer_id>/', upload_raster_file,
-         name='geomanager_dataset_layer_upload_raster'),
-
-    path('publish-rasters/<int:upload_id>/', publish_raster, name='geomanager_publish_raster'),
-    path('delete-raster-upload/<int:upload_id>/', delete_raster_upload, name='geomanager_delete_raster_upload'),
-
-    path('preview-raster-layers/<uuid:dataset_id>/', preview_raster_layers,
-         name='geomanager_preview_raster_dataset'),
-    path('preview-raster-layers/<uuid:dataset_id>/<uuid:layer_id>/', preview_raster_layers,
-         name='geomanager_preview_raster_layer'),
+    path("upload-rasters/", upload_raster_file, name="geomanager_upload_rasters"),
+    path("upload-rasters/<uuid:dataset_id>/", upload_raster_file, name="geomanager_dataset_upload_raster"),
+    path(
+        "upload-rasters/<uuid:dataset_id>/<uuid:layer_id>/",
+        upload_raster_file,
+        name="geomanager_dataset_layer_upload_raster",
+    ),
+    path("publish-rasters/<int:upload_id>/", publish_raster, name="geomanager_publish_raster"),
+    path("delete-raster-upload/<int:upload_id>/", delete_raster_upload, name="geomanager_delete_raster_upload"),
+    path("preview-raster-layers/<uuid:dataset_id>/", preview_raster_layers, name="geomanager_preview_raster_dataset"),
+    path(
+        "preview-raster-layers/<uuid:dataset_id>/<uuid:layer_id>/",
+        preview_raster_layers,
+        name="geomanager_preview_raster_layer",
+    ),
 ]

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import datetime
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -26,9 +27,9 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 # read .env file
-if os.path.isfile(os.path.join(os.path.dirname(BASE_DIR), '.env')):
+if os.path.isfile(os.path.join(os.path.dirname(BASE_DIR), ".env")):
     # reading .env file
-    environ.Env.read_env(os.path.join(os.path.dirname(BASE_DIR), '.env'))
+    environ.Env.read_env(os.path.join(os.path.dirname(BASE_DIR), ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -41,16 +42,13 @@ INSTALLED_APPS = [
     "channels",
     "home",
     "search",
-
     "geomanager",
-
     "django_deep_translator",
-
     "wagtailcache",
     "adminboundarymanager",
     "django_large_image",
-    'django_json_widget',
-    'django_nextjs',
+    "django_json_widget",
+    "django_nextjs",
     "django_filters",
     "wagtail_color_panel",
     "wagtail_adminsortable",
@@ -60,7 +58,6 @@ INSTALLED_APPS = [
     "django_extensions",
     "wagtailfontawesomesvg",
     "django_cleanup.apps.CleanupConfig",
-
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
@@ -74,7 +71,6 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
-
     "modelcluster",
     "taggit",
     "allauth",
@@ -84,7 +80,6 @@ INSTALLED_APPS = [
     "wagtail_modeladmin",
     "django_tables2",
     "django_tables2_bulma_template",
-
     "django.contrib.admin",
     "django.contrib.gis",
     "django.contrib.auth",
@@ -127,14 +122,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "sandbox.wsgi.application"
-ASGI_APPLICATION = 'sandbox.asgi.application'
+ASGI_APPLICATION = "sandbox.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": env.db()
-}
+DATABASES = {"default": env.db()}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -159,12 +152,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = env.str("LANGUAGE_CODE", "en")
 
 EXTRA_LANG_INFO = {
-    'am': {
-        'bidi': False,
-        'code': 'am',
-        'name': 'Amharic',
-        'name_local': "Amharic"
-    },
+    "am": {"bidi": False, "code": "am", "name": "Amharic", "name_local": "Amharic"},
 }
 # Add custom languages not provided by Django
 LANG_INFO = dict(django.conf.locale.LANG_INFO, **EXTRA_LANG_INFO)
@@ -175,12 +163,12 @@ LOCALE_PATHS = [
 ]
 
 LANGUAGES = WAGTAIL_CONTENT_LANGUAGES = WAGTAILADMIN_PERMITTED_LANGUAGES = [
-    ('en', 'English'),
-    ('es', 'Español'),
-    ('fr', 'French'),
-    ('ar', 'Arabic'),
-    ('am', 'Amharic'),
-    ('sw', 'Swahili'),
+    ("en", "English"),
+    ("es", "Español"),
+    ("fr", "French"),
+    ("ar", "Arabic"),
+    ("am", "Amharic"),
+    ("sw", "Swahili"),
 ]
 
 TIME_ZONE = "UTC"
@@ -191,7 +179,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-DEFAULT_AUTO_FIELD="django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -232,29 +220,23 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "https://127.0.0.1:8200"
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
-}
+REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",)}
 
 CORS_ORIGIN_ALLOW_ALL = True
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=15),
-    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=15),
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=15),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=15),
 }
 
-NEXTJS_SETTINGS = {
-    "nextjs_server_url": env.str('NEXTJS_SERVER_URL', None)
-}
+NEXTJS_SETTINGS = {"nextjs_server_url": env.str("NEXTJS_SERVER_URL", None)}
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(BASE_DIR, 'cache'),
-        'KEY_PREFIX': 'wagtailcache',
-        'TIMEOUT': 3600,  # one hour (in seconds)
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": os.path.join(BASE_DIR, "cache"),
+        "KEY_PREFIX": "wagtailcache",
+        "TIMEOUT": 3600,  # one hour (in seconds)
     }
 }
 
@@ -268,23 +250,23 @@ GEOMANAGER_AUTO_INGEST_RASTER_DATA_DIR = env.str("GEOMANAGER_AUTO_INGEST_RASTER_
 DJANGO_TABLES2_TEMPLATE = "django-tables2/bulma.html"
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'console': {
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {
+            "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
         },
     },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'console',
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "console",
         },
     },
-    'loggers': {
-        '': {
-            'level': 'INFO',
-            'handlers': ['console'],
+    "loggers": {
+        "": {
+            "level": "INFO",
+            "handlers": ["console"],
         },
     },
 }

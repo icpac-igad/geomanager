@@ -6,20 +6,24 @@ import modelcluster.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0010_remove_stationsettings_popup_props'),
+        ("geomanager", "0010_remove_stationsettings_popup_props"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='VectorLayerIcon',
+            name="VectorLayerIcon",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('color', models.CharField(max_length=100, null=True)),
-                ('file', models.FileField(upload_to='vector_icons/')),
-                ('layer', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='icons', to='geomanager.vectorlayer')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=255)),
+                ("color", models.CharField(max_length=100, null=True)),
+                ("file", models.FileField(upload_to="vector_icons/")),
+                (
+                    "layer",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="icons", to="geomanager.vectorlayer"
+                    ),
+                ),
             ],
         ),
     ]

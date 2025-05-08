@@ -27,10 +27,30 @@ class WmsLayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WmsLayer
-        fields = ["id", "dataset", "isDefault", "name", "isMultiLayer", "nestedLegend", "layerType", "layerConfig",
-                  "params", "paramsSelectorConfig", "paramsSelectorColumnView", "legendConfig", "getCapabilitiesUrl",
-                  "layerName", "multiTemporal", "currentTimeMethod", "autoUpdateInterval", "analysisConfig", "moreInfo",
-                  "getCapabilitiesLayerName", "linkedLayers", "showAllMultiLayer"]
+        fields = [
+            "id",
+            "dataset",
+            "isDefault",
+            "name",
+            "isMultiLayer",
+            "nestedLegend",
+            "layerType",
+            "layerConfig",
+            "params",
+            "paramsSelectorConfig",
+            "paramsSelectorColumnView",
+            "legendConfig",
+            "getCapabilitiesUrl",
+            "layerName",
+            "multiTemporal",
+            "currentTimeMethod",
+            "autoUpdateInterval",
+            "analysisConfig",
+            "moreInfo",
+            "getCapabilitiesLayerName",
+            "linkedLayers",
+            "showAllMultiLayer",
+        ]
 
     def get_showAllMultiLayer(self, obj):
         return obj.dataset.enable_all_multi_layers_on_add
@@ -77,7 +97,7 @@ class WmsLayerSerializer(serializers.ModelSerializer):
         return not obj.params_selectors_side_by_side
 
     def get_legendConfig(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         return obj.get_legend_config(request)
 
     def get_getCapabilitiesUrl(self, obj):

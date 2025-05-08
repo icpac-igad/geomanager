@@ -12,8 +12,23 @@ class GeoManagerUserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GeoManagerUserProfile
-        fields = ["user_id", "email", "first_name", "last_name", "full_name", "gender", "country", "city", "sector",
-                  "organization", "organization_type", "scale_of_operations", "position", "how_do_you_use", "interests"]
+        fields = [
+            "user_id",
+            "email",
+            "first_name",
+            "last_name",
+            "full_name",
+            "gender",
+            "country",
+            "city",
+            "sector",
+            "organization",
+            "organization_type",
+            "scale_of_operations",
+            "position",
+            "how_do_you_use",
+            "interests",
+        ]
 
     def get_user_id(self, obj):
         return obj.user.id

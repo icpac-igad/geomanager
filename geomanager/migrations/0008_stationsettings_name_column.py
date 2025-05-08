@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0007_remove_stationsettings_id_field_and_more'),
+        ("geomanager", "0007_remove_stationsettings_id_field_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='stationsettings',
-            name='name_column',
+            model_name="stationsettings",
+            name="name_column",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
     ]

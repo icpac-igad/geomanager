@@ -4,13 +4,12 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0029_rasterfilelayer_auto_ingest_from_directory'),
+        ("geomanager", "0029_rasterfilelayer_auto_ingest_from_directory"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='StationSettings',
+            name="StationSettings",
         ),
     ]

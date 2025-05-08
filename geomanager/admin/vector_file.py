@@ -6,12 +6,7 @@ from wagtail_modeladmin.views import CreateView, EditView, IndexView
 
 from geomanager.admin.base import ModelAdminCanHide, BaseModelAdmin, LayerIndexView, LayerFileDeleteView
 from geomanager.models import Dataset, VectorFileLayer, PgVectorTable, Category
-from geomanager.views import (
-    upload_vector_file,
-    publish_vector,
-    delete_vector_upload,
-    preview_vector_layers
-)
+from geomanager.views import upload_vector_file, publish_vector, delete_vector_upload, preview_vector_layers
 
 
 class VectorFileLayerCreateView(CreateView):
@@ -41,9 +36,11 @@ class VectorFileLayerCreateView(CreateView):
             {"url": "#", "label": _("New") + f" {VectorFileLayer._meta.verbose_name}"},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -73,9 +70,11 @@ class VectorFileLayerEditView(EditView):
             {"url": "#", "label": self.instance.title},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -94,12 +93,17 @@ class VectorFileLayerModelAdmin(BaseModelAdmin, ModelAdminCanHide):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.list_display = (list(self.list_display) or []) + ['dataset_link', "uploaded_files", "upload_files",
-                                                               'preview_layer', 'mapviewer_map_url']
-        self.dataset_link.__func__.short_description = _('Dataset')
+        self.list_display = (list(self.list_display) or []) + [
+            "dataset_link",
+            "uploaded_files",
+            "upload_files",
+            "preview_layer",
+            "mapviewer_map_url",
+        ]
+        self.dataset_link.__func__.short_description = _("Dataset")
         self.uploaded_files.__func__.short_description = _("View Uploaded Files")
-        self.upload_files.__func__.short_description = _('Upload Vector Files')
-        self.preview_layer.__func__.short_description = _('Preview on Map')
+        self.upload_files.__func__.short_description = _("Upload Vector Files")
+        self.preview_layer.__func__.short_description = _("Preview on Map")
         self.mapviewer_map_url.__func__.short_description = _("View on MapViewer")
 
     def mapviewer_map_url(self, obj):
@@ -191,9 +195,11 @@ class VectorFileIndexView(IndexView):
             {"url": "#", "label": model_verbose_name},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -202,7 +208,10 @@ class VectorTableModelAdmin(BaseModelAdmin, ModelAdminCanHide):
     model = PgVectorTable
     index_view_class = VectorFileIndexView
     hidden = True
-    list_display = ("__str__", "table_name",)
+    list_display = (
+        "__str__",
+        "table_name",
+    )
     list_filter = ("layer",)
     index_template_name = "geomanager/modeladmin/index_without_custom_create.html"
     inspect_view_enabled = True
@@ -210,13 +219,19 @@ class VectorTableModelAdmin(BaseModelAdmin, ModelAdminCanHide):
 
 
 urls = [
-    path('upload-vector/', upload_vector_file, name='geomanager_upload_vector'),
-    path('upload-vector/<uuid:dataset_id>/', upload_vector_file, name='geomanager_dataset_upload_vector'),
-    path('upload-vector/<uuid:dataset_id>/<uuid:layer_id>/', upload_vector_file,
-         name='geomanager_dataset_layer_upload_vector'),
-    path('publish-vector/<int:upload_id>/', publish_vector, name='geomanager_publish_vector'),
-    path('delete-vector-upload/<int:upload_id>/', delete_vector_upload, name='geomanager_delete_vector_upload'),
-    path('preview-vector-layers/<uuid:dataset_id>/', preview_vector_layers, name='geomanager_preview_vector_dataset'),
-    path('preview-vector-layers/<uuid:dataset_id>/<uuid:layer_id>/', preview_vector_layers,
-         name='geomanager_preview_vector_layer'),
+    path("upload-vector/", upload_vector_file, name="geomanager_upload_vector"),
+    path("upload-vector/<uuid:dataset_id>/", upload_vector_file, name="geomanager_dataset_upload_vector"),
+    path(
+        "upload-vector/<uuid:dataset_id>/<uuid:layer_id>/",
+        upload_vector_file,
+        name="geomanager_dataset_layer_upload_vector",
+    ),
+    path("publish-vector/<int:upload_id>/", publish_vector, name="geomanager_publish_vector"),
+    path("delete-vector-upload/<int:upload_id>/", delete_vector_upload, name="geomanager_delete_vector_upload"),
+    path("preview-vector-layers/<uuid:dataset_id>/", preview_vector_layers, name="geomanager_preview_vector_dataset"),
+    path(
+        "preview-vector-layers/<uuid:dataset_id>/<uuid:layer_id>/",
+        preview_vector_layers,
+        name="geomanager_preview_vector_layer",
+    ),
 ]

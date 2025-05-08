@@ -17,12 +17,7 @@ from geomanager.admin.vector_tile import VectorTileLayerModelAdmin, urls as vect
 from geomanager.admin.wms import WmsLayerModelAdmin, urls as wms_urls
 from geomanager.models import GeomanagerSettings
 
-urls = raster_file_urls \
-       + raster_tile_urls \
-       + vector_file_urls \
-       + vector_tile_urls \
-       + wms_urls \
-       + boundary_urls
+urls = raster_file_urls + raster_tile_urls + vector_file_urls + vector_tile_urls + wms_urls + boundary_urls
 
 
 class ModelAdminGroupWithHiddenItems(ModelAdminGroup):
@@ -37,8 +32,8 @@ class ModelAdminGroupWithHiddenItems(ModelAdminGroup):
 
 
 class GeoManagerAdminGroup(ModelAdminGroupWithHiddenItems):
-    menu_label = _('Geo Manager')
-    menu_icon = 'layer-group'
+    menu_label = _("Geo Manager")
+    menu_icon = "layer-group"
     menu_order = 700
     items = (
         CategoryModelAdmin,
@@ -52,12 +47,12 @@ class GeoManagerAdminGroup(ModelAdminGroupWithHiddenItems):
         VectorTileLayerModelAdmin,
         MBTSourceModelAdmin,
         RasterFileModelAdmin,
-        VectorTableModelAdmin
+        VectorTableModelAdmin,
     )
 
     def get_menu_item(self):
         if self.modeladmin_instances:
-            submenu = Menu(items=self.get_submenu_items(), register_hook_name='register_geo_manager_menu_item')
+            submenu = Menu(items=self.get_submenu_items(), register_hook_name="register_geo_manager_menu_item")
             return GroupMenuItem(self, self.get_menu_order(), submenu)
 
     def get_submenu_items(self):
@@ -69,7 +64,10 @@ class GeoManagerAdminGroup(ModelAdminGroupWithHiddenItems):
         try:
             settings_url = reverse(
                 "wagtailsettings:edit",
-                args=[GeomanagerSettings._meta.app_label, GeomanagerSettings._meta.model_name, ],
+                args=[
+                    GeomanagerSettings._meta.app_label,
+                    GeomanagerSettings._meta.model_name,
+                ],
             )
             gm_settings_menu = MenuItem(label=_("Settings"), url=settings_url, icon_name="cog")
             menu_items.append(gm_settings_menu)

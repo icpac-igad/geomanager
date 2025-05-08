@@ -36,9 +36,11 @@ class WmsLayerCreateView(CreateView):
             {"url": "#", "label": _("New") + f" {WmsLayer._meta.verbose_name}"},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -63,9 +65,11 @@ class WMSLayerEditView(EditView):
             {"url": "#", "label": self.instance.title},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -84,9 +88,9 @@ class WmsLayerModelAdmin(BaseModelAdmin, ModelAdminCanHide):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.list_display = (list(self.list_display) or []) + ['dataset_link', 'preview_layer', "mapviewer_map_url"]
-        self.dataset_link.__func__.short_description = _('Dataset')
-        self.preview_layer.__func__.short_description = _('Preview on Map')
+        self.list_display = (list(self.list_display) or []) + ["dataset_link", "preview_layer", "mapviewer_map_url"]
+        self.dataset_link.__func__.short_description = _("Dataset")
+        self.preview_layer.__func__.short_description = _("Preview on Map")
         self.mapviewer_map_url.__func__.short_description = _("View on MapViewer")
 
     def mapviewer_map_url(self, obj):
@@ -127,7 +131,8 @@ class WmsLayerModelAdmin(BaseModelAdmin, ModelAdminCanHide):
 
 
 urls = [
-    path('preview-wms-layers/<uuid:dataset_id>/', preview_wms_layers, name='geomanager_preview_wms_dataset'),
-    path('preview-wms-layers/<uuid:dataset_id>/<uuid:layer_id>/', preview_wms_layers,
-         name='geomanager_preview_wms_layer'),
+    path("preview-wms-layers/<uuid:dataset_id>/", preview_wms_layers, name="geomanager_preview_wms_dataset"),
+    path(
+        "preview-wms-layers/<uuid:dataset_id>/<uuid:layer_id>/", preview_wms_layers, name="geomanager_preview_wms_layer"
+    ),
 ]

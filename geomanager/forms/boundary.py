@@ -15,12 +15,11 @@ from geomanager.utils.vector_utils import ogr_db_import
 
 
 class AdditionalBoundaryDataAddForm(WagtailAdminModelForm):
-    file = forms.FileField(required=True,
-                           label=_("Boundary Data"),
-                           help_text=_(
-                               "Upload a file containing the boundary data. "
-                               "The file should be in Shapefile or GeoJSON format."),
-                           )
+    file = forms.FileField(
+        required=True,
+        label=_("Boundary Data"),
+        help_text=_("Upload a file containing the boundary data. The file should be in Shapefile or GeoJSON format."),
+    )
 
     class Meta:
         model = AdditionalMapBoundaryData
@@ -45,7 +44,7 @@ class AdditionalBoundaryDataAddForm(WagtailAdminModelForm):
                 temp_file.write(file.read())
                 temp_file.flush()
 
-                default_db_settings = settings.DATABASES['default']
+                default_db_settings = settings.DATABASES["default"]
 
                 db_params = {
                     "host": default_db_settings.get("HOST"),
@@ -55,15 +54,16 @@ class AdditionalBoundaryDataAddForm(WagtailAdminModelForm):
                     "name": default_db_settings.get("NAME"),
                 }
 
-                db_settings = {
-                    **db_params,
-                    "pg_service_schema": geomanager_settings.get("vector_db_schema")
-                }
+                db_settings = {**db_params, "pg_service_schema": geomanager_settings.get("vector_db_schema")}
 
                 try:
-                    table_info = ogr_db_import(temp_file.name, table_name, db_settings,
-                                               validate_geom_types=["Polygon", "MultiPolygon"],
-                                               overwrite=True)
+                    table_info = ogr_db_import(
+                        temp_file.name,
+                        table_name,
+                        db_settings,
+                        validate_geom_types=["Polygon", "MultiPolygon"],
+                        overwrite=True,
+                    )
                     cleaned_data["table_name"] = table_name
                     cleaned_data["properties"] = table_info.get("properties")
                     cleaned_data["geometry_type"] = table_info.get("geom_type")

@@ -2,16 +2,11 @@ import json
 
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext as _
-from wagtail.admin.auth import (
-    user_passes_test,
-    user_has_any_page_permission
-)
+from wagtail.admin.auth import user_passes_test, user_has_any_page_permission
 from wagtail.api.v2.utils import get_full_url
 from wagtail_modeladmin.helpers import AdminURLHelper
 
-from geomanager.models import (
-    Dataset, Category
-)
+from geomanager.models import Dataset, Category
 from geomanager.models.vector_tile import VectorTileLayer, VectorTileLayerIcon
 from geomanager.serializers.vector_tile import VectorTileLayerSerializer
 from geomanager.utils import UUIDEncoder
@@ -60,4 +55,4 @@ def preview_vector_tile_layers(request, dataset_id, layer_id=None):
         "navigation_items": navigation_items,
     }
 
-    return render(request, 'geomanager/vector_tile/vector_tile_layer_preview.html', context)
+    return render(request, "geomanager/vector_tile/vector_tile_layer_preview.html", context)

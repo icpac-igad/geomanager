@@ -30,10 +30,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Create GeoManager vector database schema
-        logger.info('[GEOMANAGER]: Creating GeoManager vector database schema...')
+        logger.info("[GEOMANAGER]: Creating GeoManager vector database schema...")
 
         vector_db_schema = geomanager_settings.get("vector_db_schema")
 
         ensure_pg_service_schema_exists(vector_db_schema)
 
-        logger.info('[GEOMANAGER]: GeoManager vector database schema created.')
+        logger.info("[GEOMANAGER]: GeoManager vector database schema created.")

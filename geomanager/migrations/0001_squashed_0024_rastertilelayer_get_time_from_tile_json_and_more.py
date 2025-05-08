@@ -19,7 +19,6 @@ import wagtailiconchooser.blocks
 
 
 class Migration(migrations.Migration):
-
     replaces = [
         ("geomanager", "0001_initial"),
         ("geomanager", "0002_geomanagersettings_logo_and_more"),
@@ -73,15 +72,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 ("order", models.IntegerField(blank=True, editable=False, null=True)),
                 (
@@ -94,9 +89,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "icon",
-                    models.CharField(
-                        blank=True, max_length=255, null=True, verbose_name="icon"
-                    ),
+                    models.CharField(blank=True, max_length=255, null=True, verbose_name="icon"),
                 ),
                 (
                     "active",
@@ -126,15 +119,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -274,15 +263,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -326,21 +311,15 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "name",
-                    models.CharField(
-                        help_text="Style Name", max_length=255, verbose_name="name"
-                    ),
+                    models.CharField(help_text="Style Name", max_length=255, verbose_name="name"),
                 ),
                 ("slug", models.CharField(editable=False, max_length=255, unique=True)),
                 ("file", models.FileField(upload_to="mbtiles", verbose_name="file")),
@@ -367,15 +346,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -528,15 +503,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "name",
@@ -588,15 +559,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "use_custom_colors",
-                    models.BooleanField(
-                        default=False, verbose_name="Use Custom Colors"
-                    ),
+                    models.BooleanField(default=False, verbose_name="Use Custom Colors"),
                 ),
                 (
                     "palette",
-                    models.TextField(
-                        blank=True, null=True, verbose_name="Color Palette"
-                    ),
+                    models.TextField(blank=True, null=True, verbose_name="Color Palette"),
                 ),
                 (
                     "interpolate",
@@ -628,15 +595,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -649,9 +612,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "title",
-                    models.CharField(
-                        help_text="Layer title", max_length=255, verbose_name="title"
-                    ),
+                    models.CharField(help_text="Layer title", max_length=255, verbose_name="title"),
                 ),
                 (
                     "default",
@@ -735,9 +696,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "label",
-                                            wagtail.blocks.CharBlock(
-                                                label="label", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="label", required=False),
                                         ),
                                         (
                                             "type",
@@ -756,15 +715,11 @@ class Migration(migrations.Migration):
                                                     [
                                                         (
                                                             "label",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="label"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="label"),
                                                         ),
                                                         (
                                                             "value",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="value"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="value"),
                                                         ),
                                                         (
                                                             "default",
@@ -849,9 +804,7 @@ class Migration(migrations.Migration):
                             ),
                             (
                                 "legend_image",
-                                wagtail.images.blocks.ImageChooserBlock(
-                                    label="Custom Image"
-                                ),
+                                wagtail.images.blocks.ImageChooserBlock(label="Custom Image"),
                             ),
                         ],
                         blank=True,
@@ -902,15 +855,11 @@ class Migration(migrations.Migration):
                                     [
                                         (
                                             "link_text",
-                                            wagtail.blocks.CharBlock(
-                                                label="Link text", required=True
-                                            ),
+                                            wagtail.blocks.CharBlock(label="Link text", required=True),
                                         ),
                                         (
                                             "link_url",
-                                            wagtail.blocks.URLBlock(
-                                                label="Link Url", required=True
-                                            ),
+                                            wagtail.blocks.URLBlock(label="Link Url", required=True),
                                         ),
                                         (
                                             "text",
@@ -1036,9 +985,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "value",
-                    models.CharField(
-                        help_text="Value of the parameter", max_length=250
-                    ),
+                    models.CharField(help_text="Value of the parameter", max_length=250),
                 ),
                 (
                     "layer",
@@ -1108,15 +1055,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 ("file", models.FileField(upload_to="vector_uploads")),
                 ("vector_metadata", models.JSONField(blank=True, null=True)),
@@ -1182,15 +1125,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "file",
@@ -1227,15 +1166,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 ("gender", models.CharField(max_length=50, verbose_name="Gender")),
                 ("country", models.CharField(max_length=50, verbose_name="Country")),
@@ -1251,9 +1186,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "scale_of_operations",
-                    models.CharField(
-                        max_length=255, verbose_name="Scale of Operations"
-                    ),
+                    models.CharField(max_length=255, verbose_name="Scale of Operations"),
                 ),
                 ("position", models.CharField(max_length=255, verbose_name="Position")),
                 (
@@ -1308,15 +1241,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -1330,34 +1259,24 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255, verbose_name="Name")),
                 (
                     "adm_0",
-                    models.CharField(
-                        blank=True, max_length=255, null=True, verbose_name="Adm 0"
-                    ),
+                    models.CharField(blank=True, max_length=255, null=True, verbose_name="Adm 0"),
                 ),
                 (
                     "adm_1",
-                    models.CharField(
-                        blank=True, max_length=255, null=True, verbose_name="Adm 1"
-                    ),
+                    models.CharField(blank=True, max_length=255, null=True, verbose_name="Adm 1"),
                 ),
                 (
                     "adm_2",
-                    models.CharField(
-                        blank=True, max_length=255, null=True, verbose_name="Adm 2"
-                    ),
+                    models.CharField(blank=True, max_length=255, null=True, verbose_name="Adm 2"),
                 ),
                 (
                     "adm_3",
-                    models.CharField(
-                        blank=True, max_length=255, null=True, verbose_name="Adm 3"
-                    ),
+                    models.CharField(blank=True, max_length=255, null=True, verbose_name="Adm 3"),
                 ),
                 ("public", models.BooleanField(default=False, verbose_name="Public")),
                 (
                     "type",
-                    models.CharField(
-                        blank=True, max_length=255, null=True, verbose_name="Type"
-                    ),
+                    models.CharField(blank=True, max_length=255, null=True, verbose_name="Type"),
                 ),
                 (
                     "products",
@@ -1410,15 +1329,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "threshold",
@@ -1429,9 +1344,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "color",
-                    wagtail_color_panel.fields.ColorField(
-                        default="#ff0000", max_length=7, verbose_name="color"
-                    ),
+                    wagtail_color_panel.fields.ColorField(default="#ff0000", max_length=7, verbose_name="color"),
                 ),
                 (
                     "label",
@@ -1579,33 +1492,23 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "backgroundColor",
-                                            wagtail.blocks.CharBlock(
-                                                label="background color"
-                                            ),
+                                            wagtail.blocks.CharBlock(label="background color"),
                                         ),
                                         (
                                             "image",
-                                            wagtail.images.blocks.ImageChooserBlock(
-                                                label="image", required=False
-                                            ),
+                                            wagtail.images.blocks.ImageChooserBlock(label="image", required=False),
                                         ),
                                         (
                                             "basemapGroup",
-                                            wagtail.blocks.CharBlock(
-                                                label="basemap group"
-                                            ),
+                                            wagtail.blocks.CharBlock(label="basemap group"),
                                         ),
                                         (
                                             "labelsGroup",
-                                            wagtail.blocks.CharBlock(
-                                                label="labels group"
-                                            ),
+                                            wagtail.blocks.CharBlock(label="labels group"),
                                         ),
                                         (
                                             "url",
-                                            wagtail.blocks.URLBlock(
-                                                label="url", required=False
-                                            ),
+                                            wagtail.blocks.URLBlock(label="url", required=False),
                                         ),
                                         (
                                             "default",
@@ -1820,15 +1723,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -1841,9 +1740,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "title",
-                    models.CharField(
-                        help_text="Layer title", max_length=255, verbose_name="title"
-                    ),
+                    models.CharField(help_text="Layer title", max_length=255, verbose_name="title"),
                 ),
                 (
                     "default",
@@ -1880,12 +1777,8 @@ class Migration(migrations.Migration):
                                                             label="fill opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -1911,21 +1804,15 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "filter",
-                                            wagtail.blocks.CharBlock(
-                                                label="filter", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="filter", required=False),
                                         ),
                                         (
                                             "maxzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="maxzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="maxzoom", required=False),
                                         ),
                                         (
                                             "minzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="minzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="minzoom", required=False),
                                         ),
                                     ],
                                     label="Polygon Layer",
@@ -1960,11 +1847,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="Line gap width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -1974,12 +1857,8 @@ class Migration(migrations.Migration):
                                                             label="line opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -1989,11 +1868,7 @@ class Migration(migrations.Migration):
                                                             default=1.0,
                                                             label="Line width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2002,11 +1877,7 @@ class Migration(migrations.Migration):
                                                             default=0,
                                                             label="Line offset",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                 ],
@@ -2047,11 +1918,7 @@ class Migration(migrations.Migration):
                                                             default=2.0,
                                                             label="line miter limit",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2060,11 +1927,7 @@ class Migration(migrations.Migration):
                                                             default=1.05,
                                                             label="line round limit",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                 ],
@@ -2073,21 +1936,15 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "filter",
-                                            wagtail.blocks.CharBlock(
-                                                label="filter", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="filter", required=False),
                                         ),
                                         (
                                             "maxzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="maxzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="maxzoom", required=False),
                                         ),
                                         (
                                             "minzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="minzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="minzoom", required=False),
                                         ),
                                     ],
                                     label="Line Layer",
@@ -2116,12 +1973,8 @@ class Migration(migrations.Migration):
                                                             label="circle opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -2131,11 +1984,7 @@ class Migration(migrations.Migration):
                                                             default=5.0,
                                                             label="circle radius",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2152,11 +2001,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="circle_stroke_width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                 ],
@@ -2165,21 +2010,15 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "filter",
-                                            wagtail.blocks.CharBlock(
-                                                label="filter", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="filter", required=False),
                                         ),
                                         (
                                             "maxzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="maxzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="maxzoom", required=False),
                                         ),
                                         (
                                             "minzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="minzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="minzoom", required=False),
                                         ),
                                     ],
                                     label="Point Layer",
@@ -2195,9 +2034,7 @@ class Migration(migrations.Migration):
                                                 [
                                                     (
                                                         "icon_image",
-                                                        wagtailiconchooser.blocks.IconChooserBlock(
-                                                            label="Icon Image"
-                                                        ),
+                                                        wagtailiconchooser.blocks.IconChooserBlock(label="Icon Image"),
                                                     ),
                                                     (
                                                         "icon_allow_overlap",
@@ -2274,11 +2111,7 @@ class Migration(migrations.Migration):
                                                             default=2.0,
                                                             label="Icon padding",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2303,12 +2136,8 @@ class Migration(migrations.Migration):
                                                             label="icon rotate",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    360
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(360),
                                                             ],
                                                         ),
                                                     ),
@@ -2334,12 +2163,8 @@ class Migration(migrations.Migration):
                                                             label="icon size",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -2378,11 +2203,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="Icon halo blur",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2399,11 +2220,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="icon halo width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2413,12 +2230,8 @@ class Migration(migrations.Migration):
                                                             label="icon opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -2452,11 +2265,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="Text halo blur",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2473,11 +2282,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="text halo width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2564,9 +2369,7 @@ class Migration(migrations.Migration):
                                                     ),
                                                     (
                                                         "text_field",
-                                                        wagtail.blocks.CharBlock(
-                                                            label="Text field"
-                                                        ),
+                                                        wagtail.blocks.CharBlock(label="Text field"),
                                                     ),
                                                     (
                                                         "text_size",
@@ -2574,11 +2377,7 @@ class Migration(migrations.Migration):
                                                             default=16,
                                                             label="Text size",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2634,11 +2433,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="Text letter spacing",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2647,11 +2442,7 @@ class Migration(migrations.Migration):
                                                             default=1.2,
                                                             label="Text line height",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2661,12 +2452,8 @@ class Migration(migrations.Migration):
                                                             label="Text max angle",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    360
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(360),
                                                             ],
                                                         ),
                                                     ),
@@ -2676,11 +2463,7 @@ class Migration(migrations.Migration):
                                                             default=10,
                                                             label="Text max width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2697,12 +2480,8 @@ class Migration(migrations.Migration):
                                                             label="text opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -2712,11 +2491,7 @@ class Migration(migrations.Migration):
                                                             default=2,
                                                             label="Text  padding",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2740,11 +2515,7 @@ class Migration(migrations.Migration):
                                                             default=0,
                                                             label="Text radial offset",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -2754,12 +2525,8 @@ class Migration(migrations.Migration):
                                                             label="Text rotate",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    360
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(360),
                                                             ],
                                                         ),
                                                     ),
@@ -2873,9 +2640,7 @@ class Migration(migrations.Migration):
                             ),
                             (
                                 "legend_image",
-                                wagtail.images.blocks.ImageChooserBlock(
-                                    label="Legend Image"
-                                ),
+                                wagtail.images.blocks.ImageChooserBlock(label="Legend Image"),
                             ),
                             (
                                 "legend_icon",
@@ -2894,9 +2659,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "icon_label",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="Icon Label"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="Icon Label"),
                                                         ),
                                                         (
                                                             "icon_color",
@@ -2943,15 +2706,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -2964,9 +2723,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "title",
-                    models.CharField(
-                        help_text="Layer title", max_length=255, verbose_name="title"
-                    ),
+                    models.CharField(help_text="Layer title", max_length=255, verbose_name="title"),
                 ),
                 (
                     "default",
@@ -3002,9 +2759,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "unit",
-                                            wagtail.blocks.CharBlock(
-                                                label="Data unit", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="Data unit", required=False),
                                         ),
                                         (
                                             "timeseries_chart_type",
@@ -3061,9 +2816,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "unit",
-                                            wagtail.blocks.CharBlock(
-                                                label="Data unit", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="Data unit", required=False),
                                         ),
                                         (
                                             "timeseries_data_enabled",
@@ -3152,15 +2905,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "file",
@@ -3196,15 +2945,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -3266,15 +3011,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -3287,9 +3028,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "title",
-                    models.CharField(
-                        help_text="Layer title", max_length=255, verbose_name="title"
-                    ),
+                    models.CharField(help_text="Layer title", max_length=255, verbose_name="title"),
                 ),
                 (
                     "default",
@@ -3342,9 +3081,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "label",
-                                            wagtail.blocks.CharBlock(
-                                                label="label", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="label", required=False),
                                         ),
                                         (
                                             "type",
@@ -3363,15 +3100,11 @@ class Migration(migrations.Migration):
                                                     [
                                                         (
                                                             "label",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="label"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="label"),
                                                         ),
                                                         (
                                                             "value",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="value"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="value"),
                                                         ),
                                                         (
                                                             "default",
@@ -3456,9 +3189,7 @@ class Migration(migrations.Migration):
                             ),
                             (
                                 "legend_image",
-                                wagtail.images.blocks.ImageChooserBlock(
-                                    label="Custom Image"
-                                ),
+                                wagtail.images.blocks.ImageChooserBlock(label="Custom Image"),
                             ),
                             (
                                 "legend_icon",
@@ -3477,9 +3208,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "icon_label",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="Icon Label"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="Icon Label"),
                                                         ),
                                                         (
                                                             "icon_color",
@@ -3516,15 +3245,11 @@ class Migration(migrations.Migration):
                                     [
                                         (
                                             "link_text",
-                                            wagtail.blocks.CharBlock(
-                                                label="Link text", required=True
-                                            ),
+                                            wagtail.blocks.CharBlock(label="Link text", required=True),
                                         ),
                                         (
                                             "link_url",
-                                            wagtail.blocks.URLBlock(
-                                                label="Link Url", required=True
-                                            ),
+                                            wagtail.blocks.URLBlock(label="Link Url", required=True),
                                         ),
                                         (
                                             "text",
@@ -3587,12 +3312,8 @@ class Migration(migrations.Migration):
                                                             label="fill opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -3618,27 +3339,19 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "filter",
-                                            wagtail.blocks.CharBlock(
-                                                label="filter", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="filter", required=False),
                                         ),
                                         (
                                             "maxzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="maxzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="maxzoom", required=False),
                                         ),
                                         (
                                             "minzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="minzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="minzoom", required=False),
                                         ),
                                         (
                                             "source_layer",
-                                            wagtail.blocks.CharBlock(
-                                                label="source layer", required=True
-                                            ),
+                                            wagtail.blocks.CharBlock(label="source layer", required=True),
                                         ),
                                     ],
                                     label="Polygon Layer",
@@ -3673,11 +3386,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="Line gap width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -3687,12 +3396,8 @@ class Migration(migrations.Migration):
                                                             label="line opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -3702,11 +3407,7 @@ class Migration(migrations.Migration):
                                                             default=1.0,
                                                             label="Line width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -3715,11 +3416,7 @@ class Migration(migrations.Migration):
                                                             default=0,
                                                             label="Line offset",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                 ],
@@ -3760,11 +3457,7 @@ class Migration(migrations.Migration):
                                                             default=2.0,
                                                             label="line miter limit",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -3773,11 +3466,7 @@ class Migration(migrations.Migration):
                                                             default=1.05,
                                                             label="line round limit",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                 ],
@@ -3786,27 +3475,19 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "filter",
-                                            wagtail.blocks.CharBlock(
-                                                label="filter", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="filter", required=False),
                                         ),
                                         (
                                             "maxzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="maxzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="maxzoom", required=False),
                                         ),
                                         (
                                             "minzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="minzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="minzoom", required=False),
                                         ),
                                         (
                                             "source_layer",
-                                            wagtail.blocks.CharBlock(
-                                                label="source layer", required=True
-                                            ),
+                                            wagtail.blocks.CharBlock(label="source layer", required=True),
                                         ),
                                     ],
                                     label="Line Layer",
@@ -3835,12 +3516,8 @@ class Migration(migrations.Migration):
                                                             label="circle opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -3850,11 +3527,7 @@ class Migration(migrations.Migration):
                                                             default=5.0,
                                                             label="circle radius",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -3871,11 +3544,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="circle_stroke_width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                 ],
@@ -3884,27 +3553,19 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "filter",
-                                            wagtail.blocks.CharBlock(
-                                                label="filter", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="filter", required=False),
                                         ),
                                         (
                                             "maxzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="maxzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="maxzoom", required=False),
                                         ),
                                         (
                                             "minzoom",
-                                            wagtail.blocks.IntegerBlock(
-                                                label="minzoom", required=False
-                                            ),
+                                            wagtail.blocks.IntegerBlock(label="minzoom", required=False),
                                         ),
                                         (
                                             "source_layer",
-                                            wagtail.blocks.CharBlock(
-                                                label="source layer", required=True
-                                            ),
+                                            wagtail.blocks.CharBlock(label="source layer", required=True),
                                         ),
                                     ],
                                     label="Point Layer",
@@ -3920,9 +3581,7 @@ class Migration(migrations.Migration):
                                                 [
                                                     (
                                                         "icon_image",
-                                                        wagtailiconchooser.blocks.IconChooserBlock(
-                                                            label="Icon Image"
-                                                        ),
+                                                        wagtailiconchooser.blocks.IconChooserBlock(label="Icon Image"),
                                                     ),
                                                     (
                                                         "icon_allow_overlap",
@@ -3999,11 +3658,7 @@ class Migration(migrations.Migration):
                                                             default=2.0,
                                                             label="Icon padding",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4028,12 +3683,8 @@ class Migration(migrations.Migration):
                                                             label="icon rotate",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    360
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(360),
                                                             ],
                                                         ),
                                                     ),
@@ -4059,12 +3710,8 @@ class Migration(migrations.Migration):
                                                             label="icon size",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -4103,11 +3750,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="Icon halo blur",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4124,11 +3767,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="icon halo width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4138,12 +3777,8 @@ class Migration(migrations.Migration):
                                                             label="icon opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -4153,9 +3788,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "source_layer",
-                                            wagtail.blocks.CharBlock(
-                                                label="source layer", required=True
-                                            ),
+                                            wagtail.blocks.CharBlock(label="source layer", required=True),
                                         ),
                                     ],
                                     label="Icon Layer",
@@ -4183,11 +3816,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="Text halo blur",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4204,11 +3833,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="text halo width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4295,9 +3920,7 @@ class Migration(migrations.Migration):
                                                     ),
                                                     (
                                                         "text_field",
-                                                        wagtail.blocks.CharBlock(
-                                                            label="Text field"
-                                                        ),
+                                                        wagtail.blocks.CharBlock(label="Text field"),
                                                     ),
                                                     (
                                                         "text_size",
@@ -4305,11 +3928,7 @@ class Migration(migrations.Migration):
                                                             default=16,
                                                             label="Text size",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4365,11 +3984,7 @@ class Migration(migrations.Migration):
                                                             default=0.0,
                                                             label="Text letter spacing",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4378,11 +3993,7 @@ class Migration(migrations.Migration):
                                                             default=1.2,
                                                             label="Text line height",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4392,12 +4003,8 @@ class Migration(migrations.Migration):
                                                             label="Text max angle",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    360
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(360),
                                                             ],
                                                         ),
                                                     ),
@@ -4407,11 +4014,7 @@ class Migration(migrations.Migration):
                                                             default=10,
                                                             label="Text max width",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4428,12 +4031,8 @@ class Migration(migrations.Migration):
                                                             label="text opacity",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    1
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(1),
                                                             ],
                                                         ),
                                                     ),
@@ -4443,11 +4042,7 @@ class Migration(migrations.Migration):
                                                             default=2,
                                                             label="Text  padding",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4471,11 +4066,7 @@ class Migration(migrations.Migration):
                                                             default=0,
                                                             label="Text radial offset",
                                                             required=False,
-                                                            validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                )
-                                                            ],
+                                                            validators=[django.core.validators.MinValueValidator(0)],
                                                         ),
                                                     ),
                                                     (
@@ -4485,12 +4076,8 @@ class Migration(migrations.Migration):
                                                             label="Text rotate",
                                                             required=False,
                                                             validators=[
-                                                                django.core.validators.MinValueValidator(
-                                                                    0
-                                                                ),
-                                                                django.core.validators.MaxValueValidator(
-                                                                    360
-                                                                ),
+                                                                django.core.validators.MinValueValidator(0),
+                                                                django.core.validators.MaxValueValidator(360),
                                                             ],
                                                         ),
                                                     ),
@@ -4545,9 +4132,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "source_layer",
-                                            wagtail.blocks.CharBlock(
-                                                label="source layer", required=True
-                                            ),
+                                            wagtail.blocks.CharBlock(label="source layer", required=True),
                                         ),
                                     ],
                                     label="Text Label Layer",
@@ -4571,9 +4156,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "get_time_from_tile_json",
-                    models.BooleanField(
-                        default=False, verbose_name="Get time from tile json url"
-                    ),
+                    models.BooleanField(default=False, verbose_name="Get time from tile json url"),
                 ),
                 (
                     "tile_json_url",
@@ -4630,15 +4213,11 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                    django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name="created"),
                 ),
                 (
                     "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                    django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name="modified"),
                 ),
                 (
                     "id",
@@ -4651,9 +4230,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "title",
-                    models.CharField(
-                        help_text="Layer title", max_length=255, verbose_name="title"
-                    ),
+                    models.CharField(help_text="Layer title", max_length=255, verbose_name="title"),
                 ),
                 (
                     "default",
@@ -4706,9 +4283,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "label",
-                                            wagtail.blocks.CharBlock(
-                                                label="label", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(label="label", required=False),
                                         ),
                                         (
                                             "type",
@@ -4727,15 +4302,11 @@ class Migration(migrations.Migration):
                                                     [
                                                         (
                                                             "label",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="label"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="label"),
                                                         ),
                                                         (
                                                             "value",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="value"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="value"),
                                                         ),
                                                         (
                                                             "default",
@@ -4820,9 +4391,7 @@ class Migration(migrations.Migration):
                             ),
                             (
                                 "legend_image",
-                                wagtail.images.blocks.ImageChooserBlock(
-                                    label="Custom Image"
-                                ),
+                                wagtail.images.blocks.ImageChooserBlock(label="Custom Image"),
                             ),
                             (
                                 "legend_icon",
@@ -4841,9 +4410,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "icon_label",
-                                                            wagtail.blocks.CharBlock(
-                                                                label="Icon Label"
-                                                            ),
+                                                            wagtail.blocks.CharBlock(label="Icon Label"),
                                                         ),
                                                         (
                                                             "icon_color",
@@ -4880,15 +4447,11 @@ class Migration(migrations.Migration):
                                     [
                                         (
                                             "link_text",
-                                            wagtail.blocks.CharBlock(
-                                                label="Link text", required=True
-                                            ),
+                                            wagtail.blocks.CharBlock(label="Link text", required=True),
                                         ),
                                         (
                                             "link_url",
-                                            wagtail.blocks.URLBlock(
-                                                label="Link Url", required=True
-                                            ),
+                                            wagtail.blocks.URLBlock(label="Link Url", required=True),
                                         ),
                                         (
                                             "text",
@@ -4935,9 +4498,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "get_time_from_tile_json",
-                    models.BooleanField(
-                        default=False, verbose_name="Get time from tile json url"
-                    ),
+                    models.BooleanField(default=False, verbose_name="Get time from tile json url"),
                 ),
                 (
                     "tile_json_url",

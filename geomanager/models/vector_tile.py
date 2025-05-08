@@ -18,7 +18,6 @@ from geomanager.blocks import (
 )
 from geomanager.models.core import Dataset
 from geomanager.models.tile_base import BaseTileLayer
-from geomanager.utils import DATE_FORMAT_CHOICES
 from geomanager.utils.svg import rasterize_svg_to_png
 from geomanager.utils.tiles import get_vector_render_layers
 
@@ -55,36 +54,49 @@ class PopupFieldBlock(blocks.StructBlock):
 
 
 class VectorTileLayer(BaseTileLayer):
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="vector_tile_layers",
-                                verbose_name=_("dataset"))
+    dataset = models.ForeignKey(
+        Dataset, on_delete=models.CASCADE, related_name="vector_tile_layers", verbose_name=_("dataset")
+    )
 
-    render_layers = StreamField([
-        ("fill", TileFillVectorLayerBlock(label=_("Polygon Layer"))),
-        ("line", TileLineVectorLayerBlock(label=_("Line Layer"))),
-        ("circle", TileCircleVectorLayerBlock(label=_("Point Layer"))),
-        ("icon", TileIconVectorLayerBlock(label=_("Icon Layer"))),
-        ("text", TileTextVectorLayerBlock(label=_("Text Label Layer"))),
-    ], use_json_field=True, null=True, blank=True, verbose_name=_("Render Layers"))
+    render_layers = StreamField(
+        [
+            ("fill", TileFillVectorLayerBlock(label=_("Polygon Layer"))),
+            ("line", TileLineVectorLayerBlock(label=_("Line Layer"))),
+            ("circle", TileCircleVectorLayerBlock(label=_("Point Layer"))),
+            ("icon", TileIconVectorLayerBlock(label=_("Icon Layer"))),
+            ("text", TileTextVectorLayerBlock(label=_("Text Label Layer"))),
+        ],
+        use_json_field=True,
+        null=True,
+        blank=True,
+        verbose_name=_("Render Layers"),
+    )
 
     use_render_layers_json = models.BooleanField(default=False, verbose_name=_("Use Render Layers JSON"))
     render_layers_json = models.JSONField(blank=True, null=True, verbose_name=_("Layers Configuration"))
 
-    popup_config = StreamField([
-        ("popup_fields", PopupFieldBlock(label=_("Popup Fields"))),
-    ], use_json_field=True, null=True, blank=True, verbose_name=_("Map Popup Configuration"))
+    popup_config = StreamField(
+        [
+            ("popup_fields", PopupFieldBlock(label=_("Popup Fields"))),
+        ],
+        use_json_field=True,
+        null=True,
+        blank=True,
+        verbose_name=_("Map Popup Configuration"),
+    )
 
     class Meta:
         verbose_name = _("Vector Tile Layer")
         verbose_name_plural = _("Vector Tile Layers")
-        ordering = ['order']
+        ordering = ["order"]
 
     panels = [
         FieldPanel("dataset"),
         *BaseTileLayer.panels,
         FieldPanel("use_render_layers_json"),
         FieldPanel("render_layers"),
-        FieldPanel('render_layers_json', widget=JSONEditorWidget(width="100%")),
-        FieldPanel('popup_config'),
+        FieldPanel("render_layers_json", widget=JSONEditorWidget(width="100%")),
+        FieldPanel("popup_config"),
     ]
 
     def __str__(self):
@@ -93,7 +105,7 @@ class VectorTileLayer(BaseTileLayer):
     @property
     def preview_url(self):
         preview_url = reverse(
-            f"geomanager_preview_vector_tile_layer",
+            "geomanager_preview_vector_tile_layer",
             args=[quote(self.dataset.pk), quote(self.pk)],
         )
         return preview_url
@@ -102,13 +114,7 @@ class VectorTileLayer(BaseTileLayer):
     def layer_config(self):
         tile_url = self.tile_url
 
-        layer_config = {
-            "type": "vector",
-            "source": {
-                "type": "vector",
-                "tiles": [tile_url]
-            }
-        }
+        layer_config = {"type": "vector", "source": {"type": "vector", "tiles": [tile_url]}}
 
         if self.use_render_layers_json and self.render_layers_json:
             layer_config.update({"render": {"layers": self.render_layers_json}})
@@ -125,17 +131,16 @@ class VectorTileLayer(BaseTileLayer):
         if not self.popup_config:
             return None
 
-        config = {
-            "type": "intersection",
-            "output": []
-        }
+        config = {"type": "intersection", "output": []}
 
         for popup_field in self.popup_config:
-            config["output"].append({
-                "column": popup_field.value.get("data_key"),
-                "property": popup_field.value.get("label"),
-                "type": popup_field.value.get("data_type", "string"),
-            })
+            config["output"].append(
+                {
+                    "column": popup_field.value.get("data_key"),
+                    "property": popup_field.value.get("label"),
+                    "type": popup_field.value.get("data_type", "string"),
+                }
+            )
 
         return config
 

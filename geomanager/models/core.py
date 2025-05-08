@@ -1,7 +1,12 @@
 import base64
 import json
 import uuid
-
+from pathlib import Path
+from os import getenv
+from geomanager.utils.timestamps import (
+    get_dekadal_dates_range,
+    get_pandas_dates_range,
+)
 from django.db import models
 from django.urls.base import reverse
 from django.utils.translation import gettext_lazy as _
@@ -14,7 +19,6 @@ from wagtail.models import Orderable
 from wagtail_adminsortable.models import AdminSortable
 from wagtail_modeladmin.helpers import AdminURLHelper
 from wagtailiconchooser.widgets import IconChooserWidget
-
 from geomanager.helpers import get_layer_action_url, get_preview_url, get_upload_url
 from ..utils import UUIDEncoder
 
@@ -22,18 +26,10 @@ DEFAULT_RASTER_MAX_UPLOAD_SIZE_MB = 100
 
 
 class Category(TimeStampedModel, AdminSortable, ClusterableModel):
-    title = models.CharField(
-        max_length=16, verbose_name=_("title"), help_text=_("Title of the category")
-    )
-    icon = models.CharField(
-        max_length=255, verbose_name=_("icon"), blank=True, null=True
-    )
-    active = models.BooleanField(
-        default=True, verbose_name=_("active"), help_text=_("Is the category active ?")
-    )
-    public = models.BooleanField(
-        default=True, verbose_name=_("public"), help_text=_("Is the category public ?")
-    )
+    title = models.CharField(max_length=16, verbose_name=_("title"), help_text=_("Title of the category"))
+    icon = models.CharField(max_length=255, verbose_name=_("icon"), blank=True, null=True)
+    active = models.BooleanField(default=True, verbose_name=_("active"), help_text=_("Is the category active ?"))
+    public = models.BooleanField(default=True, verbose_name=_("public"), help_text=_("Is the category public ?"))
 
     class Meta(AdminSortable.Meta):
         verbose_name = _("Category")
@@ -47,9 +43,7 @@ class Category(TimeStampedModel, AdminSortable, ClusterableModel):
         FieldPanel("icon", widget=IconChooserWidget),
         FieldPanel("active"),
         FieldPanel("public"),
-        InlinePanel(
-            "sub_categories", heading=_("Sub Categories"), label=_("Sub Category")
-        ),
+        InlinePanel("sub_categories", heading=_("Sub Categories"), label=_("Sub Category")),
     ]
 
     def datasets_list_url(self):
@@ -92,9 +86,7 @@ class Category(TimeStampedModel, AdminSortable, ClusterableModel):
 
 
 class SubCategory(Orderable):
-    category = ParentalKey(
-        Category, on_delete=models.CASCADE, related_name="sub_categories"
-    )
+    category = ParentalKey(Category, on_delete=models.CASCADE, related_name="sub_categories")
     title = models.CharField(max_length=256, verbose_name=_("title"))
     active = models.BooleanField(default=True, verbose_name=_("active"))
     public = models.BooleanField(default=True, verbose_name=_("public"))
@@ -129,7 +121,19 @@ class Dataset(TimeStampedModel, AdminSortable):
         ("next_to_now", _("Date next to current date time")),
         ("from_dataset_props", _("Dataset model property set by data ingestion job")),
     )
-
+    PRODUCTS_PERIODICITY = (
+        ("minutely", _("Product Updated Every Minute")),
+        ("hourly", _("Product Updated Every Hour")),
+        ("daily", _("Product Updated Every Day")),
+        ("pentadal", _("Product Updated Every 5 days (pentad)")),
+        ("weekly", _("Product Updated Every Week")),
+        ("dekadal", _("Product Updated Every 10 days (dekad)")),
+        ("monthly", _("Product Updated Every Month")),
+        ("seasonal", _("Product Updated Every Season")),
+        ("yearly", _("Product Updated Every Year")),
+        ("quinquennium", "Product Updated Every 5 Years"),
+        ("static", _("Product is Never Updated")),
+    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(
         max_length=255,
@@ -142,9 +146,7 @@ class Dataset(TimeStampedModel, AdminSortable):
         on_delete=models.PROTECT,
         related_name="datasets",
     )
-    sub_category = models.ForeignKey(
-        SubCategory, verbose_name=_("Subcategory"), on_delete=models.PROTECT
-    )
+    sub_category = models.ForeignKey(SubCategory, verbose_name=_("Subcategory"), on_delete=models.PROTECT)
     summary = models.CharField(
         max_length=100,
         null=True,
@@ -180,8 +182,21 @@ class Dataset(TimeStampedModel, AdminSortable):
         blank=True,
         verbose_name=_("latest data date set by data ingestion job"),
         help_text=_(
-            "Last day date of the pentad/week/dekad/month/season as extracted from dataset, depending on dataset periodicity"
+            "First day (initialization) date of the pentad/week/dekad/month/season as extracted from dataset, depending on dataset periodicity"
         ),
+    )
+    initial_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name=_("earliest data date covered by the product"),
+        help_text=_("Start date (initialization) on the product monitoring period"),
+    )
+    periodicity = models.CharField(
+        max_length=100,
+        choices=PRODUCTS_PERIODICITY,
+        default="weekly",
+        verbose_name=_("product period cycle"),
+        help_text=_("How often is the product updated?"),
     )
     published = models.BooleanField(
         default=True,
@@ -195,10 +210,7 @@ class Dataset(TimeStampedModel, AdminSortable):
     public = models.BooleanField(
         default=True,
         verbose_name=_("public"),
-        help_text=_(
-            "Should the dataset be visible to everyone ?"
-            " If unchecked, only authorized users can view"
-        ),
+        help_text=_("Should the dataset be visible to everyone ? If unchecked, only authorized users can view"),
     )
     initial_visible = models.BooleanField(
         default=False,
@@ -220,16 +232,12 @@ class Dataset(TimeStampedModel, AdminSortable):
     enable_all_multi_layers_on_add = models.BooleanField(
         default=True,
         verbose_name=_("Enable all Multi-Layers when adding to map"),
-        help_text=_(
-            "Enable all Multi-Layers at once when adding " "the dataset to the map"
-        ),
+        help_text=_("Enable all Multi-Layers at once when adding the dataset to the map"),
     )
     near_realtime = models.BooleanField(
         default=False,
         verbose_name=_("Near realtime"),
-        help_text=_(
-            "Is the layer near realtime?, for example updates every 10 minutes"
-        ),
+        help_text=_("Is the layer near realtime?, for example updates every 10 minutes"),
     )
 
     current_time_method = models.CharField(
@@ -237,9 +245,7 @@ class Dataset(TimeStampedModel, AdminSortable):
         choices=CURRENT_TIME_METHOD_CHOICES,
         default="latest_from_source",
         verbose_name=_("current time method"),
-        help_text=_(
-            "How to pick default time and for updates, for Multi-Temporal data"
-        ),
+        help_text=_("How to pick default time and for updates, for Multi-Temporal data"),
     )
     auto_update_interval = models.IntegerField(
         blank=True,
@@ -270,6 +276,10 @@ class Dataset(TimeStampedModel, AdminSortable):
         FieldPanel("category"),
         FieldPanel("sub_category"),
         FieldPanel("layer_type"),
+        FieldPanel("dataset_slug"),
+        FieldPanel("initial_date"),
+        FieldPanel("latest_date"),
+        FieldPanel("periodicity"),
         FieldPanel("summary"),
         FieldPanel("metadata"),
         FieldPanel("published"),
@@ -370,9 +380,7 @@ class Dataset(TimeStampedModel, AdminSortable):
     def category_url(self):
         if self.category:
             category_admin_helper = AdminURLHelper(Category)
-            category_edit_url = category_admin_helper.get_action_url(
-                "edit", self.category.pk
-            )
+            category_edit_url = category_admin_helper.get_action_url("edit", self.category.pk)
             return category_edit_url
         return None
 
@@ -480,15 +488,60 @@ class Dataset(TimeStampedModel, AdminSortable):
 
         return None
 
-    def get_wms_layers_json(self):
-        return []
+    def get_wms_layers_json(self, request=None):
+        start_date = self.initial_date
+        final_date = self.latest_date
+        # TODO: Save and extract data dates from DB
+        # if self.periodicity == "minutely":
+        #     timestamps = get_pandas_dates_range(
+        #         start_date=start_date, final_date=final_date, frequency="min"
+        #     )
+        # elif self.periodicity == "hourly":
+        #     timestamps = get_pandas_dates_range(
+        #         start_date=start_date, final_date=final_date, frequency="h"
+        #     )
+        # elif self.periodicity == "daily":
+        #     timestamps = get_pandas_dates_range(
+        #         start_date=start_date, final_date=final_date, frequency="D"
+        #     )
+        # elif self.periodicity == "pentadal":
+        #     timestamps = get_pandas_dates_range(
+        #         start_date=start_date, final_date=final_date, frequency="5D"
+        #     )
+        if self.periodicity == "weekly":
+            # weekly products are not produced on regular dates. There is need to store data dates in a database for ease of access
+            # using file-system json as a temporary database
+            json_db = Path(getenv("WEEKLY_JSON_DB", "/opt/eahw/weekly-data-dates.json"))
+            timestamps = []
+            if json_db.exists():
+                try:
+                    with open(json_db, "r") as jf:
+                        timestamps = json.loads(jf.read())
+                except Exception:
+                    pass
+        elif self.periodicity == "dekadal":
+            timestamps = get_dekadal_dates_range(start_date=start_date, final_date=final_date)
+        elif self.periodicity == "monthly" or self.periodicity == "seasonal":
+            timestamps = get_pandas_dates_range(start_date=start_date, final_date=final_date, frequency="MS")
+        elif self.periodicity == "yearly":
+            timestamps = get_pandas_dates_range(start_date=start_date, final_date=final_date, frequency="YE")
+        elif self.periodicity == "quinquennium":
+            timestamps = get_pandas_dates_range(start_date=start_date, final_date=final_date, frequency="5Y")
+        else:
+            timestamps = []  # assume static and return nothing
+        return {
+            "name": self.title,
+            "scheme": "wms",
+            "minzoom": 0,
+            "maxzoom": 20,
+            "time_parameter": "time",
+            "timestamps": timestamps,
+        }
 
 
 class Metadata(TimeStampedModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(
-        max_length=255, verbose_name=_("title"), help_text=_("Title of the dataset")
-    )
+    title = models.CharField(max_length=255, verbose_name=_("title"), help_text=_("Title of the dataset"))
     subtitle = models.CharField(
         max_length=255,
         blank=True,
@@ -539,27 +592,21 @@ class Metadata(TimeStampedModel):
         blank=True,
         null=True,
         verbose_name=_("Frequency of updates"),
-        help_text=_(
-            "How frequent is the dataset updated. "
-            "For example daily, weekly, monthly etc"
-        ),
+        help_text=_("How frequent is the dataset updated. For example daily, weekly, monthly etc"),
     )
     overview = RichTextField(
         blank=True,
         null=True,
         verbose_name=_("detail"),
         help_text=_(
-            "Detail description of the dataset, including the methodology, "
-            "references or any other relevant information"
+            "Detail description of the dataset, including the methodology, references or any other relevant information"
         ),
     )
     cautions = RichTextField(
         blank=True,
         null=True,
         verbose_name=_("cautions"),
-        help_text=_(
-            "What things should users be aware as they use and interpret this dataset"
-        ),
+        help_text=_("What things should users be aware as they use and interpret this dataset"),
     )
     citation = RichTextField(
         blank=True,
@@ -574,17 +621,13 @@ class Metadata(TimeStampedModel):
         blank=True,
         null=True,
         verbose_name=_("Data download link"),
-        help_text=_(
-            "External link to where the source data can be found and downloaded"
-        ),
+        help_text=_("External link to where the source data can be found and downloaded"),
     )
     learn_more = models.URLField(
         blank=True,
         null=True,
         verbose_name=_("Learn more link"),
-        help_text=_(
-            "External link to where more detail about the dataset can be found"
-        ),
+        help_text=_("External link to where more detail about the dataset can be found"),
     )
 
     class Meta:
@@ -603,12 +646,8 @@ def get_styles():
 
 class BaseLayer(AdminSortable, models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(
-        max_length=255, verbose_name=_("title"), help_text=_("Layer title")
-    )
-    default = models.BooleanField(
-        default=False, verbose_name=_("default"), help_text=_("Is Default Layer")
-    )
+    title = models.CharField(max_length=255, verbose_name=_("title"), help_text=_("Layer title"))
+    default = models.BooleanField(default=False, verbose_name=_("default"), help_text=_("Is Default Layer"))
 
     @property
     def linked_layers(self):
@@ -620,9 +659,7 @@ class BaseLayer(AdminSortable, models.Model):
 
     @property
     def edit_url(self):
-        edit_url = get_layer_action_url(
-            layer_type=self.dataset.layer_type, action="edit", action_args=self.pk
-        )
+        edit_url = get_layer_action_url(layer_type=self.dataset.layer_type, action="edit", action_args=self.pk)
         return edit_url
 
     @property
@@ -679,18 +716,10 @@ class BaseLayer(AdminSortable, models.Model):
     def save(self, *args, **kwargs):
         if self.dataset.multi_layer:
             if self.default:
-                self.dataset.layers.filter(default=True).exclude(pk=self.pk).update(
-                    default=False
-                )
+                self.dataset.layers.filter(default=True).exclude(pk=self.pk).update(default=False)
             else:
-                if (
-                    not self.dataset.layers.filter(default=True)
-                    .exclude(pk=self.pk)
-                    .exists()
-                ):
+                if not self.dataset.layers.filter(default=True).exclude(pk=self.pk).exists():
                     self.default = True
-                    self.dataset.layers.filter(default=True).exclude(pk=self.pk).update(
-                        default=False
-                    )
+                    self.dataset.layers.filter(default=True).exclude(pk=self.pk).update(default=False)
 
         super().save(*args, **kwargs)

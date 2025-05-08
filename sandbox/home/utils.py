@@ -21,9 +21,7 @@ def create_stations_geomanager_dataset(station_settings, request=None):
         "category": sub_category.category.pk,
         "sub_category": sub_category.pk,
         "public": True,
-        "layers": [
-
-        ]
+        "layers": [],
     }
     if metadata:
         dataset.update({"metadata": metadata.pk})
@@ -48,28 +46,25 @@ def create_stations_geomanager_dataset(station_settings, request=None):
                     {
                         "type": "circle",
                         "source-layer": "default",
-                        'paint': {
+                        "paint": {
                             "circle-color": "#adefd1",
                             "circle-radius": 8,
                             "circle-stroke-width": 4,
                             "circle-stroke-color": "#00203F",
-                        }}
+                        },
+                    }
                 ]
-            }
+            },
         },
-        "legendConfig": {}
+        "legendConfig": {},
     }
 
     if popup_fields:
-        interactionConfig = {
-            "output": []
-        }
+        interactionConfig = {"output": []}
         for field in popup_fields:
-            interactionConfig["output"].append({
-                "column": field.get("name"),
-                "property": field.get("label"),
-                "type": "string"
-            })
+            interactionConfig["output"].append(
+                {"column": field.get("name"), "property": field.get("label"), "type": "string"}
+            )
 
         layer.update({"interactionConfig": interactionConfig})
 

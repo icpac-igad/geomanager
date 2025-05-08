@@ -35,13 +35,12 @@ class LayerIndexView(IndexView):
             {"url": "#", "label": model_verbose_name},
         ]
 
-        context_data.update({
-            "custom_create_url": {
-                "label": _("Create from datasets"),
-                "url": datasets_url
-            },
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "custom_create_url": {"label": _("Create from datasets"), "url": datasets_url},
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 

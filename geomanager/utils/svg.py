@@ -26,7 +26,7 @@ def rasterize_svg_to_png(icon_name, fill_color=None):
             svg.setAttribute("fill", fill_color)
             svg_str = mark_safe(svg.toxml())
 
-    svg_bytes = svg_str.encode('utf-8')
+    svg_bytes = svg_str.encode("utf-8")
 
     in_buf = BytesIO(svg_bytes)
 

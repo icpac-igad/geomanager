@@ -9,7 +9,7 @@ from geomanager.models import GeoManagerUserProfile
 from geomanager.serializers.profile import GeoManagerUserProfileSerializer
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @renderer_classes([JSONRenderer])
 def get_geomanager_user_profile(request, user_id):
     try:
@@ -22,7 +22,7 @@ def get_geomanager_user_profile(request, user_id):
     return Response(serializer.data)
 
 
-@api_view(['PATCH'])
+@api_view(["PATCH"])
 @renderer_classes([JSONRenderer])
 def create_or_update_geomanager_user_profile(request, user_id):
     try:

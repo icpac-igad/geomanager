@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0048_alter_geomanagersettings_map_disclaimer_text'),
+        ("geomanager", "0048_alter_geomanagersettings_map_disclaimer_text"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='geomanagersettings',
-            name='allow_signups',
-            field=models.BooleanField(default=False, verbose_name='Allow user signups'),
+            model_name="geomanagersettings",
+            name="allow_signups",
+            field=models.BooleanField(default=False, verbose_name="Allow user signups"),
         ),
         migrations.AddField(
-            model_name='geomanagersettings',
-            name='enable_my_account',
-            field=models.BooleanField(default=False, verbose_name='Enable My Account'),
+            model_name="geomanagersettings",
+            name="enable_my_account",
+            field=models.BooleanField(default=False, verbose_name="Enable My Account"),
         ),
     ]

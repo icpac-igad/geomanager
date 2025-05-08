@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0009_stationsettings_popup_props'),
+        ("geomanager", "0009_stationsettings_popup_props"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='stationsettings',
-            name='popup_props',
+            model_name="stationsettings",
+            name="popup_props",
         ),
     ]

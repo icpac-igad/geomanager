@@ -2,15 +2,10 @@ import json
 
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext as _
-from wagtail.admin.auth import (
-    user_passes_test,
-    user_has_any_page_permission
-)
+from wagtail.admin.auth import user_passes_test, user_has_any_page_permission
 from wagtail_modeladmin.helpers import AdminURLHelper
 
-from geomanager.models import (
-    Dataset, Category
-)
+from geomanager.models import Dataset, Category
 from geomanager.models.wms import WmsLayer
 from geomanager.serializers.wms import WmsLayerSerializer
 from geomanager.utils import UUIDEncoder
@@ -52,4 +47,4 @@ def preview_wms_layers(request, dataset_id, layer_id=None):
         "navigation_items": navigation_items,
     }
 
-    return render(request, 'geomanager/wms/wms_layer_preview.html', context)
+    return render(request, "geomanager/wms/wms_layer_preview.html", context)

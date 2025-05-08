@@ -33,15 +33,18 @@ class StationSettings(BaseSiteSetting):
     bounds = ListField(max_length=256, blank=True, null=True)
     name_column = models.CharField(max_length=100, blank=True, null=True)
 
-    show_on_mapviewer = models.BooleanField(default=False, verbose_name=_("Show on Mapviewer"),
-                                            help_text=_("Check to show stations data on Mapviewer"))
-    layer_title = models.CharField(max_length=100, blank=True, null=True, default="Stations",
-                                   verbose_name=_("Stations Layer Title"))
-    geomanager_subcategory = models.ForeignKey(SubCategory, null=True, blank=True,
-                                               verbose_name=_("Stations Layer SubCategory"),
-                                               on_delete=models.SET_NULL)
-    geomanager_layer_metadata = models.ForeignKey(Metadata, on_delete=models.SET_NULL, blank=True, null=True,
-                                                  verbose_name=_("Stations Layer Metadata"))
+    show_on_mapviewer = models.BooleanField(
+        default=False, verbose_name=_("Show on Mapviewer"), help_text=_("Check to show stations data on Mapviewer")
+    )
+    layer_title = models.CharField(
+        max_length=100, blank=True, null=True, default="Stations", verbose_name=_("Stations Layer Title")
+    )
+    geomanager_subcategory = models.ForeignKey(
+        SubCategory, null=True, blank=True, verbose_name=_("Stations Layer SubCategory"), on_delete=models.SET_NULL
+    )
+    geomanager_layer_metadata = models.ForeignKey(
+        Metadata, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_("Stations Layer Metadata")
+    )
 
     panels = [
         FieldPanel("show_on_mapviewer"),
@@ -62,11 +65,7 @@ class StationSettings(BaseSiteSetting):
     def get_station_model(self):
         fields = self.station_fields_factory()
 
-        attrs = {
-            **fields,
-            "managed": False,
-            "__module__": "home"
-        }
+        attrs = {**fields, "managed": False, "__module__": "home"}
 
         station_model = type("Station", (models.Model,), attrs)
 
@@ -74,9 +73,7 @@ class StationSettings(BaseSiteSetting):
 
     def station_fields_factory(self):
         geom_type = self.geom_type or "Point"
-        fields = {
-            "geom": get_model_field(geom_type)()
-        }
+        fields = {"geom": get_model_field(geom_type)()}
 
         if isinstance(self.columns, list):
             for column in self.columns:
@@ -137,19 +134,21 @@ class StationsPage(RoutablePageMixin, Page):
 
     content_panels = Page.content_panels
 
-    @path('')
+    @path("")
     def all_stations(self, request, *args, **kwargs):
         context = {}
         station_settings = StationSettings.for_request(request)
 
         stations_vector_tiles_url = get_full_url(request, station_settings.stations_vector_tiles_url)
 
-        context.update({
-            "mapConfig": {
-                "stationBounds": station_settings.bounds or [],
-                "stationsVectorTilesUrl": stations_vector_tiles_url,
-            },
-        })
+        context.update(
+            {
+                "mapConfig": {
+                    "stationBounds": station_settings.bounds or [],
+                    "stationsVectorTilesUrl": stations_vector_tiles_url,
+                },
+            }
+        )
 
         # get stations model
         station_model = station_settings.get_station_model()
@@ -173,26 +172,20 @@ class StationsPage(RoutablePageMixin, Page):
                 if page_url and not page_url.endswith("/"):
                     record_pk_suffix = f"/{record_pk_suffix}"
                 url = page_url + record_pk_suffix
-                return format_html(
-                    "<a href='{}'>View detail</a>",
-                    url
-                )
+                return format_html("<a href='{}'>View detail</a>", url)
 
         stations_table = StationTable(station_model.objects.all())
 
         try:
             stations_table.paginate(page=request.GET.get("page", 1), per_page=50, paginator_class=LazyPaginator)
-        except Exception as e:
+        except Exception:
             stations_table = None
 
-        context.update({
-            "stations_table": stations_table,
-            "popup_fields": station_settings.station_popup_columns_list
-        })
+        context.update({"stations_table": stations_table, "popup_fields": station_settings.station_popup_columns_list})
 
         return self.render(request, context_overrides={**context})
 
-    @path('<int:station_pk>/')
+    @path("<int:station_pk>/")
     def station_detail(self, request, station_pk):
         station_settings = StationSettings.for_request(request)
 
@@ -210,7 +203,7 @@ class StationsPage(RoutablePageMixin, Page):
             "station": station,
             "columns": station_settings.columns,
             "bounds": station_settings.bounds,
-            "station_name_column": station_settings.name_column
+            "station_name_column": station_settings.name_column,
         }
 
         return self.render(request, template="stations/station_detail_page.html", context_overrides=context)
