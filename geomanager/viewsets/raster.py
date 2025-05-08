@@ -6,7 +6,11 @@ from geomanager.models import LayerRasterFile
 from geomanager.serializers.raster_file import LayerRasterFileSerializer
 
 
-class RasterLayerRasterFileDetailViewSet(mixins.ListModelMixin, viewsets.GenericViewSet, LargeImageFileDetailMixin, ):
+class RasterLayerRasterFileDetailViewSet(
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+    LargeImageFileDetailMixin,
+):
     queryset = LayerRasterFile.objects.all()
     serializer_class = LayerRasterFileSerializer
     filter_backends = [DjangoFilterBackend]

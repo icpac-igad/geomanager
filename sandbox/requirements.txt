@@ -139,6 +139,6 @@ djangorestframework-simplejwt==5.5.0
 django-filter==24.3
 Willow==1.9.0
 asgiref==3.8.1
-deep-translator==1.11.4 
+deep-translator==1.11.4
 wagtail-modeladmin==2.1.0
 django-deep-translator=1.5.1

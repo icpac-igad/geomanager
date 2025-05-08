@@ -23,13 +23,13 @@ from geomanager.utils.raster_utils import (
     bounds_to_polygon,
     check_raster_bounds_with_boundary,
     clip_netcdf,
-    clip_geotiff
+    clip_geotiff,
 )
 
 logger = logging.getLogger("geomanager.ingest")
 logger.setLevel(logging.INFO)
 
-ALLOWED_RASTER_FILE_EXTENSIONS = ['.tif', '.nc']
+ALLOWED_RASTER_FILE_EXTENSIONS = [".tif", ".nc"]
 
 
 class IngestException(Exception):
@@ -123,7 +123,7 @@ def clip_raster_upload_to_boundary(upload, request=None):
         clipped_raster = clip_fn(upload.file.path, union_polygon, f.name)
         raster_metadata = read_raster_info(clipped_raster)
 
-        with open(clipped_raster, 'rb') as clipped_file:
+        with open(clipped_raster, "rb") as clipped_file:
             file_obj = File(clipped_file, name=f.name)
             upload.file.save(upload.file.name, file_obj, save=True)
 
@@ -139,7 +139,7 @@ def create_raster(layer_obj, upload, time, overwrite=False, band_index=None, dat
 
     # return if raster file already exists and overwrite is False
     if exists and not overwrite:
-        logger.warning(f'LayerRasterFile for layer: {layer_obj.pk} and time: {time} already exists.')
+        logger.warning(f"LayerRasterFile for layer: {layer_obj.pk} and time: {time} already exists.")
         return
 
     # delete raster file if exists and overwrite is True, and create new raster file
@@ -176,29 +176,31 @@ def raw_raster_file_to_layer_raster_file(layer_obj, file_path, time=None, overwr
                 data_variable = layer_obj.auto_ingest_nc_data_variable
 
                 if not data_variable:
-                    raise IngestException(f'No NetCDF Auto ingestion data variable set for layer: {layer_obj}')
+                    raise IngestException(f"No NetCDF Auto ingestion data variable set for layer: {layer_obj}")
 
                 if data_variable not in raster_metadata.get("data_variables", []):
                     raise IngestException(
-                        f'NetCDF Auto ingestion data variable: {data_variable} not found in NetCDF: {file_name}')
+                        f"NetCDF Auto ingestion data variable: {data_variable} not found in NetCDF: {file_name}"
+                    )
 
                 timestamps = raster_metadata.get("timestamps", None)
 
                 if not timestamps:
-                    raise IngestException(f'No timestamps found in NetCDF: {file_name}')
+                    raise IngestException(f"No timestamps found in NetCDF: {file_name}")
 
                 for i, time_str in enumerate(timestamps):
                     d_time_unaware = datetime.fromisoformat(time_str)
                     d_time_aware = d_time_unaware.replace(tzinfo=pytz.UTC)
 
-                    logger.info(f'[GEOMANAGER_AUTO_INGEST]: Processing time : {time_str}')
+                    logger.info(f"[GEOMANAGER_AUTO_INGEST]: Processing time : {time_str}")
 
-                    create_raster(layer_obj, upload, d_time_aware, overwrite=overwrite, band_index=i,
-                                  data_variable=data_variable)
+                    create_raster(
+                        layer_obj, upload, d_time_aware, overwrite=overwrite, band_index=i, data_variable=data_variable
+                    )
 
             elif raster_driver == "GTiff":
                 if time:
-                    logger.info(f'[GEOMANAGER_AUTO_INGEST]: Processing time : {time}')
+                    logger.info(f"[GEOMANAGER_AUTO_INGEST]: Processing time : {time}")
                     create_raster(layer_obj, upload, time, overwrite=overwrite)
 
         finally:
@@ -209,12 +211,12 @@ def raw_raster_file_to_layer_raster_file(layer_obj, file_path, time=None, overwr
 def ingest_raster_file(src_path, overwrite=False, clip_to_boundary=False):
     # Check if source path exists
     if not isfile(src_path):
-        raise IngestException(f'File path: {src_path} does not exist.')
+        raise IngestException(f"File path: {src_path} does not exist.")
 
     file_extension = splitext(src_path)[1].lower()
 
     if file_extension not in ALLOWED_RASTER_FILE_EXTENSIONS:
-        raise IngestException(f'File path: {src_path} is not a tiff or netcdf file.')
+        raise IngestException(f"File path: {src_path} is not a tiff or netcdf file.")
 
     directory = os.path.dirname(src_path)
     file_name = os.path.basename(src_path)
@@ -228,46 +230,49 @@ def ingest_raster_file(src_path, overwrite=False, clip_to_boundary=False):
         raster_file_layer = RasterFileLayer.objects.filter(pk=layer_uuid).first()
 
         if not raster_file_layer:
-            raise IngestException(f'Raster file layer with uuid: {layer_uuid} does not exist.')
+            raise IngestException(f"Raster file layer with uuid: {layer_uuid} does not exist.")
     else:
         auto_ingest_raster_data_dir = geomanager_settings.get("auto_ingest_raster_data_dir")
 
         if not auto_ingest_raster_data_dir:
-            raise IngestException(f'Auto ingest raster data directory not set. Cannot ingest file: {src_path}')
+            raise IngestException(f"Auto ingest raster data directory not set. Cannot ingest file: {src_path}")
 
         if not os.path.isabs(auto_ingest_raster_data_dir):
             raise IngestException(
-                f'Auto ingest raster data directory is not an absolute path. Cannot ingest file: {src_path}')
+                f"Auto ingest raster data directory is not an absolute path. Cannot ingest file: {src_path}"
+            )
 
         layer_dir_parts = directory.split(auto_ingest_raster_data_dir)
 
         if len(layer_dir_parts) != 2:
-            raise IngestException(f'File path: {src_path} is not inside auto ingest raster data directory.')
+            raise IngestException(f"File path: {src_path} is not inside auto ingest raster data directory.")
 
         layer_dir = layer_dir_parts[1].lstrip(os.path.sep)
 
         raster_file_layer = RasterFileLayer.objects.filter(auto_ingest_custom_directory_name=layer_dir).first()
 
         if not raster_file_layer:
-            raise IngestException(f'RasterFileLayer with directory: {layer_dir} does not exist.')
+            raise IngestException(f"RasterFileLayer with directory: {layer_dir} does not exist.")
 
         if not raster_file_layer.auto_ingest_from_directory:
-            raise IngestException(f'RasterFileLayer with directory: {layer_dir} is not set for auto ingest.')
+            raise IngestException(f"RasterFileLayer with directory: {layer_dir} is not set for auto ingest.")
 
-    if file_extension == '.tif':
+    if file_extension == ".tif":
         # check if file name ends with iso format date, return the parsed date if it does
         iso_date_time = extract_iso_date_from_filename(file_name_without_extension)
         if not iso_date_time:
-            raise IngestException(f'File name: {file_name} does not end with iso format date.')
+            raise IngestException(f"File name: {file_name} does not end with iso format date.")
 
         # create layer raster file from raw tiff file
-        raw_raster_file_to_layer_raster_file(raster_file_layer, src_path, time=iso_date_time, overwrite=overwrite,
-                                             clip_to_boundary=clip_to_boundary)
+        raw_raster_file_to_layer_raster_file(
+            raster_file_layer, src_path, time=iso_date_time, overwrite=overwrite, clip_to_boundary=clip_to_boundary
+        )
 
-    elif file_extension == '.nc':
+    elif file_extension == ".nc":
         # process netcdf file
-        raw_raster_file_to_layer_raster_file(raster_file_layer, src_path, time=None, overwrite=overwrite,
-                                             clip_to_boundary=clip_to_boundary)
+        raw_raster_file_to_layer_raster_file(
+            raster_file_layer, src_path, time=None, overwrite=overwrite, clip_to_boundary=clip_to_boundary
+        )
 
     else:
-        raise IngestException(f'File extension: {file_extension} not supported.')
+        raise IngestException(f"File extension: {file_extension} not supported.")

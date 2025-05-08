@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0028_alter_pgvectortable_options_alter_dataset_category'),
+        ("geomanager", "0028_alter_pgvectortable_options_alter_dataset_category"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='rasterfilelayer',
-            name='auto_ingest_from_directory',
-            field=models.BooleanField(default=False, verbose_name='Auto ingest from directory'),
+            model_name="rasterfilelayer",
+            name="auto_ingest_from_directory",
+            field=models.BooleanField(default=False, verbose_name="Auto ingest from directory"),
         ),
     ]

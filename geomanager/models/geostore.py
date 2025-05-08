@@ -30,7 +30,6 @@ class Geostore(TimeStampedModel):
 
     @property
     def info(self):
-
         info = {}
 
         if self.iso:

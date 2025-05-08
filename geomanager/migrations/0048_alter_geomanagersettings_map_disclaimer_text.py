@@ -4,15 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0047_geomanagersettings_map_disclaimer_page_and_more'),
+        ("geomanager", "0047_geomanagersettings_map_disclaimer_page_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='geomanagersettings',
-            name='map_disclaimer_text',
-            field=models.CharField(blank=True, default='The boundaries and names shown and the designations used on this map do not imply the expression of any opinion whatsoever concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries', help_text='MapViewer Map disclaimer text. Maximum of 350 characters. Add more details in the Map Disclaimer Page and link it below', max_length=350, null=True, verbose_name='Map Disclaimer Text'),
+            model_name="geomanagersettings",
+            name="map_disclaimer_text",
+            field=models.CharField(
+                blank=True,
+                default="The boundaries and names shown and the designations used on this map do not imply the expression of any opinion whatsoever concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries",
+                help_text="MapViewer Map disclaimer text. Maximum of 350 characters. Add more details in the Map Disclaimer Page and link it below",
+                max_length=350,
+                null=True,
+                verbose_name="Map Disclaimer Text",
+            ),
         ),
     ]

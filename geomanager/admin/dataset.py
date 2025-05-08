@@ -21,13 +21,12 @@ class DatasetIndexView(SortableIndexView):
             {"url": "#", "label": Dataset._meta.verbose_name_plural},
         ]
 
-        context_data.update({
-            "custom_create_url": {
-                "label": _("Create from categories"),
-                "url": category_index_url
-            },
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "custom_create_url": {"label": _("Create from categories"), "url": category_index_url},
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -55,9 +54,11 @@ class DatasetCreateView(CreateView):
             {"url": "#", "label": _("New") + f" {Dataset._meta.verbose_name}"},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -78,17 +79,17 @@ class DatasetEditView(EditView):
             {"url": "#", "label": self.instance.title},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
 
 class DatasetButtonHelper(ButtonHelper):
-    def get_buttons_for_obj(
-            self, obj, exclude=None, classnames_add=None, classnames_exclude=None
-    ):
+    def get_buttons_for_obj(self, obj, exclude=None, classnames_add=None, classnames_exclude=None):
         buttons = super().get_buttons_for_obj(obj, exclude, classnames_add, classnames_exclude)
 
         classnames = self.edit_button_classnames + classnames_add
@@ -113,7 +114,10 @@ class DatasetModelAdmin(SortableAdminMixin, BaseModelAdmin, ModelAdminCanHide):
     model = Dataset
     exclude_from_explorer = True
     button_helper_class = DatasetButtonHelper
-    list_display = ("__str__", "layer_type",)
+    list_display = (
+        "__str__",
+        "layer_type",
+    )
     list_filter = ("category",)
     # index_template_name = "geomanager/modeladmin/index_without_custom_create.html"
     # index_template_name = 'adminsortable/index.html'
@@ -127,9 +131,9 @@ class DatasetModelAdmin(SortableAdminMixin, BaseModelAdmin, ModelAdminCanHide):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.list_display = (list(self.list_display) or []) + ['view_layers', 'mapviewer_map_url']
+        self.list_display = (list(self.list_display) or []) + ["view_layers", "mapviewer_map_url"]
 
-        self.view_layers.__func__.short_description = _('Layers')
+        self.view_layers.__func__.short_description = _("Layers")
         self.mapviewer_map_url.__func__.short_description = _("View on MapViewer")
 
     def mapviewer_map_url(self, obj):

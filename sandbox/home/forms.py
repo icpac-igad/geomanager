@@ -3,8 +3,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class StationsUploadForm(forms.Form):
-    shp_zip = forms.FileField(required=True, label=_("Stations Shapefile ZIP"),
-                              widget=forms.FileInput(attrs={'accept': '.zip'}))
+    shp_zip = forms.FileField(
+        required=True, label=_("Stations Shapefile ZIP"), widget=forms.FileInput(attrs={"accept": ".zip"})
+    )
 
 
 class StationColumnsForm(forms.Form):
@@ -22,6 +23,6 @@ class StationColumnsForm(forms.Form):
         if column_choices:
             choices = [("", "--------")]
             choices.extend(column_choices)
-            self.fields['name_column'].choices = choices
+            self.fields["name_column"].choices = choices
         else:
-            self.fields['name_column'].widget = forms.HiddenInput()
+            self.fields["name_column"].widget = forms.HiddenInput()

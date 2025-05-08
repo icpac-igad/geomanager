@@ -22,10 +22,17 @@ class AdditionalMapBoundaryData(models.Model):
     bounds = ListField(max_length=256)
     active = models.BooleanField(default=True, verbose_name=_("Active"))
 
-    render_layers = StreamField([
-        ("fill", FillVectorLayerBlock(label=_("Polygon Layer"))),
-        ("line", LineVectorLayerBlock(label=_("Line Layer"))),
-    ], use_json_field=True, null=True, blank=True, min_num=1, verbose_name=_("Map Layers"))
+    render_layers = StreamField(
+        [
+            ("fill", FillVectorLayerBlock(label=_("Polygon Layer"))),
+            ("line", LineVectorLayerBlock(label=_("Line Layer"))),
+        ],
+        use_json_field=True,
+        null=True,
+        blank=True,
+        min_num=1,
+        verbose_name=_("Map Layers"),
+    )
 
     class Meta:
         verbose_name = _("Additional Map Boundary Dataset")
@@ -78,21 +85,19 @@ class AdditionalMapBoundaryData(models.Model):
                             "type": "vector",
                             "tiles": [tiles_url],
                         },
-                        "render": {
-                            "layers": render_layers
-                        }
+                        "render": {"layers": render_layers},
                     },
                     "interactionConfig": {
                         "output": [
                             {
                                 "column": "gid",
                                 "property": "ID",
-                                'type': "string",
+                                "type": "string",
                             },
                         ]
-                    }
+                    },
                 }
-            ]
+            ],
         }
 
         return dataset_config

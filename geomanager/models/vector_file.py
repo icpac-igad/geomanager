@@ -22,7 +22,7 @@ from geomanager.blocks import (
     CircleVectorLayerBlock,
     IconVectorLayerBlock,
     TextVectorLayerBlock,
-    InlineIconLegendBlock
+    InlineIconLegendBlock,
 )
 from geomanager.fields import ListField
 from geomanager.helpers import get_vector_layer_files_url
@@ -35,26 +35,50 @@ from geomanager.utils.vector_utils import drop_vector_table
 
 
 class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="vector_file_layers",
-                                verbose_name=_("dataset"))
-    render_layers = StreamField([
-        ("fill", FillVectorLayerBlock(label=_("Polygon Layer"))),
-        ("line", LineVectorLayerBlock(label=_("Line Layer"))),
-        ("circle", CircleVectorLayerBlock(label=_("Point Layer"))),
-        ("icon", IconVectorLayerBlock(label=_("Icon Layer"))),
-        ("text", TextVectorLayerBlock(label=_("Text Label Layer"))),
-    ], use_json_field=True, null=True, blank=True, min_num=1, verbose_name=_("Render Layers"))
+    dataset = models.ForeignKey(
+        Dataset, on_delete=models.CASCADE, related_name="vector_file_layers", verbose_name=_("dataset")
+    )
+    render_layers = StreamField(
+        [
+            ("fill", FillVectorLayerBlock(label=_("Polygon Layer"))),
+            ("line", LineVectorLayerBlock(label=_("Line Layer"))),
+            ("circle", CircleVectorLayerBlock(label=_("Point Layer"))),
+            ("icon", IconVectorLayerBlock(label=_("Icon Layer"))),
+            ("text", TextVectorLayerBlock(label=_("Text Label Layer"))),
+        ],
+        use_json_field=True,
+        null=True,
+        blank=True,
+        min_num=1,
+        verbose_name=_("Render Layers"),
+    )
 
-    legend = StreamField([
-        ('legend', InlineLegendBlock(label=_("Legend")),),
-        ('legend_image', ImageChooserBlock(label=_("Legend Image")),),
-        ('legend_icon', InlineIconLegendBlock(label=_("Legend Icon")),)
-    ], use_json_field=True, null=True, blank=True, max_num=1, verbose_name=_("Legend"), )
+    legend = StreamField(
+        [
+            (
+                "legend",
+                InlineLegendBlock(label=_("Legend")),
+            ),
+            (
+                "legend_image",
+                ImageChooserBlock(label=_("Legend Image")),
+            ),
+            (
+                "legend_icon",
+                InlineIconLegendBlock(label=_("Legend Icon")),
+            ),
+        ],
+        use_json_field=True,
+        null=True,
+        blank=True,
+        max_num=1,
+        verbose_name=_("Legend"),
+    )
 
     class Meta:
         verbose_name = _("Vector File Layer")
         verbose_name_plural = _("Vector File Layers")
-        ordering = ['order']
+        ordering = ["order"]
 
     def __str__(self):
         return self.title
@@ -70,7 +94,7 @@ class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
     @property
     def upload_url(self):
         upload_url = reverse(
-            f"geomanager_dataset_layer_upload_vector",
+            "geomanager_dataset_layer_upload_vector",
             args=[quote(self.dataset.pk), quote(self.pk)],
         )
         return upload_url
@@ -78,7 +102,7 @@ class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
     @property
     def preview_url(self):
         preview_url = reverse(
-            f"geomanager_preview_vector_layer",
+            "geomanager_preview_vector_layer",
             args=[quote(self.dataset.pk), quote(self.pk)],
         )
         return preview_url
@@ -95,13 +119,7 @@ class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         if self.dataset.can_clip:
             tile_url = tile_url + "&geostore_id={geostore_id}"
 
-        layer_config = {
-            "type": "vector",
-            "source": {
-                "type": "vector",
-                "tiles": [tile_url]
-            }
-        }
+        layer_config = {"type": "vector", "source": {"type": "vector", "tiles": [tile_url]}}
 
         render_layers = get_vector_render_layers(self.render_layers)
 
@@ -113,9 +131,7 @@ class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
     def params(self):
         recent = self.vector_tables.first()
 
-        params = {
-            "table_name": recent.table_name if recent else ""
-        }
+        params = {"table_name": recent.table_name if recent else ""}
 
         if self.dataset.can_clip:
             params.update({"geostore_id": ""})
@@ -134,10 +150,7 @@ class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
 
     def get_legend_config(self, request=None):
         # default config
-        config = {
-            "type": "basic",
-            "items": []
-        }
+        config = {"type": "basic", "items": []}
 
         legend_block = self.legend
 
@@ -146,7 +159,6 @@ class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
             legend_block = legend_block[0]
 
         if legend_block:
-
             if legend_block.block_type == "legend_image":
                 image_url = legend_block.value.file.url
                 if request:
@@ -158,21 +170,20 @@ class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
 
             if legend_block.block_type == "legend_icon":
                 for item in data.get("items", []):
-                    config["items"].append({
-                        "icon": item.get("icon_image"),
-                        "name": item.get("icon_label"),
-                        "color": item.get("icon_color"),
-                        "iconSource": "sprite",
-                    })
+                    config["items"].append(
+                        {
+                            "icon": item.get("icon_image"),
+                            "name": item.get("icon_label"),
+                            "color": item.get("icon_color"),
+                            "iconSource": "sprite",
+                        }
+                    )
                 return config
 
             config.update({"type": data.get("type", config.get("type"))})
 
             for item in data.get("items", []):
-                config["items"].append({
-                    "name": item.get("value"),
-                    "color": item.get("color")
-                })
+                config["items"].append({"name": item.get("value"), "color": item.get("color")})
 
         return config
 
@@ -190,7 +201,9 @@ class VectorFileLayer(TimeStampedModel, ClusterableModel, BaseLayer):
                         config["output"] = []
                     name = column.get("name")
                     label = column.get("label")
-                    config["output"].append({"column": name, "property": label or name}, )
+                    config["output"].append(
+                        {"column": name, "property": label or name},
+                    )
 
         return config
 
@@ -270,7 +283,7 @@ class PgVectorTable(TimeStampedModel):
 
     class Meta:
         ordering = ["-time"]
-        unique_together = ('layer', 'time')
+        unique_together = ("layer", "time")
         verbose_name = _("Vector Upload")
         verbose_name_plural = _("Vector Uploads")
 

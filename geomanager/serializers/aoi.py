@@ -8,8 +8,21 @@ class AoiSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AreaOfInterest
-        fields = ["id", "user", "email", "name", "geostore_id", "adm_0", "adm_1", "adm_2", "adm_3", "public", "type",
-                  "tags", "webhook_url"]
+        fields = [
+            "id",
+            "user",
+            "email",
+            "name",
+            "geostore_id",
+            "adm_0",
+            "adm_1",
+            "adm_2",
+            "adm_3",
+            "public",
+            "type",
+            "tags",
+            "webhook_url",
+        ]
 
     def to_representation(self, instance):
         aoi = super().to_representation(instance)

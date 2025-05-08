@@ -7,7 +7,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailimages", "0025_alter_image_file_alter_rendition_file"),
         ("geomanager", "0001_initial"),

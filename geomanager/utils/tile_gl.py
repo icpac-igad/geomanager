@@ -20,8 +20,13 @@ def open_mbtiles(database_path):
 MBTILES_SCHEMA = {
     "metadata_keys": {
         "must": ["name", "format", "json"],
-        "should": ["bounds", "center", "minzoom", "maxzoom", ],
-        "may": ["attribution", "description", "type", "version", "scheme"]
+        "should": [
+            "bounds",
+            "center",
+            "minzoom",
+            "maxzoom",
+        ],
+        "may": ["attribution", "description", "type", "version", "scheme"],
     },
     "layers": [
         "aerodrome_label",
@@ -40,7 +45,7 @@ MBTILES_SCHEMA = {
         "water",
         "water_name",
         "waterway",
-    ]
+    ],
 }
 
 
@@ -90,10 +95,10 @@ class MBTiles:
                 raise MBTilesInvalid(f'Missing required metadata field "{field}"')
 
         if metadata["format"] != "pbf":
-            raise MBTilesInvalid(f"Times format must be pbf")
+            raise MBTilesInvalid("Times format must be pbf")
 
         if "json" not in metadata:
-            raise MBTilesInvalid(f'Missing required metadata field "json"')
+            raise MBTilesInvalid('Missing required metadata field "json"')
 
     def _parse_metadata_bounds(self, metadata):
         if "bounds" in metadata:

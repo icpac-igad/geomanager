@@ -1,9 +1,8 @@
 from asgiref.sync import async_to_sync
 from django_nextjs.render import render_nextjs_page
-from wagtail.api.v2.utils import get_full_url
 from wagtailiconchooser.utils import get_svg_sprite_for_icons
 
-from geomanager.models import GeomanagerSettings, Category
+from geomanager.models import Category
 from geomanager.models.vector_file import get_legend_icons
 
 

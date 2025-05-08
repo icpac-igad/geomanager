@@ -7,7 +7,7 @@ DEFAULT_NC_TIME_DIMENSION_NAMES = [
     "xtime",
 ]
 
-DEFAULT_AUTO_FIELD="django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EXTRA_NC_TIME_DIMENSION_NAMES = getattr(settings, "GEOMANAGER_EXTRA_NC_TIME_DIMENSION_NAMES", [])
 

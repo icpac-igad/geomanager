@@ -52,29 +52,19 @@ class DatasetSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
 
         if obj.layer_type == "raster_file":
-            return RasterFileLayerSerializer(
-                obj.raster_file_layers, many=True, context={"request": request}
-            ).data
+            return RasterFileLayerSerializer(obj.raster_file_layers, many=True, context={"request": request}).data
 
         if obj.layer_type == "vector_file":
-            return VectorFileLayerSerializer(
-                obj.vector_file_layers, many=True, context={"request": request}
-            ).data
+            return VectorFileLayerSerializer(obj.vector_file_layers, many=True, context={"request": request}).data
 
         if obj.layer_type == "wms":
-            return WmsLayerSerializer(
-                obj.wms_layers, many=True, context={"request": request}
-            ).data
+            return WmsLayerSerializer(obj.wms_layers, many=True, context={"request": request}).data
 
         if obj.layer_type == "raster_tile":
-            return RasterTileLayerSerializer(
-                obj.raster_tile_layers, many=True, context={"request": request}
-            ).data
+            return RasterTileLayerSerializer(obj.raster_tile_layers, many=True, context={"request": request}).data
 
         if obj.layer_type == "vector_tile":
-            return VectorTileLayerSerializer(
-                obj.vector_tile_layers, many=True, context={"request": request}
-            ).data
+            return VectorTileLayerSerializer(obj.vector_tile_layers, many=True, context={"request": request}).data
 
         return None
 

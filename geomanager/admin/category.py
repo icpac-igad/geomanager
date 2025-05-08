@@ -20,9 +20,11 @@ class CategoryCreateView(CreateView):
             {"url": "#", "label": _("New") + f" {Category._meta.verbose_name}"},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
@@ -39,17 +41,17 @@ class CategoryEditView(EditView):
             {"url": "#", "label": self.instance.title},
         ]
 
-        context_data.update({
-            "navigation_items": navigation_items,
-        })
+        context_data.update(
+            {
+                "navigation_items": navigation_items,
+            }
+        )
 
         return context_data
 
 
 class CategoryButtonHelper(ButtonHelper):
-    def get_buttons_for_obj(
-            self, obj, exclude=None, classnames_add=None, classnames_exclude=None
-    ):
+    def get_buttons_for_obj(self, obj, exclude=None, classnames_add=None, classnames_exclude=None):
         buttons = super().get_buttons_for_obj(obj, exclude, classnames_add, classnames_exclude)
 
         classnames = self.edit_button_classnames + classnames_add
@@ -80,11 +82,14 @@ class CategoryModelAdmin(SortableAdminMixin, BaseModelAdmin, ModelAdminCanHide):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.list_display = ["category_icon"] + (list(self.list_display) or []) + ["view_datasets", "create_dataset",
-                                                                                   "mapviewer_map_url"]
-        self.category_icon.__func__.short_description = _('Icon')
-        self.create_dataset.__func__.short_description = _('Add Dataset')
-        self.view_datasets.__func__.short_description = _('View Datasets')
+        self.list_display = (
+            ["category_icon"]
+            + (list(self.list_display) or [])
+            + ["view_datasets", "create_dataset", "mapviewer_map_url"]
+        )
+        self.category_icon.__func__.short_description = _("Icon")
+        self.create_dataset.__func__.short_description = _("Add Dataset")
+        self.view_datasets.__func__.short_description = _("View Datasets")
         self.mapviewer_map_url.__func__.short_description = _("View on MapViewer")
 
     def category_icon(self, obj):

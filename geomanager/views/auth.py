@@ -20,16 +20,13 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
     def perform_create(self, serializer):
-        email = serializer.validated_data['username']
+        email = serializer.validated_data["username"]
 
         # check if user exists
         if get_user_model().objects.filter(email=email).exists():
             raise ValidationError({"email": "User with this email already exists"})
 
-        user = get_user_model().objects.create(
-            username=email,
-            email=email
-        )
+        user = get_user_model().objects.create(username=email, email=email)
         user.save()
         form = ResetPasswordForm({"email": user.email})
         if form.is_valid():
@@ -44,7 +41,7 @@ class ResetPasswordView(generics.CreateAPIView):
     serializer_class = ResetPasswordSerializer
 
     def perform_create(self, serializer):
-        email = serializer.validated_data['username']
+        email = serializer.validated_data["username"]
 
         try:
             user = get_user_model().objects.get(email=email)
@@ -64,7 +61,6 @@ class EmailTokenObtainPairView(TokenObtainPairView):
 
 class UserTokenVerifyView(TokenVerifyView):
     def post(self, request, *args, **kwargs):
-
         serializer = self.get_serializer(data=request.data)
 
         try:

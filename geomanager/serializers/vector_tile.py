@@ -26,10 +26,29 @@ class VectorTileLayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VectorTileLayer
-        fields = ["id", "dataset", "isDefault", "name", "isMultiLayer", "nestedLegend", "layerType", "layerConfig",
-                  "params", "paramsSelectorConfig", "paramsSelectorColumnView", "legendConfig", "multiTemporal",
-                  "currentTimeMethod", "autoUpdateInterval", "moreInfo", "tileJsonUrl", "timestampsResponseObjectKey",
-                  "interactionConfig", "linkedLayers", "showAllMultiLayer"]
+        fields = [
+            "id",
+            "dataset",
+            "isDefault",
+            "name",
+            "isMultiLayer",
+            "nestedLegend",
+            "layerType",
+            "layerConfig",
+            "params",
+            "paramsSelectorConfig",
+            "paramsSelectorColumnView",
+            "legendConfig",
+            "multiTemporal",
+            "currentTimeMethod",
+            "autoUpdateInterval",
+            "moreInfo",
+            "tileJsonUrl",
+            "timestampsResponseObjectKey",
+            "interactionConfig",
+            "linkedLayers",
+            "showAllMultiLayer",
+        ]
 
     def get_showAllMultiLayer(self, obj):
         return obj.dataset.enable_all_multi_layers_on_add
@@ -89,7 +108,7 @@ class VectorTileLayerSerializer(serializers.ModelSerializer):
         return not obj.params_selectors_side_by_side
 
     def get_legendConfig(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         return obj.get_legend_config(request)
 
     def get_moreInfo(self, obj):

@@ -6,20 +6,53 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0035_vectortilelayer_render_layers_json_and_more'),
+        ("geomanager", "0035_vectortilelayer_render_layers_json_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='vectortilelayer',
-            name='popup_config',
-            field=wagtail.fields.StreamField([('popup_fields', wagtail.blocks.StructBlock([('data_key', wagtail.blocks.CharBlock(label='Data Key', required=True)), ('label', wagtail.blocks.CharBlock(label='Popup Label', required=True)), ('data_type', wagtail.blocks.ChoiceBlock(choices=[('string', 'String'), ('number', 'Number')], label='Data Type'))], label='Popup Fields'))], blank=True, null=True, use_json_field=True, verbose_name='Map Popup Configuration'),
+            model_name="vectortilelayer",
+            name="popup_config",
+            field=wagtail.fields.StreamField(
+                [
+                    (
+                        "popup_fields",
+                        wagtail.blocks.StructBlock(
+                            [
+                                ("data_key", wagtail.blocks.CharBlock(label="Data Key", required=True)),
+                                ("label", wagtail.blocks.CharBlock(label="Popup Label", required=True)),
+                                (
+                                    "data_type",
+                                    wagtail.blocks.ChoiceBlock(
+                                        choices=[("string", "String"), ("number", "Number")], label="Data Type"
+                                    ),
+                                ),
+                            ],
+                            label="Popup Fields",
+                        ),
+                    )
+                ],
+                blank=True,
+                null=True,
+                use_json_field=True,
+                verbose_name="Map Popup Configuration",
+            ),
         ),
         migrations.AlterField(
-            model_name='dataset',
-            name='current_time_method',
-            field=models.CharField(choices=[('latest_from_source', 'Latest available date from source'), ('earliest_from_source', 'Earliest available date from source'), ('previous_to_now', 'Date previous to current date time'), ('next_to_now', 'Date next to current date time')], default='latest_from_source', help_text='How to pick default time and for updates, for Multi-Temporal data', max_length=100, verbose_name='current time method'),
+            model_name="dataset",
+            name="current_time_method",
+            field=models.CharField(
+                choices=[
+                    ("latest_from_source", "Latest available date from source"),
+                    ("earliest_from_source", "Earliest available date from source"),
+                    ("previous_to_now", "Date previous to current date time"),
+                    ("next_to_now", "Date next to current date time"),
+                ],
+                default="latest_from_source",
+                help_text="How to pick default time and for updates, for Multi-Temporal data",
+                max_length=100,
+                verbose_name="current time method",
+            ),
         ),
     ]

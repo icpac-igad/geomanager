@@ -30,27 +30,43 @@ class RasterStyle(TimeStampedModel, ClusterableModel):
 
     base_form_class = RasterStyleModelForm
 
-    name = models.CharField(max_length=256, verbose_name=_("name"),
-                            help_text=_("Style name for identification"))
-    unit = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("data unit"),
-                            help_text=_("Data unit"))
+    name = models.CharField(max_length=256, verbose_name=_("name"), help_text=_("Style name for identification"))
+    unit = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name=_("data unit"), help_text=_("Data unit")
+    )
     min = models.IntegerField(default=0, verbose_name=_("minimum value"), help_text=_("minimum value"))
     max = models.IntegerField(default=100, verbose_name=_("maximum value"), help_text=_("maximum value"))
-    steps = models.IntegerField(default=5, validators=[MinValueValidator(3), MaxValueValidator(20), ], null=True,
-                                blank=True, verbose_name=_("steps"), help_text=_("Number of steps"))
+    steps = models.IntegerField(
+        default=5,
+        validators=[
+            MinValueValidator(3),
+            MaxValueValidator(20),
+        ],
+        null=True,
+        blank=True,
+        verbose_name=_("steps"),
+        help_text=_("Number of steps"),
+    )
     use_custom_colors = models.BooleanField(default=False, verbose_name=_("Use Custom Colors"))
     palette = models.TextField(blank=True, null=True, verbose_name=_("Color Palette"))
     interpolate = models.BooleanField(default=False, verbose_name=_("interpolate"), help_text="Interpolate colorscale")
-    legend_type = models.CharField(max_length=100, choices=LEGEND_TYPE_CHOICES, default="choropleth_vertical",
-                                   verbose_name=_("Legend Type"))
-    custom_color_for_rest = ColorField(blank=True, null=True, default="#ff0000",
-                                       verbose_name=_("Color for the rest of values"),
-                                       help_text=_(
-                                           "Color for values greater than the values defined above, "
-                                           "as well as values greater than the maximum defined value"))
+    legend_type = models.CharField(
+        max_length=100, choices=LEGEND_TYPE_CHOICES, default="choropleth_vertical", verbose_name=_("Legend Type")
+    )
+    custom_color_for_rest = ColorField(
+        blank=True,
+        null=True,
+        default="#ff0000",
+        verbose_name=_("Color for the rest of values"),
+        help_text=_(
+            "Color for values greater than the values defined above, "
+            "as well as values greater than the maximum defined value"
+        ),
+    )
 
-    rendering_engine = models.CharField(max_length=100, choices=RENDERING_ENGINE_CHOICES, default="large_image",
-                                        verbose_name=_("Rendering Engine"))
+    rendering_engine = models.CharField(
+        max_length=100, choices=RENDERING_ENGINE_CHOICES, default="large_image", verbose_name=_("Rendering Engine")
+    )
 
     class Meta:
         verbose_name = _("Raster Style")
@@ -66,18 +82,21 @@ class RasterStyle(TimeStampedModel, ClusterableModel):
             [
                 FieldPanel("min"),
                 FieldPanel("max"),
-            ], _("Data values")
+            ],
+            _("Data values"),
         ),
         FieldPanel("steps"),
         FieldPanel("palette", widget=RasterStyleWidget),
         FieldPanel("legend_type"),
         FieldPanel("use_custom_colors"),
-        MultiFieldPanel([
-            InlinePanel("color_values", heading=_("Color Values"), label=_("Color Value")),
-            NativeColorPanel("custom_color_for_rest"),
-        ], _("Custom Color Values")),
-
-        FieldPanel("rendering_engine")
+        MultiFieldPanel(
+            [
+                InlinePanel("color_values", heading=_("Color Values"), label=_("Color Value")),
+                NativeColorPanel("custom_color_for_rest"),
+            ],
+            _("Custom Color Values"),
+        ),
+        FieldPanel("rendering_engine"),
     ]
 
     def get_palette_list(self):
@@ -127,24 +146,15 @@ class RasterStyle(TimeStampedModel, ClusterableModel):
             item = {"color": color}
 
             if i == 0 and self.min > 0:
-                item.update({
-                    "from": 0,
-                    "to": self.min,
-                    "name": "< {}".format(self.min)
-                })
+                item.update({"from": 0, "to": self.min, "name": "< {}".format(self.min)})
                 val_to = self.min
 
             elif val_from < self.max:
-                item.update({
-                    "from": round(val_from, 1),
-                    "to": round(val_to, 1),
-                    "name": "{} - {}".format(val_from, val_to)
-                })
+                item.update(
+                    {"from": round(val_from, 1), "to": round(val_to, 1), "name": "{} - {}".format(val_from, val_to)}
+                )
             else:
-                item.update({
-                    "from": val_from,
-                    "name": "> {}".format(val_from)
-                })
+                item.update({"from": val_from, "name": "> {}".format(val_from)})
 
             val_from = val_to
             val_to = value_format(self.min + step * (i + (1 if self.min > 0 else 2)))
@@ -155,7 +165,7 @@ class RasterStyle(TimeStampedModel, ClusterableModel):
 
     def get_custom_color_values(self):
         values = []
-        color_values = self.color_values.order_by('threshold')
+        color_values = self.color_values.order_by("threshold")
 
         for i, c_value in enumerate(color_values):
             value = c_value.value
@@ -235,14 +245,13 @@ class RasterStyle(TimeStampedModel, ClusterableModel):
 
             if count > 0:
                 for value in values:
-                    item = {
-                        "name": "",
-                        "color": value['color']
-                    }
+                    item = {"name": "", "color": value["color"]}
                     if value.get("show_on_legend"):
-                        item.update({
-                            "name": value['label'] if value.get('label') else value['threshold'],
-                        })
+                        item.update(
+                            {
+                                "name": value["label"] if value.get("label") else value["threshold"],
+                            }
+                        )
                     items.append(item)
 
                 # if only one item and it is the custom color for rest, then show it as basic legend
@@ -255,7 +264,10 @@ class RasterStyle(TimeStampedModel, ClusterableModel):
         else:
             items = self.palette_legend_values
 
-        config = {"type": legend_type, "items": items, }
+        config = {
+            "type": legend_type,
+            "items": items,
+        }
 
         if self.unit:
             config["units"] = self.unit
@@ -266,7 +278,7 @@ class RasterStyle(TimeStampedModel, ClusterableModel):
         if not self.use_custom_colors:
             return None
 
-        color_values = self.color_values.order_by('threshold')
+        color_values = self.color_values.order_by("threshold")
         contour_level_list = [value.threshold for value in color_values]
         contour_shade_colour_list = [value.color for value in color_values]
         contour_shade_colour_list.append(self.custom_color_for_rest)
@@ -283,30 +295,27 @@ class RasterStyle(TimeStampedModel, ClusterableModel):
             "contour_min_level": self.min,
             "contour_max_level": self.max,
             "contour_shade_colour_method": "list",
-            'contour_shade_colour_list': contour_shade_colour_list
+            "contour_shade_colour_list": contour_shade_colour_list,
         }
 
         return contour_params
 
 
 class ColorValue(TimeStampedModel, Orderable):
-    layer = ParentalKey(RasterStyle, related_name='color_values')
-    threshold = models.FloatField(verbose_name=_("Threshold value"), help_text=_(
-        "Values less than or equal to the input value, will be assigned the chosen color"))
+    layer = ParentalKey(RasterStyle, related_name="color_values")
+    threshold = models.FloatField(
+        verbose_name=_("Threshold value"),
+        help_text=_("Values less than or equal to the input value, will be assigned the chosen color"),
+    )
     color = ColorField(default="#ff0000", verbose_name=_("color"))
     show_on_legend = models.BooleanField(default=True, verbose_name=_("Show label on Legend"))
-    label = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Optional Label'))
+    label = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Optional Label"))
 
     class Meta:
         verbose_name = _("Color Value")
         verbose_name_plural = _("Color Values")
 
-    panels = [
-        FieldPanel("threshold"),
-        NativeColorPanel("color"),
-        FieldPanel("show_on_legend"),
-        FieldPanel("label")
-    ]
+    panels = [FieldPanel("threshold"), NativeColorPanel("color"), FieldPanel("show_on_legend"), FieldPanel("label")]
 
     @property
     def value(self):
@@ -314,5 +323,5 @@ class ColorValue(TimeStampedModel, Orderable):
             "threshold": self.threshold,
             "color": self.color,
             "label": self.label,
-            "show_on_legend": self.show_on_legend
+            "show_on_legend": self.show_on_legend,
         }

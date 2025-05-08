@@ -4,39 +4,42 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0030_delete_stationsettings'),
+        ("geomanager", "0030_delete_stationsettings"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='geomanagersettings',
-            name='cap_auto_refresh_interval',
+            model_name="geomanagersettings",
+            name="cap_auto_refresh_interval",
         ),
         migrations.RemoveField(
-            model_name='geomanagersettings',
-            name='cap_base_url',
+            model_name="geomanagersettings",
+            name="cap_base_url",
         ),
         migrations.RemoveField(
-            model_name='geomanagersettings',
-            name='cap_metadata',
+            model_name="geomanagersettings",
+            name="cap_metadata",
         ),
         migrations.RemoveField(
-            model_name='geomanagersettings',
-            name='cap_shown_by_default',
+            model_name="geomanagersettings",
+            name="cap_shown_by_default",
         ),
         migrations.RemoveField(
-            model_name='geomanagersettings',
-            name='cap_sub_category',
+            model_name="geomanagersettings",
+            name="cap_sub_category",
         ),
         migrations.RemoveField(
-            model_name='geomanagersettings',
-            name='gadm_version',
+            model_name="geomanagersettings",
+            name="gadm_version",
         ),
         migrations.AlterField(
-            model_name='geomanagersettings',
-            name='max_upload_size_mb',
-            field=models.IntegerField(default=100, help_text='Maximum raster file size that can be uploaded in MegaBytes. Default is 100Mbs.', verbose_name='Maximum upload size in MegaBytes'),
+            model_name="geomanagersettings",
+            name="max_upload_size_mb",
+            field=models.IntegerField(
+                default=100,
+                help_text="Maximum raster file size that can be uploaded in MegaBytes. Default is 100Mbs.",
+                verbose_name="Maximum upload size in MegaBytes",
+            ),
         ),
     ]

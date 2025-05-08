@@ -61,11 +61,13 @@ def get_vector_render_layers(render_layers_stream_field, tiled=False):
             # nothing for layout. Just delete it
             data.pop("layout", None)
 
-        data.update({
-            "metadata": {
-                "position": "top",
+        data.update(
+            {
+                "metadata": {
+                    "position": "top",
+                }
             }
-        })
+        )
 
         render_layers.append(data)
 

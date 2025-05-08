@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0003_alter_colorvalue_label_alter_colorvalue_threshold_and_more'),
+        ("geomanager", "0003_alter_colorvalue_label_alter_colorvalue_threshold_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dataset',
-            name='can_clip',
-            field=models.BooleanField(default=True, help_text='Check to enable clipping by boundary or drawn shapes, for raster and vector datasets. Not implemented for WMS types', verbose_name='Enable Clipping by shape'),
+            model_name="dataset",
+            name="can_clip",
+            field=models.BooleanField(
+                default=True,
+                help_text="Check to enable clipping by boundary or drawn shapes, for raster and vector datasets. Not implemented for WMS types",
+                verbose_name="Enable Clipping by shape",
+            ),
         ),
     ]

@@ -37,7 +37,7 @@ def load_stations(request):
                     temp_file.write(chunk)
 
                 try:
-                    default_db_settings = settings.DATABASES['default']
+                    default_db_settings = settings.DATABASES["default"]
                     db_params = {
                         "host": default_db_settings.get("HOST"),
                         "port": default_db_settings.get("PORT"),
@@ -46,13 +46,15 @@ def load_stations(request):
                         "name": default_db_settings.get("NAME"),
                     }
 
-                    db_settings = {
-                        **db_params,
-                        "pg_service_schema": station_settings.db_schema
-                    }
+                    db_settings = {**db_params, "pg_service_schema": station_settings.db_schema}
 
-                    table_info = ogr_db_import(temp_file.name, station_settings.stations_table_name, db_settings,
-                                               overwrite=True, validate_geom_types=["Point", "MultiPoint"])
+                    table_info = ogr_db_import(
+                        temp_file.name,
+                        station_settings.stations_table_name,
+                        db_settings,
+                        overwrite=True,
+                        validate_geom_types=["Point", "MultiPoint"],
+                    )
 
                     columns = table_info.get("properties")
                     geom_type = table_info.get("geom_type")
@@ -111,10 +113,7 @@ def preview_stations(request):
     if stations_settings.columns:
         context.update({"station_columns": stations_settings.columns})
 
-    initial_data = {
-        "columns": stations_settings.columns,
-        "name_column": stations_settings.name_column
-    }
+    initial_data = {"columns": stations_settings.columns, "name_column": stations_settings.name_column}
 
     column_choices = [(column, column) for column in stations_settings.station_columns_list]
 
@@ -144,7 +143,7 @@ def preview_stations(request):
     return render(request, template, context=context)
 
 
-@method_decorator(cache_page, name='get')
+@method_decorator(cache_page, name="get")
 class StationsTileView(View):
     def get(self, request, z, x, y):
         station_settings = StationSettings.for_request(request)

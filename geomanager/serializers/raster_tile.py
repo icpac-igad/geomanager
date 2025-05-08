@@ -25,10 +25,28 @@ class RasterTileLayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RasterTileLayer
-        fields = ["id", "dataset", "isDefault", "name", "isMultiLayer", "nestedLegend", "layerType", "layerConfig",
-                  "params", "paramsSelectorConfig", "paramsSelectorColumnView", "legendConfig", "multiTemporal",
-                  "currentTimeMethod", "autoUpdateInterval", "moreInfo", "tileJsonUrl", "timestampsResponseObjectKey",
-                  "linkedLayers", "showAllMultiLayer"]
+        fields = [
+            "id",
+            "dataset",
+            "isDefault",
+            "name",
+            "isMultiLayer",
+            "nestedLegend",
+            "layerType",
+            "layerConfig",
+            "params",
+            "paramsSelectorConfig",
+            "paramsSelectorColumnView",
+            "legendConfig",
+            "multiTemporal",
+            "currentTimeMethod",
+            "autoUpdateInterval",
+            "moreInfo",
+            "tileJsonUrl",
+            "timestampsResponseObjectKey",
+            "linkedLayers",
+            "showAllMultiLayer",
+        ]
 
     def get_showAllMultiLayer(self, obj):
         return obj.dataset.enable_all_multi_layers_on_add
@@ -90,7 +108,7 @@ class RasterTileLayerSerializer(serializers.ModelSerializer):
         return None
 
     def get_legendConfig(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         return obj.get_legend_config(request)
 
     def get_moreInfo(self, obj):

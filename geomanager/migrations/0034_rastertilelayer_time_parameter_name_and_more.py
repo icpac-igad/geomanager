@@ -4,20 +4,33 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0033_alter_layerrasterfile_file_and_more'),
+        ("geomanager", "0033_alter_layerrasterfile_file_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='rastertilelayer',
-            name='time_parameter_name',
-            field=models.CharField(blank=True, default='time', help_text='Name of the time parameter in the url', max_length=100, null=True, verbose_name='Time Parameter Name'),
+            model_name="rastertilelayer",
+            name="time_parameter_name",
+            field=models.CharField(
+                blank=True,
+                default="time",
+                help_text="Name of the time parameter in the url",
+                max_length=100,
+                null=True,
+                verbose_name="Time Parameter Name",
+            ),
         ),
         migrations.AddField(
-            model_name='vectortilelayer',
-            name='time_parameter_name',
-            field=models.CharField(blank=True, default='time', help_text='Name of the time parameter in the url', max_length=100, null=True, verbose_name='Time Parameter Name'),
+            model_name="vectortilelayer",
+            name="time_parameter_name",
+            field=models.CharField(
+                blank=True,
+                default="time",
+                help_text="Name of the time parameter in the url",
+                max_length=100,
+                null=True,
+                verbose_name="Time Parameter Name",
+            ),
         ),
     ]

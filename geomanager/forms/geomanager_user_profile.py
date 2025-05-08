@@ -7,5 +7,3 @@ class GeoManagerUserProfileForm(ModelForm):
     class Meta:
         model = GeoManagerUserProfile
         fields = "__all__"
-
-

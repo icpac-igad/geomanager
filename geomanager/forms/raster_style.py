@@ -27,11 +27,9 @@ class RasterStyleModelForm(WagtailAdminModelForm):
             return False
 
         if use_custom_colors:
-
             # no color for values greater than max
             if not custom_color_for_rest:
-                self.add_error("custom_color_for_rest",
-                               _("Color for the rest of values must be specified"))
+                self.add_error("custom_color_for_rest", _("Color for the rest of values must be specified"))
                 return False
 
             color_values_formset = self.formsets.get("color_values")

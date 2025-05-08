@@ -13,10 +13,10 @@ class GeostoreSerializer(serializers.ModelSerializer):
 
     def get_attributes(self, obj):
         geostore = {
-            'info': obj.info,
-            'geojson': create_feature_collection_from_geom(obj.geom),
-            'bbox': obj.bbox,
-            'hash': obj.pk
+            "info": obj.info,
+            "geojson": create_feature_collection_from_geom(obj.geom),
+            "bbox": obj.bbox,
+            "hash": obj.pk,
         }
 
         return geostore

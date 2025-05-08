@@ -13,8 +13,9 @@ class AreaOfInterest(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("User"))
 
     name = models.CharField(max_length=255, verbose_name=_("Name"))
-    geostore_id = models.ForeignKey(Geostore, blank=True, null=True, on_delete=models.SET_NULL,
-                                    verbose_name=_("Geostore Id"))
+    geostore_id = models.ForeignKey(
+        Geostore, blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Geostore Id")
+    )
     adm_0 = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Adm 0"))
     adm_1 = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Adm 1"))
     adm_2 = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Adm 2"))

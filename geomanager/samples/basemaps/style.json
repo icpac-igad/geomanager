@@ -1,74 +1,44 @@
 {
-  "version": 8,
-  "name": "Base",
-  "metadata": {
-    "openmaptiles:version": "3.x",
-    "mapbox:groups": {
-      "basemap_light": {
-        "name": "basemap-light"
-      },
-      "basemap_dark": {
-        "name": "basemap-dark"
-      },
-      "basemap_satellite": {
-        "name": "basemap-satellite"
-      },
-      "labels_light": {
-        "name": "labels-light"
-      },
-      "labels_dark": {
-        "name": "labels-dark"
-      },
-      "roads": {
-        "name": "roads"
-      }
-    }
-  },
-  "sources": {
-    "openmaptiles": {
-      "type": "vector",
-      "url": ""
-    }
-  },
+  "id": "base",
   "layers": [
     {
       "id": "background-light",
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "basemap_light"
+      },
       "paint": {
         "background-color": "hsl(0, 0%, 100%)"
       },
-      "layout": {
-        "visibility": "none"
-      },
-      "type": "background",
-      "metadata": {
-        "mapbox:group": "basemap_light"
-      }
+      "type": "background"
     },
     {
       "id": "background-dark",
-      "type": "background",
+      "layout": {
+        "visibility": "none"
+      },
       "metadata": {
         "mapbox:group": "basemap_dark"
       },
-      "layout": {
-        "visibility": "none"
-      },
       "paint": {
         "background-color": "hsl(60, 2%, 19%)"
-      }
+      },
+      "type": "background"
     },
     {
       "id": "background-satellite",
-      "type": "background",
-      "metadata": {
-        "mapbox:group": "basemap_satellite"
-      },
       "layout": {
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "basemap_satellite"
+      },
       "paint": {
         "background-color": "#fff"
-      }
+      },
+      "type": "background"
     },
     {
       "filter": [
@@ -85,18 +55,18 @@
         ]
       ],
       "id": "water",
-      "paint": {
-        "fill-color": "hsl(203, 95%, 84%)"
-      },
       "layout": {
         "visibility": "none"
       },
-      "source": "openmaptiles",
-      "source-layer": "water",
-      "type": "fill",
       "metadata": {
         "mapbox:group": "basemap_light"
-      }
+      },
+      "paint": {
+        "fill-color": "hsl(203, 95%, 84%)"
+      },
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "type": "fill"
     },
     {
       "filter": [
@@ -113,18 +83,18 @@
         ]
       ],
       "id": "water_dark",
-      "paint": {
-        "fill-color": "hsl(60, 5%, 12%)"
-      },
       "layout": {
         "visibility": "none"
       },
-      "source": "openmaptiles",
-      "source-layer": "water",
-      "type": "fill",
       "metadata": {
         "mapbox:group": "basemap_dark"
-      }
+      },
+      "paint": {
+        "fill-color": "hsl(60, 5%, 12%)"
+      },
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "type": "fill"
     },
     {
       "filter": [
@@ -141,19 +111,19 @@
         ]
       ],
       "id": "water_intermittent",
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "basemap_light"
+      },
       "paint": {
         "fill-color": "hsl(203, 95%, 84%)",
         "fill-opacity": 0.7
       },
-      "layout": {
-        "visibility": "none"
-      },
       "source": "openmaptiles",
       "source-layer": "water",
-      "type": "fill",
-      "metadata": {
-        "mapbox:group": "basemap_light"
-      }
+      "type": "fill"
     },
     {
       "filter": [
@@ -170,19 +140,19 @@
         ]
       ],
       "id": "water_intermittent_dark",
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "basemap_dark"
+      },
       "paint": {
         "fill-color": "hsl(60, 5%, 12%)",
         "fill-opacity": 0.7
       },
-      "layout": {
-        "visibility": "none"
-      },
       "source": "openmaptiles",
       "source-layer": "water",
-      "type": "fill",
-      "metadata": {
-        "mapbox:group": "basemap_dark"
-      }
+      "type": "fill"
     },
     {
       "filter": [
@@ -205,6 +175,13 @@
         ]
       ],
       "id": "waterway",
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "basemap_light"
+      },
+      "minzoom": 8,
       "paint": {
         "line-color": "hsl(203, 95%, 84%)",
         "line-opacity": 1,
@@ -222,16 +199,9 @@
           ]
         }
       },
-      "layout": {
-        "visibility": "none"
-      },
       "source": "openmaptiles",
       "source-layer": "waterway",
-      "minzoom": 8,
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "basemap_light"
-      }
+      "type": "line"
     },
     {
       "filter": [
@@ -254,6 +224,13 @@
         ]
       ],
       "id": "waterway_dark",
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "basemap_dark"
+      },
+      "minzoom": 8,
       "paint": {
         "line-color": "hsl(0, 0%, 0%)",
         "line-opacity": 1,
@@ -271,16 +248,9 @@
           ]
         }
       },
-      "layout": {
-        "visibility": "none"
-      },
       "source": "openmaptiles",
       "source-layer": "waterway",
-      "minzoom": 8,
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "basemap_dark"
-      }
+      "type": "line"
     },
     {
       "filter": [
@@ -303,8 +273,19 @@
         ]
       ],
       "id": "waterway_intermittent",
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "basemap_light"
+      },
+      "minzoom": 8,
       "paint": {
         "line-color": "hsl(203, 95%, 84%)",
+        "line-dasharray": [
+          2,
+          1
+        ],
         "line-opacity": 1,
         "line-width": {
           "base": 1.4,
@@ -318,22 +299,11 @@
               8
             ]
           ]
-        },
-        "line-dasharray": [
-          2,
-          1
-        ]
-      },
-      "layout": {
-        "visibility": "none"
+        }
       },
       "source": "openmaptiles",
       "source-layer": "waterway",
-      "minzoom": 8,
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "basemap_light"
-      }
+      "type": "line"
     },
     {
       "filter": [
@@ -356,8 +326,19 @@
         ]
       ],
       "id": "waterway_intermittent_dark",
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "basemap_dark"
+      },
+      "minzoom": 8,
       "paint": {
         "line-color": "hsl(0, 0%, 0%)",
+        "line-dasharray": [
+          2,
+          1
+        ],
         "line-opacity": 1,
         "line-width": {
           "base": 1.4,
@@ -371,31 +352,13 @@
               8
             ]
           ]
-        },
-        "line-dasharray": [
-          2,
-          1
-        ]
-      },
-      "layout": {
-        "visibility": "none"
+        }
       },
       "source": "openmaptiles",
       "source-layer": "waterway",
-      "minzoom": 8,
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "basemap_dark"
-      }
+      "type": "line"
     },
     {
-      "id": "road_pier",
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "roads"
-      },
-      "source": "openmaptiles",
-      "source-layer": "transportation",
       "filter": [
         "all",
         [
@@ -409,10 +372,14 @@
           "pier"
         ]
       ],
+      "id": "road_pier",
       "layout": {
         "line-cap": "round",
         "line-join": "round",
         "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "roads"
       },
       "paint": {
         "line-color": "#fffca2",
@@ -429,7 +396,10 @@
             ]
           ]
         }
-      }
+      },
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "type": "line"
     },
     {
       "filter": [
@@ -447,6 +417,14 @@
         ]
       ],
       "id": "road_path",
+      "layout": {
+        "line-cap": "square",
+        "line-join": "bevel",
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "roads"
+      },
       "paint": {
         "line-color": "#fffca2",
         "line-dasharray": [
@@ -467,17 +445,9 @@
           ]
         }
       },
-      "layout": {
-        "line-cap": "square",
-        "line-join": "bevel",
-        "visibility": "none"
-      },
       "source": "openmaptiles",
       "source-layer": "transportation",
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "roads"
-      }
+      "type": "line"
     },
     {
       "filter": [
@@ -495,6 +465,15 @@
         ]
       ],
       "id": "road_minor",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "roads"
+      },
+      "minzoom": 13,
       "paint": {
         "line-color": "#fffca2",
         "line-width": {
@@ -511,18 +490,9 @@
           ]
         }
       },
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round",
-        "visibility": "none"
-      },
       "source": "openmaptiles",
       "source-layer": "transportation",
-      "type": "line",
-      "minzoom": 13,
-      "metadata": {
-        "mapbox:group": "roads"
-      }
+      "type": "line"
     },
     {
       "filter": [
@@ -540,6 +510,14 @@
         ]
       ],
       "id": "road_trunk_primary",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "roads"
+      },
       "paint": {
         "line-color": "#fffca2",
         "line-width": {
@@ -556,17 +534,9 @@
           ]
         }
       },
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round",
-        "visibility": "none"
-      },
       "source": "openmaptiles",
       "source-layer": "transportation",
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "roads"
-      }
+      "type": "line"
     },
     {
       "filter": [
@@ -584,6 +554,14 @@
         ]
       ],
       "id": "road_secondary_tertiary",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "roads"
+      },
       "paint": {
         "line-color": "#fffca2",
         "line-width": {
@@ -600,17 +578,9 @@
           ]
         }
       },
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round",
-        "visibility": "none"
-      },
       "source": "openmaptiles",
       "source-layer": "transportation",
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "roads"
-      }
+      "type": "line"
     },
     {
       "filter": [
@@ -632,6 +602,9 @@
         "line-join": "round",
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "roads"
+      },
       "paint": {
         "line-color": "#fffca2",
         "line-offset": 0,
@@ -651,10 +624,7 @@
       },
       "source": "openmaptiles",
       "source-layer": "transportation",
-      "type": "line",
-      "metadata": {
-        "mapbox:group": "roads"
-      }
+      "type": "line"
     },
     {
       "filter": [
@@ -686,6 +656,9 @@
         "text-size": 11,
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "labels_light"
+      },
       "minzoom": 14,
       "paint": {
         "text-color": "#666",
@@ -696,10 +669,7 @@
       },
       "source": "openmaptiles",
       "source-layer": "poi",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_light"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -731,19 +701,19 @@
         "text-size": 11,
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "labels_dark"
+      },
       "minzoom": 14,
       "paint": {
-        "text-halo-width": 1.25,
-        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
         "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
+        "text-halo-width": 1.25,
         "text-opacity": 0.9
       },
       "source": "openmaptiles",
       "source-layer": "poi",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_dark"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -769,6 +739,9 @@
         "text-size": 11,
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "labels_light"
+      },
       "minzoom": 10,
       "paint": {
         "text-color": "#666",
@@ -779,10 +752,7 @@
       },
       "source": "openmaptiles",
       "source-layer": "aerodrome_label",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_light"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -808,19 +778,19 @@
         "text-size": 11,
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "labels_dark"
+      },
       "minzoom": 10,
       "paint": {
-        "text-halo-width": 1.25,
-        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
         "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
+        "text-halo-width": 1.25,
         "text-opacity": 0.9
       },
       "source": "openmaptiles",
       "source-layer": "aerodrome_label",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_dark"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -853,6 +823,9 @@
         "text-transform": "uppercase",
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "labels_light"
+      },
       "paint": {
         "text-color": "#000",
         "text-halo-color": "hsl(0, 0%, 100%)",
@@ -861,10 +834,7 @@
       },
       "source": "openmaptiles",
       "source-layer": "transportation_name",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_light"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -897,18 +867,18 @@
         "text-transform": "uppercase",
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "labels_dark"
+      },
       "paint": {
-        "text-halo-width": 1.25,
-        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
         "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
+        "text-halo-width": 1.25,
         "text-opacity": 0.9
       },
       "source": "openmaptiles",
       "source-layer": "transportation_name",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_dark"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -949,6 +919,9 @@
         },
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "labels_light"
+      },
       "minzoom": 8,
       "paint": {
         "text-color": "hsl(0, 0%, 25%)",
@@ -959,10 +932,7 @@
       },
       "source": "openmaptiles",
       "source-layer": "place",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_light"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -1003,19 +973,19 @@
         },
         "visibility": "none"
       },
+      "metadata": {
+        "mapbox:group": "labels_dark"
+      },
       "minzoom": 8,
       "paint": {
-        "text-halo-width": 1.25,
-        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
         "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
+        "text-halo-width": 1.25,
         "text-opacity": 0.9
       },
       "source": "openmaptiles",
       "source-layer": "place",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_dark"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -1053,6 +1023,9 @@
         "visibility": "none"
       },
       "maxzoom": 16,
+      "metadata": {
+        "mapbox:group": "labels_light"
+      },
       "paint": {
         "text-color": "hsl(0, 0%, 0%)",
         "text-halo-blur": 0,
@@ -1062,10 +1035,7 @@
       },
       "source": "openmaptiles",
       "source-layer": "place",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_light"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -1103,18 +1073,18 @@
         "visibility": "none"
       },
       "maxzoom": 16,
+      "metadata": {
+        "mapbox:group": "labels_dark"
+      },
       "paint": {
-        "text-halo-width": 1.25,
-        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
         "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
+        "text-halo-width": 1.25,
         "text-opacity": 0.9
       },
       "source": "openmaptiles",
       "source-layer": "place",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_dark"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -1156,6 +1126,9 @@
         "visibility": "none"
       },
       "maxzoom": 12,
+      "metadata": {
+        "mapbox:group": "labels_light"
+      },
       "paint": {
         "text-color": "hsl(0, 0%, 13%)",
         "text-halo-blur": 0,
@@ -1165,10 +1138,7 @@
       },
       "source": "openmaptiles",
       "source-layer": "place",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_light"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -1210,18 +1180,18 @@
         "visibility": "none"
       },
       "maxzoom": 12,
+      "metadata": {
+        "mapbox:group": "labels_dark"
+      },
       "paint": {
-        "text-halo-width": 1.25,
-        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
         "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
+        "text-halo-width": 1.25,
         "text-opacity": 0.9
       },
       "source": "openmaptiles",
       "source-layer": "place",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_dark"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -1264,8 +1234,11 @@
         "visibility": "none"
       },
       "maxzoom": 12,
+      "metadata": {
+        "mapbox:group": "labels_light"
+      },
       "paint": {
-        "text-halo-width": 1.25,
+        "text-color": "hsl(0, 0%, 0%)",
         "text-halo-color": {
           "base": 1,
           "stops": [
@@ -1279,15 +1252,12 @@
             ]
           ]
         },
-        "text-color": "hsl(0, 0%, 0%)",
+        "text-halo-width": 1.25,
         "text-opacity": 0.7
       },
       "source": "openmaptiles",
       "source-layer": "place",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_light"
-      }
+      "type": "symbol"
     },
     {
       "filter": [
@@ -1330,19 +1300,49 @@
         "visibility": "none"
       },
       "maxzoom": 12,
+      "metadata": {
+        "mapbox:group": "labels_dark"
+      },
       "paint": {
-        "text-halo-width": 1.25,
-        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
         "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
+        "text-halo-width": 1.25,
         "text-opacity": 0.9
       },
       "source": "openmaptiles",
       "source-layer": "place",
-      "type": "symbol",
-      "metadata": {
-        "mapbox:group": "labels_dark"
-      }
+      "type": "symbol"
     }
   ],
-  "id": "base"
+  "metadata": {
+    "mapbox:groups": {
+      "basemap_dark": {
+        "name": "basemap-dark"
+      },
+      "basemap_light": {
+        "name": "basemap-light"
+      },
+      "basemap_satellite": {
+        "name": "basemap-satellite"
+      },
+      "labels_dark": {
+        "name": "labels-dark"
+      },
+      "labels_light": {
+        "name": "labels-light"
+      },
+      "roads": {
+        "name": "roads"
+      }
+    },
+    "openmaptiles:version": "3.x"
+  },
+  "name": "Base",
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "url": ""
+    }
+  },
+  "version": 8
 }

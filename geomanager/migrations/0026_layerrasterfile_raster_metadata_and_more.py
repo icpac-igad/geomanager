@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0025_alter_areaofinterest_options_alter_category_options_and_more'),
+        ("geomanager", "0025_alter_areaofinterest_options_alter_category_options_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='layerrasterfile',
-            name='raster_metadata',
+            model_name="layerrasterfile",
+            name="raster_metadata",
             field=models.JSONField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='colorvalue',
-            name='label',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='Optional Label'),
+            model_name="colorvalue",
+            name="label",
+            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Optional Label"),
         ),
     ]

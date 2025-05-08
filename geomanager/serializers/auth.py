@@ -11,7 +11,7 @@ class EmailTokenObtainSerializer(TokenObtainPairSerializer):
         user = get_user_model().objects.filter(email=raw_username)
         if user:
             user = user.first()
-            attrs['username'] = user.username
+            attrs["username"] = user.username
 
         data = super().validate(attrs)
         return data
@@ -21,12 +21,13 @@ class RegisterSerializer(serializers.ModelSerializer):
     username = serializers.EmailField(
         required=True,
         validators=[
-            UniqueValidator(queryset=get_user_model().objects.all(), message="User with this email already exists")]
+            UniqueValidator(queryset=get_user_model().objects.all(), message="User with this email already exists")
+        ],
     )
 
     class Meta:
         model = get_user_model()
-        fields = ('username',)
+        fields = ("username",)
 
 
 class ResetPasswordSerializer(serializers.ModelSerializer):
@@ -34,7 +35,7 @@ class ResetPasswordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('username',)
+        fields = ("username",)
 
     def validate_username(self, value):
         try:

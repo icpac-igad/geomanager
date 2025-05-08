@@ -4,32 +4,31 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0004_alter_dataset_can_clip'),
+        ("geomanager", "0004_alter_dataset_can_clip"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='CountryBoundary',
+            name="CountryBoundary",
         ),
         migrations.RemoveField(
-            model_name='geomanagersettings',
-            name='country',
+            model_name="geomanagersettings",
+            name="country",
         ),
         migrations.AddField(
-            model_name='geostore',
-            name='id3',
+            model_name="geostore",
+            name="id3",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.AddField(
-            model_name='geostore',
-            name='name_3',
+            model_name="geostore",
+            name="name_3",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.AddField(
-            model_name='geostore',
-            name='name_4',
+            model_name="geostore",
+            name="name_4",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
     ]

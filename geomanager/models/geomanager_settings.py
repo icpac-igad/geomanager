@@ -18,7 +18,6 @@ from wagtail.models import Page
 
 from geomanager.blocks import NavigationItemsBlock
 from .tile_gl import MBTSource
-from ..fields import ListField
 
 DEFAULT_RASTER_MAX_UPLOAD_SIZE_MB = 100
 
@@ -28,10 +27,7 @@ class GeomanagerSettings(BaseSiteSetting, ClusterableModel):
     max_upload_size_mb = models.IntegerField(
         default=DEFAULT_RASTER_MAX_UPLOAD_SIZE_MB,
         verbose_name=_("Maximum upload size in MegaBytes"),
-        help_text=_(
-            "Maximum raster file size that can be uploaded in MegaBytes. "
-            "Default is 100Mbs."
-        ),
+        help_text=_("Maximum raster file size that can be uploaded in MegaBytes. Default is 100Mbs."),
     )
     crop_raster_to_country = models.BooleanField(
         default=True,
@@ -140,12 +136,8 @@ class GeomanagerSettings(BaseSiteSetting, ClusterableModel):
         help_text=_("MapViewer Map disclaimer page for more details"),
     )
 
-    enable_my_account = models.BooleanField(
-        default=False, verbose_name=_("Enable My Account")
-    )
-    allow_signups = models.BooleanField(
-        default=False, verbose_name=_("Allow user signups")
-    )
+    enable_my_account = models.BooleanField(default=False, verbose_name=_("Enable My Account"))
+    allow_signups = models.BooleanField(default=False, verbose_name=_("Allow user signups"))
 
     base_maps = StreamField(
         [

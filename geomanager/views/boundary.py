@@ -9,46 +9,52 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
-from wagtail.admin.views.generic import (
-    IndexView,
-    CreateView,
-    EditView,
-    DeleteView
-)
+from wagtail.admin.views.generic import IndexView, CreateView, EditView, DeleteView
 
 from geomanager.forms.boundary import AdditionalBoundaryDataAddForm, AdditionalBoundaryDataEditForm
 from geomanager.models import AdditionalMapBoundaryData, Geostore
 from geomanager.serializers.geostore import GeostoreSerializer
 
 
-def boundary_landing_view(request, ):
+def boundary_landing_view(
+    request,
+):
     links = []
     try:
         settings_url = reverse(
             "wagtailsettings:edit",
-            args=[AdminBoundarySettings._meta.app_label, AdminBoundarySettings._meta.model_name, ],
+            args=[
+                AdminBoundarySettings._meta.app_label,
+                AdminBoundarySettings._meta.model_name,
+            ],
         )
-        links.append({
-            "url": settings_url,
-            "icon": "cog",
-            "title": _("Boundary Settings"),
-        })
+        links.append(
+            {
+                "url": settings_url,
+                "icon": "cog",
+                "title": _("Boundary Settings"),
+            }
+        )
 
         preview_url = reverse("adminboundarymanager_preview_boundary")
 
-        links.append({
-            "url": preview_url,
-            "icon": "upload",
-            "title": _("Country Boundary Loader"),
-        })
+        links.append(
+            {
+                "url": preview_url,
+                "icon": "upload",
+                "title": _("Country Boundary Loader"),
+            }
+        )
     except Exception:
         pass
 
-    links.append({
-        "url": reverse("additional_boundary_index"),
-        "icon": "layer-group",
-        "title": _("Additional Map Boundaries"),
-    })
+    links.append(
+        {
+            "url": reverse("additional_boundary_index"),
+            "icon": "layer-group",
+            "title": _("Additional Map Boundaries"),
+        }
+    )
 
     context = {
         "links": links,
@@ -137,14 +143,14 @@ def get_boundary_data_feature_by_id(request, table_name, gid):
     with connection.cursor() as cursor:
         query = f"""
             SELECT json_build_object(
-                'type', 'FeatureCollection', 
+                'type', 'FeatureCollection',
                 'features', json_agg(feature)
             ) FROM (
                 SELECT json_build_object(
-                    'type', 'Feature', 
-                    'geometry', ST_AsGeoJSON(geom)::json, 
+                    'type', 'Feature',
+                    'geometry', ST_AsGeoJSON(geom)::json,
                     'properties', to_jsonb(inputs) - 'geom'
-                ) AS feature 
+                ) AS feature
                 FROM (
                     SELECT gid, geom
                     FROM {vector_table.full_table_name}

@@ -14,9 +14,7 @@ def create_homepage(apps, schema_editor):
     Page.objects.filter(id=2).delete()
 
     # Create content type for homepage model
-    homepage_content_type, __ = ContentType.objects.get_or_create(
-        model="homepage", app_label="home"
-    )
+    homepage_content_type, __ = ContentType.objects.get_or_create(model="homepage", app_label="home")
 
     # Create a new homepage
     homepage = HomePage.objects.create(
@@ -48,7 +46,6 @@ def remove_homepage(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     run_before = [
         ("wagtailcore", "0053_locale_model"),
     ]

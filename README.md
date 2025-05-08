@@ -83,7 +83,7 @@ Make sure the following are all added to your `INSTALLED_APPS` in your Wagtail `
 ````python
 INSTALLED_APPS = [
     ...
-    
+
     "geomanager",
     "adminboundarymanager",
     "django_large_image",
@@ -100,11 +100,11 @@ INSTALLED_APPS = [
     "allauth.account",
     "wagtailcache",
     "wagtail_modeladmin"
-    
+
     "wagtail.contrib.settings",
     "rest_framework",
     "django.contrib.gis",
-    
+
     ...
 ]
 

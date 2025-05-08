@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('geomanager', '0017_wmslayer_more_info_alter_wmslayer_date_format'),
+        ("geomanager", "0017_wmslayer_more_info_alter_wmslayer_date_format"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='wmslayer',
-            name='custom_get_capabilities_url',
-            field=models.URLField(blank=True, help_text='Alternative URL for the GetCapabilities request', null=True, verbose_name='Get Capabilities URL'),
+            model_name="wmslayer",
+            name="custom_get_capabilities_url",
+            field=models.URLField(
+                blank=True,
+                help_text="Alternative URL for the GetCapabilities request",
+                null=True,
+                verbose_name="Get Capabilities URL",
+            ),
         ),
     ]

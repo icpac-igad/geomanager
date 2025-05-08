@@ -32,7 +32,7 @@ class VectorTableFileDetailViewSet(mixins.ListModelMixin, viewsets.GenericViewSe
 class AdminBoundaryViewSet(viewsets.ViewSet):
     renderer_classes = [JSONRenderer]
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     @method_decorator(revalidate_cache)
     @method_decorator(cache_page)
     def get(self, request):
@@ -40,7 +40,7 @@ class AdminBoundaryViewSet(viewsets.ViewSet):
         data = AdminBoundarySerializer(countries, many=True).data
         return Response(data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     @method_decorator(revalidate_cache)
     @method_decorator(cache_page)
     def get_regions(self, request, gid_0):
@@ -48,7 +48,7 @@ class AdminBoundaryViewSet(viewsets.ViewSet):
         data = AdminBoundarySerializer(countries, many=True).data
         return Response(data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     @method_decorator(revalidate_cache)
     @method_decorator(cache_page)
     def get_sub_regions(self, request, gid_0, gid_1):
@@ -60,14 +60,13 @@ class AdminBoundaryViewSet(viewsets.ViewSet):
 class GeostoreViewSet(viewsets.ViewSet):
     renderer_classes = [JSONRenderer]
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=["post"])
     def post(self, request):
-
         payload = request.data
         geojson = payload.get("geojson")
 
         # extract the MultiPolygon geometry from the GeoJSON
-        geometry = geojson['geometry']
+        geometry = geojson["geometry"]
         geom = GEOSGeometry(json.dumps(geometry))
 
         if geom.geom_type == "Polygon":
@@ -81,7 +80,7 @@ class GeostoreViewSet(viewsets.ViewSet):
 
         return Response(res_data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     @method_decorator(revalidate_cache)
     @method_decorator(cache_page)
     def get(self, request, geostore_id):
@@ -90,9 +89,9 @@ class GeostoreViewSet(viewsets.ViewSet):
             res_data = GeostoreSerializer(geostore).data
             return Response(res_data)
         except Geostore.DoesNotExist:
-            raise NotFound(detail='Geostore not found')
+            raise NotFound(detail="Geostore not found")
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     @method_decorator(revalidate_cache)
     @method_decorator(cache_page)
     def get_by_admin(self, request, gid_0, gid_1=None, gid_2=None):
@@ -107,10 +106,7 @@ class GeostoreViewSet(viewsets.ViewSet):
             "id2": None,
         }
 
-        boundary_filter = {
-            "gid_0": gid_0,
-            "level": 0
-        }
+        boundary_filter = {"gid_0": gid_0, "level": 0}
 
         if data_source != "gadm41":
             if gid_1:
@@ -135,7 +131,7 @@ class GeostoreViewSet(viewsets.ViewSet):
             geostore = AdminBoundary.objects.filter(**boundary_filter)
 
         if not geostore.exists():
-            raise NotFound(detail='Geostore not found')
+            raise NotFound(detail="Geostore not found")
 
         geostore = geostore.first()
 
@@ -156,7 +152,7 @@ class GeostoreViewSet(viewsets.ViewSet):
                 "name_0": geostore.name_0,
                 "name_1": geostore.name_1,
                 "name_2": geostore.name_2,
-                "geom": geom
+                "geom": geom,
             }
 
             geostore = Geostore.objects.create(**geostore_data)

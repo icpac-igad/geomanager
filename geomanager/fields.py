@@ -10,18 +10,18 @@ class ListField(models.CharField):
     def from_db_value(self, value, expression, connection):
         if value is None:
             return value
-        return value.split(',')
+        return value.split(",")
 
     def to_python(self, value):
         if isinstance(value, list):
             return value
         if value is None:
             return value
-        return value.split(',')
+        return value.split(",")
 
     def get_prep_value(self, value):
         if isinstance(value, list):
-            return ','.join([str(i) for i in value])
+            return ",".join([str(i) for i in value])
         return value
 
     def value_to_string(self, obj):
