@@ -1,7 +1,12 @@
 import base64
 import json
 import uuid
-
+from pathlib import Path
+from os import getenv
+from geomanager.utils.timestamps import (
+    get_dekadal_dates_range,
+    get_pandas_dates_range,
+)
 from django.db import models
 from django.urls.base import reverse
 from django.utils.translation import gettext_lazy as _
@@ -14,7 +19,6 @@ from wagtail.models import Orderable
 from wagtail_adminsortable.models import AdminSortable
 from wagtail_modeladmin.helpers import AdminURLHelper
 from wagtailiconchooser.widgets import IconChooserWidget
-
 from geomanager.helpers import get_layer_action_url, get_preview_url, get_upload_url
 from ..utils import UUIDEncoder
 
@@ -117,7 +121,19 @@ class Dataset(TimeStampedModel, AdminSortable):
         ("next_to_now", _("Date next to current date time")),
         ("from_dataset_props", _("Dataset model property set by data ingestion job")),
     )
-
+    PRODUCTS_PERIODICITY = (
+        ("minutely", _("Product Updated Every Minute")),
+        ("hourly", _("Product Updated Every Hour")),
+        ("daily", _("Product Updated Every Day")),
+        ("pentadal", _("Product Updated Every 5 days (pentad)")),
+        ("weekly", _("Product Updated Every Week")),
+        ("dekadal", _("Product Updated Every 10 days (dekad)")),
+        ("monthly", _("Product Updated Every Month")),
+        ("seasonal", _("Product Updated Every Season")),
+        ("yearly", _("Product Updated Every Year")),
+        ("quinquennium", "Product Updated Every 5 Years"),
+        ("static", _("Product is Never Updated")),
+    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(
         max_length=255,
@@ -168,6 +184,19 @@ class Dataset(TimeStampedModel, AdminSortable):
         help_text=_(
             "First day (initialization) date of the pentad/week/dekad/month/season as extracted from dataset, depending on dataset periodicity"
         ),
+    )
+    initial_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name=_("earliest data date covered by the product"),
+        help_text=_("Start date (initialization) on the product monitoring period"),
+    )
+    periodicity = models.CharField(
+        max_length=100,
+        choices=PRODUCTS_PERIODICITY,
+        default="weekly",
+        verbose_name=_("product period cycle"),
+        help_text=_("How often is the product updated?"),
     )
     published = models.BooleanField(
         default=True,
@@ -248,8 +277,10 @@ class Dataset(TimeStampedModel, AdminSortable):
         FieldPanel("sub_category"),
         FieldPanel("layer_type"),
         FieldPanel("dataset_slug"),
-        FieldPanel("summary"),
+        FieldPanel("initial_date"),
         FieldPanel("latest_date"),
+        FieldPanel("periodicity"),
+        FieldPanel("summary"),
         FieldPanel("metadata"),
         FieldPanel("published"),
         FieldPanel("public"),
@@ -457,8 +488,55 @@ class Dataset(TimeStampedModel, AdminSortable):
 
         return None
 
-    def get_wms_layers_json(self):
-        return []
+    def get_wms_layers_json(self, request=None):
+        start_date = self.initial_date
+        final_date = self.latest_date
+        # TODO: Save and extract data dates from DB
+        # if self.periodicity == "minutely":
+        #     timestamps = get_pandas_dates_range(
+        #         start_date=start_date, final_date=final_date, frequency="min"
+        #     )
+        # elif self.periodicity == "hourly":
+        #     timestamps = get_pandas_dates_range(
+        #         start_date=start_date, final_date=final_date, frequency="h"
+        #     )
+        # elif self.periodicity == "daily":
+        #     timestamps = get_pandas_dates_range(
+        #         start_date=start_date, final_date=final_date, frequency="D"
+        #     )
+        # elif self.periodicity == "pentadal":
+        #     timestamps = get_pandas_dates_range(
+        #         start_date=start_date, final_date=final_date, frequency="5D"
+        #     )
+        if self.periodicity == "weekly":
+            # weekly products are not produced on regular dates. There is need to store data dates in a database for ease of access
+            # using file-system json as a temporary database
+            json_db = Path(getenv("WEEKLY_JSON_DB", "/opt/eahw/weekly-data-dates.json"))
+            timestamps = []
+            if json_db.exists():
+                try:
+                    with open(json_db, "r") as jf:
+                        timestamps = json.loads(jf.read())
+                except Exception:
+                    pass
+        elif self.periodicity == "dekadal":
+            timestamps = get_dekadal_dates_range(start_date=start_date, final_date=final_date)
+        elif self.periodicity == "monthly" or self.periodicity == "seasonal":
+            timestamps = get_pandas_dates_range(start_date=start_date, final_date=final_date, frequency="MS")
+        elif self.periodicity == "yearly":
+            timestamps = get_pandas_dates_range(start_date=start_date, final_date=final_date, frequency="YE")
+        elif self.periodicity == "quinquennium":
+            timestamps = get_pandas_dates_range(start_date=start_date, final_date=final_date, frequency="5Y")
+        else:
+            timestamps = []  # assume static and return nothing
+        return {
+            "name": self.title,
+            "scheme": "wms",
+            "minzoom": 0,
+            "maxzoom": 20,
+            "time_parameter": "time",
+            "timestamps": timestamps,
+        }
 
 
 class Metadata(TimeStampedModel):

@@ -30,6 +30,7 @@ from .views.raster_file import (
     RasterDataGeostoreView,
     RasterDataGeostoreTimeseriesView,
     raster_file_as_tile_json,
+    wms_dataset_tileset_json,
     RasterThumbnailView,
 )
 from .viewsets import (
@@ -149,6 +150,12 @@ urlpatterns = [
         r"api/raster/<uuid:layer_id>/tiles.json",
         raster_file_as_tile_json,
         name="raster_file_tile_json",
+    ),
+    # WMS dataset properties
+    path(
+        r"api/wms-tileset/<uuid:dataset_id>",
+        wms_dataset_tileset_json,
+        name="wms_tileset_json",
     ),
     # Tiles
     path(

@@ -2,8 +2,9 @@ import datetime
 import json
 import tempfile
 from typing import Optional, Any
-
+from uuid import UUID
 import pytz
+
 from adminboundarymanager.models import AdminBoundarySettings, AdminBoundary
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.core.files.base import File
@@ -21,7 +22,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from shapely import wkb
-from wagtail.admin.auth import user_passes_test, user_has_any_page_permission, permission_denied
+from wagtail.admin.auth import (
+    user_passes_test,
+    user_has_any_page_permission,
+    permission_denied,
+)
 from wagtail.api.v2.utils import get_full_url
 from wagtail.models import Site
 from wagtail.snippets.permissions import get_permission_name
@@ -347,7 +352,11 @@ def publish_raster(request, upload_id):
                         return JsonResponse(get_response())
 
                     create_layer_raster_file(
-                        layer, upload, time=d_time, band_index=str(index), data_variable=nc_data_variable
+                        layer,
+                        upload,
+                        time=d_time,
+                        band_index=str(index),
+                        data_variable=nc_data_variable,
                     )
                 except Exception:
                     layer_form.add_error(None, _("Error occurred. Try again"))
@@ -442,7 +451,10 @@ def preview_raster_layers(request, dataset_id, layer_id=None):
     navigation_items = [
         {"url": categories_url, "label": Category._meta.verbose_name_plural},
         {"url": dataset_list_url, "label": Dataset._meta.verbose_name_plural},
-        {"url": raster_file_layer_list_url, "label": RasterFileLayer._meta.verbose_name_plural},
+        {
+            "url": raster_file_layer_list_url,
+            "label": RasterFileLayer._meta.verbose_name_plural,
+        },
         {"url": "#", "label": _("Preview")},
     ]
 
@@ -488,7 +500,7 @@ class RasterDataMixin:
         }
         raise RasterFileNotFound(error_message)
 
-    def get_multiple_raster_files(self, request: Request, layer_id) -> [LayerRasterFile]:
+    def get_multiple_raster_files(self, request: Request, layer_id) -> list[LayerRasterFile]:
         time_from = self.get_query_param(request, "time_from")
         time_to = self.get_query_param(request, "time_to")
 
@@ -541,11 +553,11 @@ class RasterDataMixin:
             geostore = Geostore.objects.get(pk=geostore_id)
         except ObjectDoesNotExist:
             error_message = _("Geostore with id %(geostore_id)s does not exist") % {"geostore_id": geostore_id}
-            raise GeostoreNotFound(error_message)
+            raise GeostoreNotFound(error_message)  # noqa
         return geostore
 
     def get_raster_geostore_data(self, raster_file, geostore, value_type):
-        geostore_data = get_geostore_data(raster_file.file, geostore)
+        return get_geostore_data(raster_file.file, geostore)
 
     def get_query_param(self, request: Request, key: str, default: Optional[Any] = "") -> str:
         return request.query_params.get(key, str(default))
@@ -590,7 +602,12 @@ class RasterTileView(RasterDataMixin, APIView):
 
         encoding = tilesource.format_to_encoding(fmt, pil_safe=True)
 
-        options = {"encoding": encoding, "projection": projection, "style": style, "geostore_id": geostore_id}
+        options = {
+            "encoding": encoding,
+            "projection": projection,
+            "style": style,
+            "geostore_id": geostore_id,
+        }
 
         source = get_tile_source(path=raster_file.file, options=options)
         mime_type = source.getTileMimeType()
@@ -598,7 +615,11 @@ class RasterTileView(RasterDataMixin, APIView):
         if layer_style and layer_style.rendering_engine == "magics" and layer_style.magics_contour_params:
             try:
                 tile_binary = get_magics_png_tile(
-                    source, int(x), int(y), int(z), contour_params=layer_style.magics_contour_params
+                    source,
+                    int(x),
+                    int(y),
+                    int(z),
+                    contour_params=layer_style.magics_contour_params,
                 )
             except Exception:
                 return HttpResponse(status=404)
@@ -606,7 +627,7 @@ class RasterTileView(RasterDataMixin, APIView):
             try:
                 tile_binary = source.getTile(int(x), int(y), int(z))
             except TileSourceXYZRangeError as e:
-                raise ValidationError(e)
+                raise ValidationError(e)  # noqa
 
         return HttpResponse(tile_binary, content_type=mime_type)
 
@@ -754,3 +775,9 @@ def raster_file_as_tile_json(request, layer_id):
     layer = get_object_or_404(RasterFileLayer, pk=layer_id)
     tile_json = layer.get_tile_json(request)
     return JsonResponse(tile_json)
+
+
+def wms_dataset_tileset_json(request, dataset_id: UUID | str):
+    dataset = get_object_or_404(Dataset, pk=dataset_id)
+    wms_json = dataset.get_wms_layers_json(request)
+    return JsonResponse(wms_json)
