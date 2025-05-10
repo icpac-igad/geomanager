@@ -10,7 +10,11 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.models import Image
 from wagtail.models import Orderable
 
-from geomanager.blocks import InlineLegendBlock, LayerMoreInfoBlock, QueryParamSelectableBlock
+from geomanager.blocks import (
+    InlineLegendBlock,
+    LayerMoreInfoBlock,
+    QueryParamSelectableBlock,
+)
 from geomanager.models.core import Dataset, BaseLayer
 from geomanager.utils import DATE_FORMAT_CHOICES
 
@@ -27,7 +31,12 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         ("1.3.0", "1.3.0"),
     )
 
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="wms_layers", verbose_name=_("dataset"))
+    dataset = models.ForeignKey(
+        Dataset,
+        on_delete=models.CASCADE,
+        related_name="wms_layers",
+        verbose_name=_("dataset"),
+    )
     request_time_from_capabilities = models.BooleanField(
         default=True,
         verbose_name=_("Request time from capabilities"),
@@ -37,7 +46,12 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         max_length=500,
         verbose_name=_("base url for WMS"),
     )
-    version = models.CharField(max_length=50, default="1.1.1", choices=VERSION_CHOICES, verbose_name=_("WMS Version"))
+    version = models.CharField(
+        max_length=50,
+        default="1.1.1",
+        choices=VERSION_CHOICES,
+        verbose_name=_("WMS Version"),
+    )
     width = models.IntegerField(
         default=256,
         verbose_name=_("Pixel Width"),
@@ -163,11 +177,20 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
                 FieldPanel("srs"),
                 FieldPanel("format"),
                 InlinePanel(
-                    "wms_request_layers", heading=_("WMS Request Layers"), label=_("WMS Request Layer"), min_num=1
+                    "wms_request_layers",
+                    heading=_("WMS Request Layers"),
+                    label=_("WMS Request Layer"),
+                    min_num=1,
                 ),
-                InlinePanel("wms_request_styles", heading=_("WMS Request Styles"), label=_("WMS Request Style")),
                 InlinePanel(
-                    "wms_request_params", heading=_("WMS Request Additional Parameters"), label=_("WMS Request Param")
+                    "wms_request_styles",
+                    heading=_("WMS Request Styles"),
+                    label=_("WMS Request Style"),
+                ),
+                InlinePanel(
+                    "wms_request_params",
+                    heading=_("WMS Request Additional Parameters"),
+                    label=_("WMS Request Param"),
                 ),
                 FieldPanel("wms_query_params_selectable"),
             ],
@@ -227,7 +250,7 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         params = self.get_wms_params()
         selectable_params = self.get_selectable_params()
 
-        for key, val in selectable_params.items():
+        for key, _val in selectable_params.items():
             key_val = key
             if key.upper() in params:
                 key_val = key.upper()
@@ -279,7 +302,10 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         if self.dataset.multi_temporal:
             wms_url = f"{wms_url}&time={{time}}"
 
-        layer_config = {"type": "raster", "source": {"type": "raster", "tiles": [wms_url]}}
+        layer_config = {
+            "type": "raster",
+            "source": {"type": "raster", "tiles": [wms_url]},
+        }
 
         return layer_config
 
@@ -319,13 +345,19 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
                 if self.date_format == "pentadal":
                     time_config.update(
                         {
-                            "dateFormat": {"currentTime": "MMM yyyy", "asPeriod": "pentadal"},
+                            "dateFormat": {
+                                "currentTime": "MMM yyyy",
+                                "asPeriod": "pentadal",
+                            },
                         }
                     )
                 elif self.date_format == "dekadal":
                     time_config.update(
                         {
-                            "dateFormat": {"currentTime": "MMM yyyy", "asPeriod": "dekadal"},
+                            "dateFormat": {
+                                "currentTime": "MMM yyyy",
+                                "asPeriod": "dekadal",
+                            },
                         }
                     )
                 else:
@@ -393,14 +425,17 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
         return analysis_config
 
     def get_more_info(self):
-        more_info = self.more_info
+        more_info = self.more_info  # noqa: F841
 
         return {}
 
 
 class WmsRequestLayer(Orderable):
     layer = ParentalKey(
-        WmsLayer, on_delete=models.CASCADE, related_name="wms_request_layers", verbose_name=_("WMS Request Layers")
+        WmsLayer,
+        on_delete=models.CASCADE,
+        related_name="wms_request_layers",
+        verbose_name=_("WMS Request Layers"),
     )
     name = models.CharField(
         max_length=250,
@@ -417,7 +452,10 @@ class WmsRequestLayer(Orderable):
 
 class WmsRequestStyle(Orderable):
     layer = ParentalKey(
-        WmsLayer, on_delete=models.CASCADE, related_name="wms_request_styles", verbose_name=_("WMS Request Styles")
+        WmsLayer,
+        on_delete=models.CASCADE,
+        related_name="wms_request_styles",
+        verbose_name=_("WMS Request Styles"),
     )
     name = models.CharField(
         max_length=250,
@@ -442,10 +480,34 @@ class WmsRequestParam(Orderable):
         ),
     )
     name = models.CharField(
-        max_length=250, null=False, blank=False, verbose_name=_("name"), help_text=_("Name of the parameter")
+        max_length=250,
+        null=False,
+        blank=False,
+        verbose_name=_("name"),
+        help_text=_("Name of the parameter"),
     )
     value = models.CharField(max_length=250, null=False, blank=False, help_text=_("Value of the parameter"))
 
     class Meta:
         verbose_name = _("WMS Request Parameter")
         verbose_name_plural = _("WMS Request Parameters")
+
+
+class WmsDatasetIndex(TimeStampedModel):
+    dataset = models.ForeignKey(
+        Dataset,
+        on_delete=models.CASCADE,
+        related_name="wms_datasets",
+        verbose_name=_("dataset"),
+    )
+    datetime = models.DateTimeField(
+        verbose_name=_("dataset_date_time"),
+        help_text=_(
+            "Date and Time for the raster file ingested on WMS service. This can be the time the data was acquired, "
+            " or the date and time when forecast was initialized, or the date and time for which the data applies",
+        ),
+    )
+
+    class Meta:
+        verbose_name = _("WMS Dataset DateTime")
+        verbose_name_plural = _("WMS Datasets DateTime")

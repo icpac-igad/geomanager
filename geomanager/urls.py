@@ -24,13 +24,13 @@ from .views.profile import (
     get_geomanager_user_profile,
     create_or_update_geomanager_user_profile,
 )
+from .views.wms import wms_dataset_tileset_json
 from .views.raster_file import (
     RasterDataPixelView,
     RasterDataPixelTimeseriesView,
     RasterDataGeostoreView,
     RasterDataGeostoreTimeseriesView,
     raster_file_as_tile_json,
-    wms_dataset_tileset_json,
     RasterThumbnailView,
 )
 from .viewsets import (

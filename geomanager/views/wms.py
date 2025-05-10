@@ -1,5 +1,6 @@
 import json
-
+from uuid import UUID
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext as _
 from wagtail.admin.auth import user_passes_test, user_has_any_page_permission
@@ -48,3 +49,9 @@ def preview_wms_layers(request, dataset_id, layer_id=None):
     }
 
     return render(request, "geomanager/wms/wms_layer_preview.html", context)
+
+
+def wms_dataset_tileset_json(request, dataset_id: UUID | str):
+    dataset = get_object_or_404(Dataset, pk=dataset_id)
+    wms_json = dataset.get_wms_datasets_index_json(request)
+    return JsonResponse(wms_json)
