@@ -2,7 +2,6 @@ import datetime
 import json
 import tempfile
 from typing import Optional, Any
-from uuid import UUID
 import pytz
 
 from adminboundarymanager.models import AdminBoundarySettings, AdminBoundary
@@ -775,9 +774,3 @@ def raster_file_as_tile_json(request, layer_id):
     layer = get_object_or_404(RasterFileLayer, pk=layer_id)
     tile_json = layer.get_tile_json(request)
     return JsonResponse(tile_json)
-
-
-def wms_dataset_tileset_json(request, dataset_id: UUID | str):
-    dataset = get_object_or_404(Dataset, pk=dataset_id)
-    wms_json = dataset.get_wms_layers_json(request)
-    return JsonResponse(wms_json)

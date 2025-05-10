@@ -1,10 +1,13 @@
+from datetime import datetime
 from rest_framework import mixins, viewsets
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-
+from rest_framework.exceptions import NotAcceptable
 from wagtail import hooks
+from django.shortcuts import get_object_or_404
 from geomanager import serializers
 from geomanager.models import Dataset
+from geomanager.models.wms import WmsDatasetIndex
 from geomanager.models.core import Metadata
 
 geomanager_register_datasets_hook_name = "register_geomanager_datasets"
@@ -63,11 +66,25 @@ class DatasetSlugViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, vie
         return context
 
     def update(self, request, *args, **kwargs):
-        # explicitly set partial update status
-        kwargs["partial"] = True
-        super().update(request, *args, **kwargs)
-        # return request payload
-        return Response(request.data)
+        # update dataset latest date if in API payload
+        if "latest_date" in request.data.keys():
+            dataset = get_object_or_404(Dataset, dataset_slug=kwargs["dataset_slug"])
+            api_date = datetime.strptime(request.data["latest_date"], "%Y-%m-%d").date()
+            if dataset.latest_date < api_date:
+                dataset.latest_date = api_date
+                dataset.save()
+            # add api date into dataset dates index
+            wms_dates = [
+                index_datetime.strftime("%Y-%m-%d")
+                for index_datetime in dataset.wms_datasets.all().values_list("datetime", flat=True)
+            ]
+            if request.data["latest_date"] not in wms_dates:
+                dataset_index = WmsDatasetIndex.objects.create(datetime=api_date, dataset=dataset)
+                dataset_index.save()
+            # return request payload
+            return Response(request.data)
+        else:
+            raise NotAcceptable(detail="route implemented for uopdating dataset date only!")
 
 
 class MetadataViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
