@@ -72,7 +72,9 @@ class DatasetSlugViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, vie
             api_date = datetime.strptime(request.data["latest_date"], "%Y-%m-%d").date()
             if dataset.latest_date < api_date:
                 dataset.latest_date = api_date
-                dataset.save()
+            if "summary" in request.data.keys():
+                dataset.summary = request.data["summary"]
+            dataset.save()
             # add api date into dataset dates index
             wms_dates = [
                 index_datetime.strftime("%Y-%m-%d")
