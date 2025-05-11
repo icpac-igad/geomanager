@@ -42,9 +42,6 @@ class GeoManagerUserProfileSerializer(serializers.ModelSerializer):
     def get_last_name(self, obj):
         return obj.user.last_name
 
-    def get_last_name(self, obj):
-        return obj.user.last_name
-
     def get_full_name(self, obj):
         if obj.user.first_name and obj.user.last_name:
             return f"{obj.user.first_name} {obj.user.last_name}"

@@ -46,7 +46,6 @@ from geomanager.models import (
 )
 from geomanager.serializers import RasterFileLayerSerializer
 from geomanager.utils import UUIDEncoder
-from geomanager.utils.magics import get_magics_png_tile
 from geomanager.utils.raster_utils import (
     get_tile_source,
     read_raster_info,
@@ -351,11 +350,7 @@ def publish_raster(request, upload_id):
                         return JsonResponse(get_response())
 
                     create_layer_raster_file(
-                        layer,
-                        upload,
-                        time=d_time,
-                        band_index=str(index),
-                        data_variable=nc_data_variable,
+                        layer, upload, time=d_time, band_index=str(index), data_variable=nc_data_variable
                     )
                 except Exception:
                     layer_form.add_error(None, _("Error occurred. Try again"))
@@ -611,22 +606,10 @@ class RasterTileView(RasterDataMixin, APIView):
         source = get_tile_source(path=raster_file.file, options=options)
         mime_type = source.getTileMimeType()
 
-        if layer_style and layer_style.rendering_engine == "magics" and layer_style.magics_contour_params:
-            try:
-                tile_binary = get_magics_png_tile(
-                    source,
-                    int(x),
-                    int(y),
-                    int(z),
-                    contour_params=layer_style.magics_contour_params,
-                )
-            except Exception:
-                return HttpResponse(status=404)
-        else:
-            try:
-                tile_binary = source.getTile(int(x), int(y), int(z))
-            except TileSourceXYZRangeError as e:
-                raise ValidationError(e)  # noqa
+        try:
+            tile_binary = source.getTile(int(x), int(y), int(z))
+        except TileSourceXYZRangeError as e:
+            raise ValidationError(e)
 
         return HttpResponse(tile_binary, content_type=mime_type)
 

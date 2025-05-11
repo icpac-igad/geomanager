@@ -18,6 +18,9 @@ docstring-code-line-length = "dynamic"
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "F401", "F403", "F405"]
+"production.py" = ["F403", "F405"]
+"dev.py" = ["F403", "F405"]
+"*.py" = ["B904"]
 "**/{tests,docs,tools}/*" = ["E402"]
 
 [build-system]
