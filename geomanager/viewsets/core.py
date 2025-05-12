@@ -1,4 +1,6 @@
+import pytz
 from datetime import datetime
+from django.conf.global_settings import TIME_ZONE
 from rest_framework import mixins, viewsets
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -56,7 +58,7 @@ class DatasetViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
 
 class DatasetSlugViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Dataset.objects.exclude(dataset_slug=None)
-    serializer_class = serializers.DatasetSerializer
+    serializer_class = serializers.DatasetDetailSerializer
     lookup_field = "dataset_slug"
     renderer_classes = [JSONRenderer]
 
@@ -67,20 +69,18 @@ class DatasetSlugViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, vie
 
     def update(self, request, *args, **kwargs):
         # update dataset latest date if in API payload
+        api_date_format = "%Y-%m-%d" if "date_format" not in request.data.keys() else request.data["date_format"]
         if "latest_date" in request.data.keys():
             dataset = get_object_or_404(Dataset, dataset_slug=kwargs["dataset_slug"])
-            api_date = datetime.strptime(request.data["latest_date"], "%Y-%m-%d").date()
-            if dataset.latest_date < api_date:
+            local_tz = pytz.timezone(TIME_ZONE)
+            api_date = local_tz.localize(datetime.strptime(request.data["latest_date"], api_date_format))
+            if dataset.latest_date is None or dataset.latest_date < api_date:
                 dataset.latest_date = api_date
             if "summary" in request.data.keys():
                 dataset.summary = request.data["summary"]
             dataset.save()
             # add api date into dataset dates index
-            wms_dates = [
-                index_datetime.strftime("%Y-%m-%d")
-                for index_datetime in dataset.wms_datasets.all().values_list("datetime", flat=True)
-            ]
-            if request.data["latest_date"] not in wms_dates:
+            if not len(dataset.wms_datasets.filter(datetime=api_date)):
                 dataset_index = WmsDatasetIndex.objects.create(datetime=api_date, dataset=dataset)
                 dataset_index.save()
             # return request payload

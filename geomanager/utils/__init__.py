@@ -23,6 +23,14 @@ DATE_FORMAT_CHOICES = (
     ("yyyy", _("Year - (E.g 2023)")),
 )
 
+JS_TO_PYTHONIC_DATE_FORMAT = {
+    "yyyy-MM-dd HH:mm": "%Y-%m-%d %H:%M",
+    "yyyy-MM-dd": "%Y-%m-%d",
+    "yyyy-MM": "%Y-%m",
+    "MMMM yyyy": "%B %Y",
+    "yyyy": "%Y",
+}
+
 
 def significant_digits(step, number):
     """

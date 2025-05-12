@@ -1,6 +1,8 @@
 import base64
 import json
 import uuid
+import pytz
+from django.conf.global_settings import TIME_ZONE
 from django.db import models
 from django.urls.base import reverse
 from django.utils.translation import gettext_lazy as _
@@ -14,7 +16,7 @@ from wagtail_adminsortable.models import AdminSortable
 from wagtail_modeladmin.helpers import AdminURLHelper
 from wagtailiconchooser.widgets import IconChooserWidget
 from geomanager.helpers import get_layer_action_url, get_preview_url, get_upload_url
-from ..utils import UUIDEncoder
+from ..utils import UUIDEncoder, JS_TO_PYTHONIC_DATE_FORMAT
 
 DEFAULT_RASTER_MAX_UPLOAD_SIZE_MB = 100
 
@@ -158,7 +160,7 @@ class Dataset(TimeStampedModel, AdminSortable):
             "for the purpose of updating from data ingestion jobs and visualization using mapserver/mapcache"
         ),
     )
-    latest_date = models.DateField(
+    latest_date = models.DateTimeField(
         null=True,
         blank=True,
         verbose_name=_("latest data date set by data ingestion job"),
@@ -455,14 +457,23 @@ class Dataset(TimeStampedModel, AdminSortable):
         return None
 
     def get_wms_datasets_index_json(self, request=None):
-        timestamps = list(self.wms_datasets.all().values_list("datetime", flat=True))
+        local_tz = pytz.timezone(TIME_ZONE)
+        date_format = JS_TO_PYTHONIC_DATE_FORMAT[self.wms_layers.first().date_format]
+        date_format = date_format if date_format is not None else "%Y-%m-%d"
+        timestamps = sorted(
+            [
+                timestamp.astimezone(local_tz)
+                for timestamp in self.wms_datasets.all().values_list("datetime", flat=True)
+            ],
+            reverse=True,
+        )
         return {
             "name": self.title,
             "scheme": "wms",
             "minzoom": 0,
             "maxzoom": 20,
             "time_parameter": "time",
-            "timestamps": sorted(timestamps, reverse=True),
+            "timestamps": [timestamp.strftime(date_format) for timestamp in timestamps],
         }
 
 

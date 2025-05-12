@@ -1,3 +1,6 @@
+import pytz
+from django.conf.global_settings import TIME_ZONE
+from geomanager.utils import JS_TO_PYTHONIC_DATE_FORMAT
 from rest_framework import serializers
 
 from geomanager.models import Category
@@ -73,6 +76,34 @@ class DatasetSerializer(serializers.ModelSerializer):
 
     def get_dataset(self, obj):
         return obj.id
+
+    def get_name(self, obj):
+        return obj.title
+
+
+class DatasetDetailSerializer(serializers.ModelSerializer):
+    latest_date = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Dataset
+        fields = [
+            "id",
+            "name",
+            "summary",
+            "dataset_slug",
+            "latest_date",
+            "public",
+            "layer_type",
+        ]
+
+    def get_latest_date(self, obj) -> str | None:
+        local_tz = pytz.timezone(TIME_ZONE)
+        if obj.latest_date is not None:
+            latest_date = obj.latest_date.astimezone(local_tz)
+            date_format = JS_TO_PYTHONIC_DATE_FORMAT[obj.wms_layers.first().date_format]
+            return latest_date.strftime(date_format if date_format is not None else "%Y-%m-%d")
+        return None
 
     def get_name(self, obj):
         return obj.title
