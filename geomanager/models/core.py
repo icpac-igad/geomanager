@@ -473,7 +473,9 @@ class Dataset(TimeStampedModel, AdminSortable):
             "minzoom": 0,
             "maxzoom": 20,
             "time_parameter": "time",
-            "timestamps": [timestamp.strftime(date_format) for timestamp in timestamps],
+            "timestamps": [
+                timestamp.strftime("%Y-%m-%d") for timestamp in timestamps
+            ],  # TODO: remove hardcode when time reformating is implemented in the front-end geomapviewer
         }
 
 
