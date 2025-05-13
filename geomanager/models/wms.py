@@ -156,7 +156,8 @@ class WmsLayer(TimeStampedModel, ClusterableModel, BaseLayer):
     class Meta:
         verbose_name = _("WMS Layer")
         verbose_name_plural = _("WMS Layers")
-        ordering = ["order"]
+        ordering = ["created"]
+        # ordering = ["order"] # disable because order value is usually set to null
 
     panels = [
         FieldPanel("dataset"),

@@ -98,7 +98,8 @@ class RasterFileLayer(TimeStampedModel, BaseLayer):
     class Meta:
         verbose_name = _("Raster File Layer")
         verbose_name_plural = _("Raster File Layers")
-        ordering = ["order"]
+        ordering = ["created"]
+        # ordering = ["order"] # disable because order value is usually set to null
 
     panels = [
         FieldPanel("dataset"),
