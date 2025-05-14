@@ -39,7 +39,7 @@
 
 /* MAIN NAVBAR STYLING - Already dark green theme */
 .navbar {
-    background-color: #064210f0; /* ALREADY CORRECT: Dark green with transparency */
+    background-color: #064210f0  !important; /* ALREADY CORRECT: Dark green with transparency */
     min-height: 3.25rem;
     position: relative;
     z-index: 30;
@@ -53,7 +53,7 @@
 
 .navbar.is-white .navbar-brand > .navbar-item,
 .navbar.is-white .navbar-brand .navbar-link {
-    color: white; /* CHANGED: from #0a0a0a to white */
+    color: white !important; /* CHANGED: from #0a0a0a to white */
 }
 
 .navbar.is-white .navbar-brand > a.navbar-item:focus, 
