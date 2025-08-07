@@ -124,6 +124,7 @@ wagtail-color-panel==1.4.1
 wagtail-font-awesome-svg==1.0.1
 wagtail-humanitarian-icons==2.0.0
 wagtail-icon-chooser==0.3.1
+wagtail-modeladmin==2.2.0
 webencodings==0.5.1
 websockets==11.0.3
 xarray==2023.4.2
@@ -140,5 +141,4 @@ django-filter==24.3
 Willow==1.9.0
 asgiref==3.8.1
 deep-translator==1.11.4
-wagtail-modeladmin==2.1.0
 django-deep-translator=1.5.1
