@@ -21,15 +21,15 @@ class ModelAdminCanHide(ModelAdmin):
 class LayerIndexView(PatchedIndexView):
     def get_context_data(self, **kwargs):
         context_data = super(LayerIndexView, self).get_context_data(**kwargs)
-        
+
         model_verbose_name = self.model._meta.verbose_name_plural
-        
+
         dataset_admin_helper = AdminURLHelper(Dataset)
         datasets_url = dataset_admin_helper.get_action_url("index")
-        
+
         category_admin_helper = AdminURLHelper(Category)
         categories_url = category_admin_helper.get_action_url("index")
-        
+
         navigation_items = [
             {"url": categories_url, "label": _("Categories")},
             {"url": datasets_url, "label": _("Datasets")},
@@ -55,6 +55,5 @@ class LayerFileDeleteView(DeleteView):
         index_url = self.url_helper.index_url
         if self.instance:
             layer_id = str(self.instance.layer.pk)
-            index_url += f"?layer__id={layer_id}"
-        
+            index_url += f"?layer__id__exact={layer_id}"
         return index_url

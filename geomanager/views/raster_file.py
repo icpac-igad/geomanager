@@ -5,6 +5,7 @@ from typing import Optional, Any
 import pytz
 
 from adminboundarymanager.models import AdminBoundarySettings, AdminBoundary
+from django.core.cache import cache
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.core.files.base import File
 from django.http import JsonResponse, HttpResponse
@@ -110,7 +111,7 @@ def upload_raster_file(request, dataset_id=None, layer_id=None):
     if layer_id:
         layer = get_object_or_404(RasterFileLayer, pk=layer_id)
         layer_admin_url_helper = AdminURLHelper(layer)
-        layer_list_url = layer_admin_url_helper.get_action_url("index") + f"?dataset__id__exact={dataset.pk}"
+        layer_list_url = layer_admin_url_helper.get_action_url("index") + f"?dataset__id__exact={str(dataset.pk)}"
         layer_preview_url = layer.preview_url
 
     navigation_items = [
@@ -430,11 +431,11 @@ def preview_raster_layers(request, dataset_id, layer_id=None):
 
     dataset_admin_helper = AdminURLHelper(Dataset)
     dataset_list_url = dataset_admin_helper.get_action_url("index") + f"?id={str(dataset_id)}"
-    
+
     raster_file_layer_admin_helper = AdminURLHelper(RasterFileLayer)
     raster_file_layer_list_url = raster_file_layer_admin_helper.get_action_url("index")
     raster_file_layer_list_url = raster_file_layer_list_url + f"?dataset__id__exact={str(dataset_id)}"
-    
+
     dataset_layers = RasterFileLayerSerializer(dataset.raster_file_layers, many=True, context={"request": request}).data
 
     selected_layer = None
@@ -479,20 +480,20 @@ class RasterDataMixin:
 
     def get_single_raster_file(self, request: Request, layer_id) -> LayerRasterFile:
         time = self.get_query_param(request, "time")
-
         if not time:
             raise QueryParamRequired(_("time param required"))
-
-        raster_file = LayerRasterFile.objects.filter(layer=layer_id, time=time)
-
-        if raster_file.exists():
-            return raster_file.first()
-
-        error_message = _("File not found matching 'layer': %(layer_id)s and 'time': %(time)s") % {
-            "layer_id": layer_id,
-            "time": time,
-        }
-        raise RasterFileNotFound(error_message)
+        qs = LayerRasterFile.objects.select_related("layer__style")
+        try:
+            return qs.get(layer_id=layer_id, time=time)
+        except LayerRasterFile.DoesNotExist:
+            msg = _("File not found matching 'layer': %(layer_id)s and 'time': %(time)s") % {
+                "layer_id": layer_id,
+                "time": time,
+            }
+            raise RasterFileNotFound(msg)
+        except LayerRasterFile.MultipleObjectsReturned:
+            obj = qs.filter(layer_id=layer_id, time=time).order_by("-updated_at", "-id").first()
+            return obj
 
     def get_multiple_raster_files(self, request: Request, layer_id) -> list[LayerRasterFile]:
         time_from = self.get_query_param(request, "time_from")
@@ -557,11 +558,19 @@ class RasterDataMixin:
         return request.query_params.get(key, str(default))
 
 
+def get_layer_style_json(raster_file):
+    key = f"layer-style:{raster_file.layer_id}"
+    data = cache.get(key)
+    if data is None:
+        data = raster_file.layer.style.get_style_as_json()
+        cache.set(key, data, 60 * 60 * 24)  # cache for 24 hours
+    return data
+
+
 @method_decorator(revalidate_cache, name="get")
 @method_decorator(cache_page, name="get")
 class RasterTileView(RasterDataMixin, APIView):
     # TODO: Validate style query param thoroughly. If not validated, the whole app just exits without warning.
-    # TODO: Cache getting layer style. We should not be querying the database each time for style
     def get(self, request, layer_id, z, x, y):
         try:
             raster_file = self.get_single_raster_file(request, layer_id)
@@ -572,30 +581,21 @@ class RasterTileView(RasterDataMixin, APIView):
 
         fmt = self.get_query_param(request, "format", "png")
         projection = self.get_query_param(request, "projection", "EPSG:3857")
-        style = self.get_query_param(request, "style")
+        style_param = self.get_query_param(request, "style")
         geostore_id = self.get_query_param(request, "geostore_id")
 
-        layer_style = None
-
-        if style:
-            # explict request to use layer defined style. Mostly used for admin previews
-            if style == "layer-style":
-                layer_style = raster_file.layer.style
-            else:
-                # try validating style
-                # TODO: do more thorough validation
-                try:
-                    style = json.loads(style)
-                except Exception:
-                    style = None
+        # Decide the style (prefer cached layer style unless a custom JSON is provided)
+        style = None
+        if not style_param or style_param == "layer-style":
+            style = get_layer_style_json(raster_file)
         else:
-            layer_style = raster_file.layer.style
-
-        if layer_style:
-            style = layer_style.get_style_as_json()
+            try:
+                style = json.loads(style_param)  # simple validation; harden as needed
+            except Exception:
+                # fallback to layer style if param is invalid
+                style = get_layer_style_json(raster_file)
 
         encoding = tilesource.format_to_encoding(fmt, pil_safe=True)
-
         options = {
             "encoding": encoding,
             "projection": projection,
@@ -605,12 +605,10 @@ class RasterTileView(RasterDataMixin, APIView):
 
         source = get_tile_source(path=raster_file.file, options=options)
         mime_type = source.getTileMimeType()
-
         try:
             tile_binary = source.getTile(int(x), int(y), int(z))
         except TileSourceXYZRangeError as e:
-            raise ValidationError(e)
-
+            raise ValidationError(str(e))
         return HttpResponse(tile_binary, content_type=mime_type)
 
 

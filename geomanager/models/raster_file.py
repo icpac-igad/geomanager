@@ -138,7 +138,7 @@ class RasterFileLayer(TimeStampedModel, BaseLayer):
         if self.style:
             url.update({"action": _("Edit Style"), "url": style_admin_helper.get_action_url("edit", self.style.pk)})
         else:
-            url.update({"url": style_admin_helper.get_action_url("create") + f"?layer_id={self.pk}"})
+            url.update({"url": style_admin_helper.get_action_url("create") + f"?layer_id={str(self.pk)}"})
         return url
 
     @property
