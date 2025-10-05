@@ -37,3 +37,8 @@ repos:
       - id: ruff-lint
       - id: ruff-format-diff
       - id: ruff-format
+      - id: shellcheck
+      - id: mdformat
+      - id: mdformat-check
+      - id: validate-pyproject
+      - id: actionlint
