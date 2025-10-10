@@ -1,7 +1,7 @@
 [project]
-version = "0.6.6"
+version = "0.6.7"
 name = "geomanager"
-requires-python = ">=3.12"
+requires-python = ">=3.11, <3.14"
 license = "CC-BY-4.0"
 authors = [
     { name = "Jason Kinyua", email = "jaysnmury@gmail.com" },
@@ -12,6 +12,7 @@ dependencies = [
     "adm-boundary-manager>=0.2.5",
     "cairosvg>=2.8.2",
     "cftime>=1.6.4.post1",
+    "django==4.2.16",
     "django-allauth>=65.11.2",
     "django-environ>=0.12.0",
     "django-extensions>=3.2.1",

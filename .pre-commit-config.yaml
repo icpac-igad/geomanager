@@ -40,5 +40,4 @@ repos:
       - id: shellcheck
       - id: mdformat
       - id: mdformat-check
-      - id: validate-pyproject
       - id: actionlint
