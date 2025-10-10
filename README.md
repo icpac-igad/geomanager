@@ -1,6 +1,6 @@
 # GeoManager
 
-Wagtail based Geospatial Data Manager and backend CMS for [geomapviewer](https://github.com/wmo-raf/geomapviewer)
+Wagtail based Geospatial Data Manager and backend CMS for [geomapviewer](https://github.com/icpac-igad/geomapviewer)
 
 ![Geomanager Admin Screenshot](./screenshots/geomanager_with_frontend.png)
 
@@ -28,19 +28,19 @@ must be manually assigned time.
 Data management and visualization
 
 - Uploading and visualization of gridded data
-    - netCDF
-    - Geotiff
+  - netCDF
+  - Geotiff
 - Uploading and visualization of vector data
-    - Shapefiles
-    - Geojson
+  - Shapefiles
+  - Geojson
 - Raster Tile serving of raster data using [django-large-image](https://github.com/girder/django-large-image).
   All `django-large-image`features are available
 - Vector tile serving using PostGIS MVT Tiles
 
 MapViewer Management
 
-- Management of layers visualized on the [geomapviewer](https://github.com/wmo-raf/geomapviewer)
-    - Control on visibility (public or private) of layers on the MapViewer
+- Management of layers visualized on the [geomapviewer](https://github.com/icpac-igad/geomapviewer)
+  - Control on visibility (public or private) of layers on the MapViewer
 
 # Installation
 
@@ -74,13 +74,13 @@ has some updates to the original packages.
 
 ```shell
 pip install https://github.com/wmo-raf/wagtail-admin-sortable/archive/33bf22f290e7a4210b44667e9ff56e4b35ad309e.zip
-````
+```
 
 # Usage
 
 Make sure the following are all added to your `INSTALLED_APPS` in your Wagtail `settings`
 
-````python
+```python
 INSTALLED_APPS = [
     ...
 
@@ -108,7 +108,7 @@ INSTALLED_APPS = [
     ...
 ]
 
-````
+```
 
 Run migrations
 
